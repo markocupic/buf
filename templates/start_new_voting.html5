@@ -1,0 +1,40 @@
+<div id="neueBeurteilungstarten">
+    <h2>Neue Beurteilung beginnen</h2>
+
+    <a class="icon_back" href="<?php echo $this->hrefBack; ?>">zurück</a>
+
+    <div class="formBody width50">
+        <form name="neue_Beurteilung_starten" method="post" action="<?php echo $this->action; ?>">
+            <input type="hidden" name="REQUEST_TOKEN" value="<?php echo REQUEST_TOKEN; ?>"/>
+
+            <h4>Parameter</h4>
+            <table border="0">
+                <tr>
+                    <td width="158"><strong>Name der Lehrperson:</strong></td>
+                    <td width="184">
+                        <input name="Lehrername" type="text" readonly="true" value="{{user::username}}"/>
+                    </td>
+                </tr>
+                <tr>
+                    <td width="158"><strong>Beurteilung an Klasse: </strong></td>
+                    <td width="184">
+                        <select name="Klasse">
+                            <option value="0">leer</option>
+                            <?php echo $this->classes; ?>
+                        </select></td>
+                </tr>
+                <tr>
+                    <td><strong>Beurteilung im Fach:</strong></td>
+                    <td>
+                        <select name="Fach">
+                            <option value="0">leer</option>
+                            <?php echo $this->subjects; ?>
+                        </select>
+                    </td>
+                </tr>
+            </table>
+            <input name="weiter" type="submit" value="weiter"/>
+        </form>
+    </div>
+
+</div>
