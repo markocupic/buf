@@ -34,8 +34,9 @@ class StartNewVotingController extends \Frontend
        public function setTemplate($objTemplate)
        {
 
-              $objTemplate->hrefBack = str_replace('start_new_voting', 'menu', \Environment::get('request'));
-              $objTemplate->action = str_replace('start_new_voting', 'edit_table', \Environment::get('request'));
+              global $objPage;
+
+              $objTemplate->hrefBack = $this->generateFrontendUrl($objPage->row(), '/do/menu');
 
 
               // get option tags for classes

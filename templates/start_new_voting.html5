@@ -12,22 +12,21 @@
                 <tr>
                     <td width="158"><strong>Name der Lehrperson:</strong></td>
                     <td width="184">
-                        <input name="Lehrername" type="text" readonly="true" value="{{user::username}}"/>
+                        <input name="teacher" type="text" readonly="true" value="{{user::username}}"/>
                     </td>
                 </tr>
                 <tr>
                     <td width="158"><strong>Beurteilung an Klasse: </strong></td>
                     <td width="184">
-                        <select name="Klasse">
-                            <option value="0">leer</option>
+                        <select name="class">
                             <?php echo $this->classes; ?>
-                        </select></td>
+                        </select>
+                    </td>
                 </tr>
                 <tr>
                     <td><strong>Beurteilung im Fach:</strong></td>
                     <td>
-                        <select name="Fach">
-                            <option value="0">leer</option>
+                        <select name="subject">
                             <?php echo $this->subjects; ?>
                         </select>
                     </td>

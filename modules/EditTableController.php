@@ -25,7 +25,7 @@ namespace MCupic;
  * @author     Leo Feyer <https://contao.org>
  * @package    Core
  */
-class MenuController extends \Frontend
+class EditTableController extends \Frontend
 {
 
 
@@ -35,8 +35,7 @@ class MenuController extends \Frontend
        public function setTemplate($objTemplate)
        {
               global $objPage;
-
-              $objTemplate->hrefNewVoting = $this->generateFrontendUrl($objPage->row(), '/do/start_new_voting');
+              $objTemplate->hrefBack = $this->generateFrontendUrl($objPage->row(), '/do/menu');
               return $objTemplate;
        }
 }

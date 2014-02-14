@@ -2,6 +2,6 @@
 <h3>Beurteilen</h3>
 <a title="neue Beurteilung abgeben" class="icon_edit" href="<?php echo $this->hrefNewVoting; ?>">Neue Beurteilung abgeben</a>
 
-<?php if(\StudentModel::isClassTeacher()): ?>
+<?php if(\TeacherModel::getOwnClass()): ?>
 <h3>Alle vorgenommenen Beurteilungen an meiner Stammklasse</h3>
 <?php endif; ?>
