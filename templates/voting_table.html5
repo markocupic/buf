@@ -1,9 +1,9 @@
 <h2>Beurteilungsraster </h2>
 
 <ul>
-    <li><strong>Fach: </strong><?php echo \SubjectModel::findByPk($this->Fach)->name; ?></li>
-    <li><strong>Beurteilt durch: </strong><?php echo \TeacherModel::findByPk($this->ID_LP)->name; ?></li>
-    <li><strong>Klasse: </strong><?php echo \ClassModel::findByPk($this->Klasse)->name; ?></li>
+    <li><strong>Fach: </strong><?php echo \SubjectModel::findByPk($this->subjectId)->name; ?></li>
+    <li><strong>Beurteilt durch: </strong><?php echo \TeacherModel::findByPk($this->teacherId)->username; ?></li>
+    <li><strong>Klasse: </strong><?php echo \ClassModel::findByPk($this->classId)->name; ?></li>
 </ul>
 
 <div style="width:100%">
@@ -17,41 +17,11 @@
 
 
     <div style="width:15em; margin-left:-20px; margin-top:0.25em; float:right;" id="Erklaerung">
-        <?php
-        /**
-//Man kann nur die selber erstellten Beurteilungen lÃ¶schen
-if (Session::getSessionVar("user_id") == $this->ID_LP)
-        {
-        $delete_path = $this->url(array("controller" => "beurteilungstabelle", "action" => "tabelleLoeschen", "Klasse"
-        => $this->Klasse, "Fach" => $this->Fach, "ID_LP" => $this->ID_LP));
-        //Die ID der Lehrperson wird mit der $_SESSION["user_id"] Ã¼bermittelt
 
-        **/
-        ?>
-        <!--
-        <script type="text/javascript">
-            function tabelle_loeschen() {
-                var path = '<?php echo ampersand($delete_path, null); ?>';
-                var bRepeat;
-                var bRepeat = confirm("Warnung! Sollen alle Datensätze der Tabelle unwiderruflich gelö¶scht werden?");
-                if (bRepeat == true) {
-                    window.location.href = path;
-                }
-            }
-        </script>
-        <a class="icon_delete" title="Ganze Tabelle löschen" id="delete_table"
-           href="<?php echo $delete_path; ?>">Ganze Tabelle löschen</a>
-        <script type="text/javascript">
-            // Bei eingeschaltetem js kommt es vor dem Lö¶schen zur Rö¼ckfrage.
-            document.getElementById("delete_table").href = 'javascript:tabelle_loeschen();';
-        </script>
-        -->
-        <?php
-        /**
-              }
+<?php if ($this->User->id == $this->idTeacher): ?>
+        <a class="icon_delete" title="Ganze Tabelle löschen" id="delete_table" href="<?php echo $this->hrefDeleteTable; ?>" onclick="if(!confirm('Warnung! Sollen alle Datensätze der Tabelle unwiderruflich gelöscht werden?')) return false;">Ganze Tabelle löschen</a>
+<?php endif; ?>
 
-              **/
-              ?>
 
         <p><strong>Erklärung:<br/></strong>
             1 = vollumfünglich erfüllt<br/>
@@ -167,31 +137,43 @@ if (Session::getSessionVar("user_id") == $this->ID_LP)
     <div class="clearing"></div>
 </div>
 
+<script>
+    window.addEvent('domready', function(event){
+        var isOwner = <?php echo ($this->User->id == \Input::get('teacher')) ? 'true' : 'false'; ?>;
+        var isClassTeacher = <?php echo (\TeacherModel::isClassTeacher()) ? 'true' : 'false'; ?>;
+        EvalTable = new EditTable(isOwner, isClassTeacher);
+        EvalTable.request_token = '<?php echo REQUEST_TOKEN; ?>';
+        EvalTable.elementId = '<?php echo $this->elId; ?>';
+        EvalTable.teacher = '<?php echo Input::get("teacher"); ?>';
+        EvalTable.subject = '<?php echo Input::get("subject"); ?>';
+        EvalTable.class = '<?php echo Input::get("class"); ?>';
+    });
+</script>
 
 <script type="text/javascript">
-    Event.observe(window, 'load', function () {
-        $('skillHead_1').observe('mouseover', function (event) {
+    window.addEvent('domready', function() {
+        $('skillHead_1').addEvent('mouseover', function (event) {
             displaySkillDetails(1);
         });
-        $('skillHead_2').observe('mouseover', function (event) {
+        $('skillHead_2').addEvent('mouseover', function (event) {
             displaySkillDetails(2);
         });
-        $('skillHead_3').observe('mouseover', function (event) {
+        $('skillHead_3').addEvent('mouseover', function (event) {
             displaySkillDetails(3);
         });
-        $('skillHead_4').observe('mouseover', function (event) {
+        $('skillHead_4').addEvent('mouseover', function (event) {
             displaySkillDetails(4);
         });
-        $('skillHead_5').observe('mouseover', function (event) {
+        $('skillHead_5').addEvent('mouseover', function (event) {
             displaySkillDetails(5);
         });
-        $('skillHead_6').observe('mouseover', function (event) {
+        $('skillHead_6').addEvent('mouseover', function (event) {
             displaySkillDetails(6);
         });
-        $('skillHead_7').observe('mouseover', function (event) {
+        $('skillHead_7').addEvent('mouseover', function (event) {
             displaySkillDetails(7);
         });
-        $('skillHead_8').observe('mouseover', function (event) {
+        $('skillHead_8').addEvent('mouseover', function (event) {
             displaySkillDetails(8);
         });
 
@@ -199,29 +181,29 @@ if (Session::getSessionVar("user_id") == $this->ID_LP)
         displaySkillDetails(1);
 
     });
-    Event.observe(window, 'load', function () {
-        $('skillHead_1').observe('mouseout', function (event) {
+    window.addEvent('domready', function() {
+        $('skillHead_1').addEvent('mouseout', function (event) {
             hideSkillDetails();
         });
-        $('skillHead_2').observe('mouseout', function (event) {
+        $('skillHead_2').addEvent('mouseout', function (event) {
             hideSkillDetails();
         });
-        $('skillHead_3').observe('mouseout', function (event) {
+        $('skillHead_3').addEvent('mouseout', function (event) {
             hideSkillDetails();
         });
-        $('skillHead_4').observe('mouseout', function (event) {
+        $('skillHead_4').addEvent('mouseout', function (event) {
             hideSkillDetails();
         });
-        $('skillHead_5').observe('mouseout', function (event) {
+        $('skillHead_5').addEvent('mouseout', function (event) {
             hideSkillDetails();
         });
-        $('skillHead_6').observe('mouseout', function (event) {
+        $('skillHead_6').addEvent('mouseout', function (event) {
             hideSkillDetails();
         });
-        $('skillHead_7').observe('mouseout', function (event) {
+        $('skillHead_7').addEvent('mouseout', function (event) {
             hideSkillDetails();
         });
-        $('skillHead_8').observe('mouseout', function (event) {
+        $('skillHead_8').addEvent('mouseout', function (event) {
             hideSkillDetails();
         });
     });
@@ -230,22 +212,14 @@ if (Session::getSessionVar("user_id") == $this->ID_LP)
     function displaySkillDetails(index) {
 
         $$('div.skillDetails').each(function (el) {
-            el.setStyle({
+            el.setStyles({
                 'display': 'none'
             });
         });
         el = $('skillDetails_' + index);
-        el.fade({
-            from: 0,
-            to: 1,
-            afterFinish: function () {
-                el.setStyle({
-                    display: 'block'
-                });
-            }
-        });
-
-    }
+        el.fade('in');
+        el.setStyle('display','block');
+   }
 
     function hideSkillDetails(index) {
         return;

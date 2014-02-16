@@ -1,0 +1,61 @@
+<table class="beurteilungstabelle">
+    <!-- row 1 -->
+    <tr>
+        <td class="name_col">&nbsp;</td>
+        <td class="name_col">&nbsp;</td>
+        <?php for ($i = 1; $i < 9; $i++): ?>
+            <td id="skillHead_<?php echo $i; ?>"style="background-image: url('system/modules/buf/assets/images/Kriterien/fff/<?php echo $i; ?>.png');" class="description col_<?php echo $i; ?>">&nbsp;</td>
+        <?php endfor; ?>
+        <td class="edit_col">&nbsp;</td>
+        <td class="delete_col">&nbsp;</td>
+    </tr>
+    <!-- row 2 -->
+    <tr>
+        <td class="name_col">&nbsp;</td>
+        <td class="name_col">&nbsp;</td>
+        <?php for ($i = 1; $i < 9; $i++): ?>
+        <td class="col_<?php echo $i; ?>"><img onclick="EvalTable.deleteEntries(<?php echo $i; ?>,'delete_col')" class="delete_icon" title="Spalte loeschen" alt="Spalte loeschen" src="system/modules/buf/assets/images/loeschen.png"/></td>
+        <?php endfor; ?>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+    </tr>
+    <!-- row 3 -->
+    <tr>
+        <td class="name_col">&nbsp;</td>
+        <td class="name_col">&nbsp;</td>
+        <?php for ($i = 1; $i < 9; $i++): ?>
+        <td class="col_<?php echo $i; ?>"><img class="edit_icon" title="bearbeiten vertikal" alt="bearbeiten vertikal" src="system/modules/buf/assets/images/edit.png" onclick="EvalTable.edit(this,<?php echo $i; ?>,'edit_col');"/></td>
+        <?php endfor; ?>
+        <td>&nbsp;</td>
+        <td>&nbsp;</td>
+    </tr>
+
+    <!-- skills -->
+    <?php $Zeile = 0; ?>
+    <?php foreach ($this->rows as $Datensatz): ?>
+        <?php $Zeile++; ?>
+        <!-- next student -->
+        <tr>
+            <!--lastname, firstname -->
+            <td class="row_<?php echo $Datensatz['student']; ?> name_col"><?php echo $Datensatz['lastname']; ?></td>
+            <td class="row_<?php echo $Datensatz['student']; ?> name_col"><?php echo $Datensatz['firstname']; ?></td>
+            <!-- rating cols -->
+            <?php for ($i = 1; $i < 9; $i++): ?>
+            <?php
+            //generate the rating value
+            $value = ($Datensatz["skill" . $i]["Wert"] == 0 ? "&nbsp;" : $Datensatz["skill" . $i]["Wert"]);
+            if (\TeacherModel::isClassTeacher() == $this->Klasse && $Datensatz["skill" . $i]["Abweichung"] != "") {
+                $value .= sprintf('<pre style="color:#%s;">Abw:<br />%s</pre>', $Datensatz["skill" . $i]["Farbe"], $Datensatz["skill" . $i]["Abweichung"]);
+            }
+            ?>
+            <td id="skillCell_s_<?php echo $Datensatz['student']; ?>_k_<?php echo $i; ?>" class="row_<?php echo $Datensatz['student']; ?> skillCell col_<?php echo $i; ?>"><?php echo $value; ?></td>
+            <?php endfor; ?>
+
+            <!-- edit col -->
+            <td class="edit_col row_<?php echo $Datensatz['student']; ?>"><img class="edit_icon" title="Reihe bearbeiten" alt="Reihe bearbeiten" src="system/modules/buf/assets/images/edit.png" onclick="EvalTable.edit(this,<?php echo $Datensatz["student"]; ?>,'edit_row')"/></td>
+
+            <!-- delete col -->
+            <td class="delete_col row_<?php echo $Datensatz['student']; ?>"><img onclick="EvalTable.deleteEntries(<?php echo $Datensatz['student']; ?>,'delete_row')" class="delete_icon" title="Zeile loeschen" alt="Zeile loeschen" src="system/modules/buf/assets/images/loeschen.png"/>  </td>
+        </tr>
+    <?php endforeach; ?>
+</table>

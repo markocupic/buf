@@ -28,6 +28,11 @@ namespace MCupic;
 class MenuController extends \Frontend
 {
 
+       public function __construct()
+       {
+              $this->import('FrontendUser', 'User');
+              return parent::__construct();
+       }
 
        /**
         * Generate the module

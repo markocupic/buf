@@ -1,0 +1,46 @@
+var req = new Request({
+    method: 'post',
+    url: 'contao/main.php?do=tl_member_cell_edit&act=updateGroupmembership',
+    data: {
+        'FORM_SUBMIT': self.formSubmit,
+        'REQUEST_TOKEN': self.requestToken,
+        'action': 'updateGroupmembership',
+        'field': field,
+        'memberId': memberId,
+        'groupId': groupId,
+        'checked': checked
+    },
+
+    onRequest: function () {
+        //
+    },
+
+    onComplete: function (response) {
+        // hide message Text
+        document.id('statusBox').fade('hide');
+        var serverResponse = '';
+        // catch  server-response
+        var json = JSON.decode(response);
+        // if server returns error
+        if (json.status == 'error') {
+            serverResponse = json.errorMsg;
+        }
+
+        // if server returns success
+        if (json.status == 'success') {
+            elSpan.innerHTML = json.value;
+            serverResponse = 'Daten erfolgreich übernommen!';
+        }
+
+        var fadein = (function () {
+            document.id('statusBox').innerHTML = serverResponse;
+            document.id('statusBox').fade('in');
+        }.delay(200));
+
+        var fadeOut = (function () {
+            document.id('statusBox').innerHTML = '';
+            document.id('statusBox').fade('out')
+        }.delay(4000));
+    }
+});
+req.send();
