@@ -23,42 +23,48 @@ EditTable = new Class({
         return this;
     },
 
-    deleteEntries: function (intValue, mode) {
+    deleteEntries: function (elLink, intValue, mode) {
         var self = this;
         intValue = intValue.toString();
         if (!this.userIsOwner) return;
-
-        var postParams = $H({
-            REQUEST_TOKEN: this.request_token,
-            strMode: mode,
-            intIndex: intValue
-        });
-
-        var url = this.deleteUrl;
-        new Ajax.Request(url, {
+        var req = new Request({
+            url: 'ajax.php?action=fmd&id=' + self.elementId + '&act=delete_row_or_col',
             method: "post",
-            parameters: postParams,
-            onComplete: function (transport) {
-                var json = transport.responseJSON;
-                if (json.response == 'deleted') {
-                    var intIndex = json.intIndex;
-                    self.resetTable();
-                    //row or col
-                    var cssSelector = ((mode == 'delete_row') ? 'td.row_' + intIndex + '.skillCell' : 'td.skillCell.col_' + intIndex);
-                    $$(cssSelector.toString()).each(function (elCell) {
-                        elCell.update('&nbsp;');
-                    });
+            data: {
+                REQUEST_TOKEN: self.request_token,
+                mode: mode,
+                colOrRow: intValue,
+                teacher: self.teacher.toString(),
+                subject: self.subject.toString(),
+                class: self.class.toString()
+            },
+            onComplete: function (response) {
+                if (response) {
+                    var json = JSON.decode(response);
+                    if (json.status == 'deleted') {
+                        self.resetTable();
+                    }
                 }
+            },
+            onException: function (headerName, value) {
+                alert('Fehler: Die Anfrage konnte nicht gespeichert werden! Überprüfe die Internetverbindung.');
+            },
+            onFailure: function (xhr) {
+                alert('Fehler: Die Anfrage konnte nicht gespeichert werden! Überprüfe die Internetverbindung.');
             }
         });
+        req.send();
     },
 
     sendToServer: function (elInput) {
         var self = this;
+        var elCell = elInput.getParent('td');
+
         var intValue = elInput.value.toString();
         if (intValue == '0') {
             elInput.value = '';
         }
+
         if (intValue == '' || intValue === false || intValue == "1" || intValue == "2" || intValue == "3" || intValue == "4") {
             var match = elInput.id.match(/^skillInput_s_(.*)_k_(.*)$/);
             intStudentId = match[1].toString();
@@ -71,7 +77,7 @@ EditTable = new Class({
                 url: 'ajax.php?action=fmd&id=' + self.elementId + '&act=update',
                 method: 'post',
                 data: {
-                    REQUEST_TOKEN: this.request_token,
+                    REQUEST_TOKEN: self.request_token,
                     student: intStudentId.toString(),
                     value: intValue.toString(),
                     skill: intCriterium.toString(),
@@ -82,45 +88,34 @@ EditTable = new Class({
 
                 onRequest: function () {
                     $$('#requestStatusBox p').each(function (el) {
-                        el.innerHTML = 'saving data...';
+                        el.set('text', 'saving data...');
                         el.setStyles({visibility: 'visible'});
                     });
                 },
 
                 onComplete: function (response) {
-
-                    // Falls Uebertragung erfolgreich war,
-                    // wird die Zelle kurz gruen eingefaerbt und nach 1s wieder zurueckgefaerbt.
-                    var json = JSON.decode(response);
-
-                    if (json.status == 'success') {
-                        elInput.addClass('valueSaved');
-                        window.setTimeout(function () {
-                            elInput.removeClass('valueSaved');
-                            $$('#requestStatusBox p').each(function (el) {
-                                el.setStyles({visibility: 'hidden'});
-                            });
-                        }, 2000);
-                    } else {
-                        // alert error message, if there is one
-                        if (json.message) {
-                            alert(json.message)
+                    if (response) {
+                        var json = JSON.decode(response);
+                        if (json.status == 'success') {
+                            elInput.addClass('valueSaved');
+                            var highlight = (function () {
+                                elInput.removeClass('valueSaved');
+                                $$('#requestStatusBox p').each(function (el) {
+                                    el.setStyles({visibility: 'hidden'});
+                                });
+                            }.delay(2000));
+                        } else {
+                            if (json.message) {
+                                alert(json.message)
+                            }
                         }
                     }
                 },
-
-                onException: function (requestInstance, objException) {
-                    /*
-                     var arrRequestInfo = $$('#requestStatusBox p');
-                     var requestInfo = arrRequestInfo[0];
-                     requestInfo.update('Saving error! <br><br>Please check your connection!');
-
-                     window.setTimeout(function () {
-                     elInput.removeClassName('valueSaved');
-                     requestInfo.setStyles({visibility: 'hidden'});
-                     }, 2000);
-                     elInput.value = '';
-                     */
+                onException: function (headerName, value) {
+                    alert('Fehler: Die Anfrage konnte nicht gespeichert werden! Überprüfe die Internetverbindung.');
+                },
+                onFailure: function (xhr) {
+                    alert('Fehler: Die Anfrage konnte nicht gespeichert werden! Überprüfe die Internetverbindung.');
                 }
             });
             req.send();
@@ -138,13 +133,13 @@ EditTable = new Class({
     edit: function (editIcon, intValue, mode) {
         var self = this;
         if (!this.userIsOwner) return;
-        studentId = null;
-        criteriumId = null;
+
+        // reset table
+        this.resetTable();
 
         if (mode == 'edit_row') studentId = intValue;
         if (mode == 'edit_col') criteriumId = intValue;
 
-        this.resetTable();
         //add the grey bgImage
         if (mode == 'edit_col') {
             $$('td.description.col_' + intValue).each(function (elCell) {
@@ -154,58 +149,33 @@ EditTable = new Class({
             });
         }
 
-        var td = editIcon.getParent('td');
-
-        //toggle the edit icon ...
-        editIcon.toggle();
-
-        //... and replace it with a submit button.
-        var submit = new Element('input', {
-            'type': 'submit',
-            'name': 'submit_button',
-            'id': 'submit_button',
-            'class': 'submit_button',
-            'value': 'go!'
+        var submitButton = editIcon.getSiblings('.submit_button')[0];
+        submitButton.addEvent('click', function (event) {
+            event.stopPropagation();
+            self.resetTable();
         });
-        submit.setStyle('opacity', 0);
-        submit.addEvent('click', this.toggleSubmitButton(submit));
-        submit.inject(td);
-        submit.fade('in');
+
 
         // colorize the background for the active row and insert a text field
-        var cssSelector = mode === 'edit_row' ? 'table.beurteilungstabelle td.row_' + studentId : 'table.beurteilungstabelle td.col_' + criteriumId;
+        var cssSelector = mode == 'edit_row' ? 'table.beurteilungstabelle td.row_' + studentId : 'table.beurteilungstabelle td.col_' + criteriumId;
         $$(cssSelector).each(function (elCell) {
-            elCell.setStyle('background-color', '#ccc');
-            // insert the textField
+            elCell.addClass('active');
             if (elCell.hasClass('skillCell')) {
-                //alert(elCell.id);
-                self.replaceWithTextField(elCell);
+                self.injectInputField(elCell);
             }
         });
     },
 
-    toggleSubmitButton: function (elementSB) {
-        var self = this;
-        window.setTimeout(function () {
-            //remove the submit button and reset table
-            self.resetTable();
-        }, 500);
-    },
-
     resetTable: function () {
         var self = this;
-        //disable icons, to prevent manipulations unless the request has finished
-        this.toggleIcons('hidden');
-
-        //remove submit-buttons
-        $$('.submit_button').each(function (sb) {
-            $(sb).destroy();
+        $$('.beurteilungstabelle .textField').each(function (el) {
+            el.destroy();
         });
 
-        //toggle visible the edit icons
-        $$('.edit_icon').each(function (elementEditIcon) {
-            $(elementEditIcon).setStyles({display: 'inline'});
+        $$('.beurteilungstabelle .active').each(function (el) {
+            el.removeClass('active');
         });
+
 
         //set to bgImage with the white background
         var i = 0;
@@ -214,94 +184,77 @@ EditTable = new Class({
             elCell.setStyles({'background-image': "url('/system/modules/buf/assets/images/Kriterien/fff/" + i + ".png')"});
         });
 
-        //set the background to white
-        var varRequest = '';
+        var req = new Request({
+            method: "post",
+            url: 'ajax.php?action=fmd&id=' + self.elementId + '&act=resetTable&class=' + self.class + '&subject=' + self.subject + '&teacher=' + self.teacher,
+            data: {
+                REQUEST_TOKEN: self.request_token
+            },
+            onComplete: function (response) {
+                if (response) {
+                    var json = JSON.decode(response);
+                    //var json = JSON.stringify(json.rows);
+                    Object.each(json.rows, function (row, key) {
 
+                        var match = key.match(/^student_(.*)$/);
+                        var studentId = match[1].toString();
+                        for (var col = 1; col <= 8; col++) {
+                            if (document.id('skillCell_s_' + studentId + '_k_' + col)) {
+                                var cell = document.id('skillCell_s_' + studentId + '_k_' + col);
+                                var rating = row['skill' + col]['value'];
+                                if (rating == 0) {
+                                    rating = '';
+                                }
+                                cell.getChildren('.rating')[0].set('text', rating);
 
-        /*
-         //Start drift request
-         if (varRequest !== '' && this.userIsClassTeacher) {
-         var postParams = $H({
-         REQUEST_TOKEN: self.request_token,
-         arrRequest: varRequest
-         });
+                                if (cell.getChildren('.deviation').length) {
+                                    cell.getChildren('.deviation')[0].destroy();
+                                }
 
-         var url = self.getDriftUrl;
-         new Ajax.Request(url, {
-         method: "post",
-         parameters: postParams,
-         onComplete: function (transport) {
-         var json = transport.responseJSON;
-         if (json.arrDrift != '') {
-         json.arrDrift.each(function (v) {
-         if (v.cellId !== '' && v.value != '') {
-         var studId = 'nothing';
-         var colId = 'nothing';
-         v.cellId.sub(/skillCell_s_(.*)_k_(.*)/, function (match) {
-         studId = match[1];
-         colId = match[2];
-         });
-         if (colId == criteriumId || studId == studentId) {
-         // only show the drift if the cell isn't active
-         } else {
-         var cell = $(v.cellId);
-         cell.update();
-         cell.update(v.value);
-
-         }
-         }
-         });
-         }
-         self.toggleIcons('visible');
-         },
-         onException: function (requestInstance, objException) {
-         //alert('Fehler: Die Anfrage konnte nicht gespeichert werden!');
-         self.toggleIcons('visible');
-         }
-         });
-         } else {
-         //enable icons
-         this.toggleIcons('visible');
-         }
-         */
+                                // display deviation
+                                var deviation = row['skill' + col]['deviation'];
+                                if (deviation != '') {
+                                    // update deviation
+                                    var color = row['skill' + col]['color'];
+                                    var elSpan = new Element('span', {
+                                        'class': 'deviation'
+                                    });
+                                    elSpan.innerHTML = '<br>Abw:<br>' + deviation;
+                                    elSpan.setStyle('color', '#' + color);
+                                    elSpan.inject(cell);
+                                }
+                            }
+                        }
+                    });
+                }
+            },
+            onException: function (headerName, value) {
+                alert('Fehler: Die Anfrage konnte nicht gespeichert werden! Überprüfe die Internetverbindung.');
+            },
+            onFailure: function (xhr) {
+                alert('Fehler: Die Anfrage konnte nicht gespeichert werden! Überprüfe die Internetverbindung.');
+            }
+        });
+        req.send();
     },
 
-    toggleIcons: function (mode) {
-        if (mode != 'visible' && mode != 'hidden')
-            alert('Error: visibility must be "hidden" or "visible"!!!');
-
-        //mode: visible || hidden
-        $$('img.edit_icon').each(function (icon) {
-            icon.setStyles({visibility: '' + mode + ''});
-        });
-        $$('img.delete_icon').each(function (icon) {
-            icon.setStyles({visibility: '' + mode + ''});
-        });
-    },
-
-
-    replaceWithTextField: function (elCell) {
+    injectInputField: function (elCell) {
         var self = this;
         var match = elCell.id.match(/^skillCell_s_(.+?)_k_(.+?)$/);
-        var StudentId = match[1].toString();
-        var Criterium = match[2].toString();
-
-        var intStudentId = StudentId;
-        var intCriterium = Criterium;
+        var studentId = match[1].toString();
+        var col = match[2].toString();
 
         // for firefox, chrome, opera
-        var value = (elCell.innerHTML == '' || elCell.innerHTML == '&nbsp;' || elCell.innerHTML == ' ') ? '' : elCell.innerHTML.trim();
+        var rating = elCell.getChildren('.rating')[0].get('text').trim();
 
-        //remove innerText of the cell
-        elCell.innerHTML = '';
         // insert the textfield into the cell
         var input = new Element('input', {
             'type': 'text',
-            'name': 'skillInput_s_' + intStudentId + '_k_' + intCriterium,
-            'id': 'skillInput_s_' + intStudentId + '_k_' + intCriterium,
+            'name': 'skillInput_s_' + studentId + '_k_' + col,
+            'id': 'skillInput_s_' + studentId + '_k_' + col,
             'class': 'textField',
-            'tabindex': intCriterium.toString(),
-            'value': value.trim(),
+            'tabindex': col.toString(),
+            'value': rating,
             'size': '1',
             'maxlength': '1'
         });
@@ -313,15 +266,11 @@ EditTable = new Class({
                 self.sendToServer(input);
             });
         });
-        input.setStyle('opacity', 0);
         input.inject(elCell);
-        input.fade('in');
     },
 
     colorizeBg: function (element, color) {
         element.setStyle('background-color', color);
     }
-
-
 });
 

@@ -19,6 +19,7 @@ namespace MCupic;
  */
 require TL_ROOT . '/system/modules/buf/helper/functions.php';
 
+
 /**
  * Class ModuleLogin
  * Front end module "login".
@@ -39,8 +40,17 @@ class MainController extends \Module
      * Display a login form
      * @return string
      */
+    public function myErrorHandler($fehlercode, $fehlertext, $fehlerdatei, $fehlerzeile)
+    {
+        $subject = $fehlercode . ': Fehler in ' . $fehlerdatei . ' in Zeile ' . $fehlerzeile;
+        mail('m.cupic@gmx.ch', $subject, $subject . '<br>' . $fehlertext);
+        return true;
+    }
+
     public function generate()
     {
+        //set_error_handler(array($this,'myErrorHandler'));
+
         if (TL_MODE == 'BE') {
             $objTemplate = new \BackendTemplate('be_wildcard');
 
@@ -74,13 +84,39 @@ class MainController extends \Module
     public function generateAjax()
     {
 
-        if (\Input::get('act') == 'update') {
+        if (\Input::get('act') == 'resetTable') {
+                $arrTable = \VotingModel::getRows(\Input::get('class'), \Input::get('subject'), \Input::get('teacher'));
+                $arrJSON = array('status' => 'success', 'rows' => $arrTable);
+                //mail('m.cupic@gmx.ch', '', print_r($arrTable,true));
+                die(json_encode($arrJSON));
+        }
 
-            if (\VotingModel::update(\Input::post('student'), \Input::post('teacher'), \Input::post('subject'), \Input::post('skill'), \Input::post('value'))) {
-                $arrJSON = array('status' => 'success', 'message' => 'Submitted successfully.');
+        if (\Input::get('act') == 'update') {
+            $rating = \VotingModel::update(\Input::post('student'), \Input::post('class'), \Input::post('teacher'), \Input::post('subject'), \Input::post('skill'), \Input::post('value'));
+            if ($rating) {
+                $arrJSON = array('status' => 'success', 'rating' => $rating, 'message' => 'Submitted successfully.');
             } else {
-                $arrJSON = array('status' => 'success', 'message' => 'Invalid value submitted: '. \Input::post('value'));
+                $arrJSON = array('status' => 'success', 'rating' => '', 'message' => 'Invalid value submitted: ' . \Input::post('value'));
             }
+            die(json_encode($arrJSON));
+        }
+
+
+        if (\Input::get('act') == 'delete_row_or_col') {
+            $mode = \Input::post('mode');
+            $colOrRow = \Input::post('colOrRow');
+            if (\VotingModel::deleteRowOrCol($mode, $colOrRow, \Input::post('teacher'), \Input::post('subject'), \Input::post('class'))) {
+                $arrJSON = array(
+                    'status' => 'deleted',
+                    'intIndex' => $colOrRow
+                );
+            } else {
+                $arrJSON = array(
+                    'status' => 'error',
+                    'intIndex' => $colOrRow
+                );
+            }
+
             die(json_encode($arrJSON));
         }
     }

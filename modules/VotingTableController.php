@@ -38,15 +38,24 @@ class VotingTableController extends \Frontend
     {
         global $objPage;
 
-           // back href
+        // back href
         $objTemplate->hrefBack = $this->generateFrontendUrl($objPage->row(), '/do/menu');
 
         // delete table href
         $arrQuery = array('teacher' => \Input::get('teacher'), 'subject' => \Input::get('subject'), 'class' => \Input::get('class'));
-        $objTemplate->hrefDeleteTable = $this->generateFrontendUrl($objPage->row(), '/do/delete_table') .  setQueryString($arrQuery);
+        $objTemplate->hrefDeleteTable = $this->generateFrontendUrl($objPage->row(), '/do/delete_table') . setQueryString($arrQuery);
 
         $objTable = new \FrontendTemplate('voting_table_partial');
-        $objTable->rows = $this->getRows();
+        $objTable->rows = \VotingModel::getRows(\Input::get('class'), \Input::get('subject'), \Input::get('teacher'));
+        $objTable->classId = \Input::get('class');
+        $objTable->teacherId = \Input::get('teacher');
+        $objTable->subjectId = \Input::get('subject');
+        $objTable->User = $this->User;
+
+        // Delete row or col href
+        $arrQuery = array('teacher' => \Input::get('teacher'), 'subject' => \Input::get('subject'), 'class' => \Input::get('class'));
+        $objTable->hrefDeleteRowOrCol = $this->generateFrontendUrl($objPage->row(), '/do/delete_row_or_col') . setQueryString($arrQuery);
+
         $objTemplate->classId = \Input::get('class');
         $objTemplate->teacherId = \Input::get('teacher');
         $objTemplate->subjectId = \Input::get('subject');
@@ -57,113 +66,7 @@ class VotingTableController extends \Frontend
         return $objTemplate;
     }
 
-    public function isOwner()
-    {
-        if ($this->User->id == \Input::get('teacher')) {
-            return true;
-        }
-        return false;
-    }
-
-    public function getRows()
-    {
-        $Abweichungstoleranz = $this->User->deviation;
-        //die($Abweichungstoleranz);
 
 
-        $Klasse = \Input::get('class');
-        $Fach = \Input::get('subject');
-        $ID_LP = \Input::get('teacher');
-
-        //prueft, ob der aktuelle Benutzer auch Besitzer der Datensaeze ist
-        if ($this->isOwner()) {
-            $BearbeitenVerboten = false;
-        } else {
-            $BearbeitenVerboten = true;
-        }
-
-
-        $arr_datensaetze = array();
-
-
-        $objStudent = $this->Database->prepare('SELECT id, lastname, firstname FROM tl_student WHERE class=? ORDER BY gender ASC,lastname, firstname')->execute($Klasse);
-        $m = 0;
-        while ($objStudent->next()) {
-            $m++;
-            $objVoting = $this->Database->prepare('SELECT * FROM tl_voting WHERE teacher = ? AND student = ? AND subject = ?')->execute($ID_LP,$objStudent->id, $Fach);
-            //Falls die Abfrage nicht eindeutig war.
-            if ($objVoting->numRows > 1) {
-                die ("Abbruch: zwei Datens&auml;tze der selben Kategorie vorhanden");
-            }
-
-            //Falls zum Namen keine Bewertung gefunden wurde, bleiben die Zellen leer.
-            if ($objVoting->numRows < 1) {
-                for ($i = 1; $i < 9; $i++) {
-                    $Kriterium = "0";
-                    $Abweichung = "";
-                    $Farbe = "000000";
-                    $array_name = "unterarray" . $i;
-                    $$array_name = array("Wert" => $Kriterium, "Abweichung" => $Abweichung, "Farbe" => $Farbe, "Mittelwert" => 0);
-                    $DatensatzID = "";
-                }
-            }
-            //Falls ein Datensatz vorhanden ist
-            if ($objVoting->numRows == 1) {
-                $rowDatensatz = $objVoting->fetchAssoc();
-                for ($i = 1; $i < 9; $i++) {
-                    $Kriterium = $rowDatensatz["skill" . $i];
-                    if ($Kriterium < 1) {
-                        $Kriterium = "0";
-                    }
-                    //Mittelwert
-                    //Nur für den Klassenlehrer an seiner Stammklasse ersichtlich
-                    if ($Kriterium > 0 && \TeacherModel::isClassTeacher() == $Klasse) {
-                        $stmt3 = $this->Database->prepare("SELECT AVG(skill" . $i . ") AS 'Mittelwert' FROM tl_voting WHERE  student = ? AND skill$i > 0 AND skill" . $i ." < 5 AND id != ?")->execute($objStudent->id, $rowDatensatz['id']);
-                        $rowMittelwert = $stmt3->fetchAssoc();
-
-                        $Abweichung = $rowDatensatz["skill" . $i] - $rowMittelwert["Mittelwert"];
-                        if ($Abweichung < (-1) * $Abweichungstoleranz && $rowMittelwert["Mittelwert"] > 0) {
-                            $Farbe = "009900";
-                        } elseif ($Abweichung > $Abweichungstoleranz && $rowMittelwert["Mittelwert"] > 0) {
-                            $Farbe = "CC0000";
-                        } else {
-                            $Farbe = "000000";
-                        }
-                    } else {
-                        $rowMittelwert["Mittelwert"] = 0;
-                        $Farbe = "000000";
-                    }
-
-                    if ($Farbe != "000000" && $rowMittelwert["Mittelwert"] > 0) {
-                        $Abweichung = round($Abweichung, 1);
-                    } else {
-                        $Abweichung = "";
-                    }
-                    $array_name = "unterarray" . $i;
-                    $$array_name = array("Wert" => $Kriterium, "Abweichung" => $Abweichung, "Farbe" => $Farbe, "Mittelwert" => $rowMittelwert["Mittelwert"]);
-
-                }
-                //end for
-            }
-            //end if
-            $DatensatzID = $rowDatensatz["id"];
-            $arr_datensaetze[$m] = array(
-                "student" => $objStudent->id,
-                "lastname" => $objStudent->lastname,
-                "firstname" => $objStudent->firstname,
-                "Datensatz_ID" => $DatensatzID,
-                "skill1" => $unterarray1,
-                "skill2" => $unterarray2,
-                "skill3" => $unterarray3,
-                "skill4" => $unterarray4,
-                "skill5" => $unterarray5,
-                "skill6" => $unterarray6,
-                "skill7" => $unterarray7,
-                "skill8" => $unterarray8
-            );
-        }
-        //end while
-        return $arr_datensaetze;
-    }
 
 }

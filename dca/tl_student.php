@@ -134,7 +134,7 @@ $GLOBALS['TL_DCA']['tl_student'] = array
               ),
               'lastname' => array
               (
-                     'label'                   => &$GLOBALS['TL_LANG']['tl_member']['firstname'],
+                     'label'                   => &$GLOBALS['TL_LANG']['tl_member']['lastname'],
                      'exclude'                 => true,
                      'search'                  => true,
                      'sorting'                 => true,
@@ -156,7 +156,7 @@ $GLOBALS['TL_DCA']['tl_student'] = array
               ),
               'class' => array
               (
-                     'label'                   => &$GLOBALS['TL_LANG']['tl_member']['firstname'],
+                     'label'                   => &$GLOBALS['TL_LANG']['tl_member']['class'],
                      'exclude'                 => true,
                      'search'                  => true,
                      'sorting'                 => true,

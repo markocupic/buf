@@ -1,6 +1,21 @@
 <h2>Hauptmenü</h2>
 <h3>Beurteilen</h3>
-<a title="neue Beurteilung abgeben" class="icon_edit" href="<?php echo $this->hrefNewVoting; ?>">Neue Beurteilung abgeben</a>
+<a title="neue Beurteilung abgeben" class="icon_edit" href="<?php echo $this->hrefNewVoting; ?>">Neue Beurteilung
+    abgeben</a>
+
+<h3>Meine gemachten Beurteilungen</h3>
+<ul>
+    <?php foreach ($this->myVotings as $voting): ?>
+    <li>
+        <a class="icon_edit" title="bearbeiten" href="<?php echo $this->hrefVotingTable . setQueryString(array('teacher' => $voting['teacherId'], 'subject' => $voting['subjectId'], 'class' => $voting['classId'])); ?>">
+            <strong style="color:black"><?php echo $voting["classname"] ." " . $voting["subjectname"]; ?> </strong>&nbsp;bearbeiten
+        </a>
+    </li>
+    <?php endforeach; ?>
+    <?php if(!count($this->myVotings)): ?>
+    <li><strong>Du hast noch keine Beurteilungen abgegeben.</strong></li>
+    <?php endif; ?>
+</ul>
 
 <?php if(\TeacherModel::getOwnClass()): ?>
 <h3>Alle vorgenommenen Beurteilungen an meiner Stammklasse</h3>

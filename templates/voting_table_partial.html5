@@ -14,7 +14,7 @@
         <td class="name_col">&nbsp;</td>
         <td class="name_col">&nbsp;</td>
         <?php for ($i = 1; $i < 9; $i++): ?>
-        <td class="col_<?php echo $i; ?>"><img onclick="EvalTable.deleteEntries(<?php echo $i; ?>,'delete_col')" class="delete_icon" title="Spalte loeschen" alt="Spalte loeschen" src="system/modules/buf/assets/images/loeschen.png"/></td>
+        <td class="col_<?php echo $i; ?>"><a href="<?php echo $this->hrefDeleteRowOrCol; ?>" onclick="EvalTable.deleteEntries(this,<?php echo $i; ?>,'delete_col'); return false;" title="Spalte löschen"><img class="delete_icon" alt="Spalte loeschen" src="system/modules/buf/assets/images/loeschen.png"></a></td>
         <?php endfor; ?>
         <td>&nbsp;</td>
         <td>&nbsp;</td>
@@ -24,7 +24,10 @@
         <td class="name_col">&nbsp;</td>
         <td class="name_col">&nbsp;</td>
         <?php for ($i = 1; $i < 9; $i++): ?>
-        <td class="col_<?php echo $i; ?>"><img class="edit_icon" title="bearbeiten vertikal" alt="bearbeiten vertikal" src="system/modules/buf/assets/images/edit.png" onclick="EvalTable.edit(this,<?php echo $i; ?>,'edit_col');"/></td>
+        <td class="col_<?php echo $i; ?>">
+            <img class="edit_icon" title="bearbeiten vertikal" alt="bearbeiten vertikal" src="system/modules/buf/assets/images/edit.png" onclick="EvalTable.edit(this,<?php echo $i; ?>,'edit_col');">
+            <input type="submit" name="submit_button" class="submit_button" value="go!">
+        </td>
         <?php endfor; ?>
         <td>&nbsp;</td>
         <td>&nbsp;</td>
@@ -43,19 +46,26 @@
             <?php for ($i = 1; $i < 9; $i++): ?>
             <?php
             //generate the rating value
-            $value = ($Datensatz["skill" . $i]["Wert"] == 0 ? "&nbsp;" : $Datensatz["skill" . $i]["Wert"]);
-            if (\TeacherModel::isClassTeacher() == $this->Klasse && $Datensatz["skill" . $i]["Abweichung"] != "") {
-                $value .= sprintf('<pre style="color:#%s;">Abw:<br />%s</pre>', $Datensatz["skill" . $i]["Farbe"], $Datensatz["skill" . $i]["Abweichung"]);
-            }
+            $value = ($Datensatz["skill" . $i]["value"] == 0 ? "" : $Datensatz["skill" . $i]["value"]);
             ?>
-            <td id="skillCell_s_<?php echo $Datensatz['student']; ?>_k_<?php echo $i; ?>" class="row_<?php echo $Datensatz['student']; ?> skillCell col_<?php echo $i; ?>"><?php echo $value; ?></td>
+
+            <td id="skillCell_s_<?php echo $Datensatz['student']; ?>_k_<?php echo $i; ?>" class="row_<?php echo $Datensatz['student']; ?> skillCell col_<?php echo $i; ?>">
+                <span class="rating"><?php echo $value; ?></span>
+
+      <?php if (\TeacherModel::getOwnClass() == $this->teacherId && $Datensatz["skill" . $i]["deviation"] != ""): ?>
+            <span class="deviation" style="color:#<?php echo $Datensatz['skill' . $i]['color']; ?>;"><br>Abw:<br><?php echo $Datensatz['skill' . $i]['deviation']; ?></span>
+            <?php endif; ?>
+            </td>
             <?php endfor; ?>
 
             <!-- edit col -->
-            <td class="edit_col row_<?php echo $Datensatz['student']; ?>"><img class="edit_icon" title="Reihe bearbeiten" alt="Reihe bearbeiten" src="system/modules/buf/assets/images/edit.png" onclick="EvalTable.edit(this,<?php echo $Datensatz["student"]; ?>,'edit_row')"/></td>
+            <td class="edit_col row_<?php echo $Datensatz['student']; ?>">
+                <img class="edit_icon" title="Reihe bearbeiten" alt="Reihe bearbeiten" src="system/modules/buf/assets/images/edit.png" onclick="EvalTable.edit(this,<?php echo $Datensatz["student"]; ?>,'edit_row')">
+                <input type="submit" name="submit_button" class="submit_button" value="go!">
+            </td>
 
             <!-- delete col -->
-            <td class="delete_col row_<?php echo $Datensatz['student']; ?>"><img onclick="EvalTable.deleteEntries(<?php echo $Datensatz['student']; ?>,'delete_row')" class="delete_icon" title="Zeile loeschen" alt="Zeile loeschen" src="system/modules/buf/assets/images/loeschen.png"/>  </td>
+            <td class="delete_col row_<?php echo $Datensatz['student']; ?>"><a href="<?php echo $this->hrefDeleteRowOrCol; ?>" onclick="EvalTable.deleteEntries(this,<?php echo $Datensatz['student']; ?>,'delete_row'); return false;" title="Zeile löschen"><img class="delete_icon" alt="Zeile loeschen" src="system/modules/buf/assets/images/loeschen.png"></a></td>
         </tr>
     <?php endforeach; ?>
 </table>

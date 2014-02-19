@@ -184,7 +184,7 @@ $GLOBALS['TL_DCA']['tl_voting'] = array
                      'options'                 => array('0','1', '2', '3', '4'),
                      'reference'               => &$GLOBALS['TL_LANG']['MSC'],
                      'eval'                    => array('mandatory'=>true,'includeBlankOption'=>false),
-                     'sql'                     => "varchar(1) NOT NULL default ''"
+                     'sql'                     => "varchar(1) NOT NULL default '0'"
               ),
               'skill2' => array
               (
@@ -194,7 +194,7 @@ $GLOBALS['TL_DCA']['tl_voting'] = array
                      'options'                 => array('0','1', '2', '3', '4'),
                      'reference'               => &$GLOBALS['TL_LANG']['MSC'],
                      'eval'                    => array('mandatory'=>true,'includeBlankOption'=>false),
-                     'sql'                     => "varchar(1) NOT NULL default ''"
+                     'sql'                     => "varchar(1) NOT NULL default '0'"
               ),
               'skill3' => array
               (
@@ -204,7 +204,7 @@ $GLOBALS['TL_DCA']['tl_voting'] = array
                      'options'                 => array('0','1', '2', '3', '4'),
                      'reference'               => &$GLOBALS['TL_LANG']['MSC'],
                      'eval'                    => array('mandatory'=>true,'includeBlankOption'=>false),
-                     'sql'                     => "varchar(1) NOT NULL default ''"
+                     'sql'                     => "varchar(1) NOT NULL default '0'"
               ),
               'skill4' => array
               (
@@ -214,7 +214,7 @@ $GLOBALS['TL_DCA']['tl_voting'] = array
                      'options'                 => array('0','1', '2', '3', '4'),
                      'reference'               => &$GLOBALS['TL_LANG']['MSC'],
                      'eval'                    => array('mandatory'=>true,'includeBlankOption'=>false),
-                     'sql'                     => "varchar(1) NOT NULL default ''"
+                     'sql'                     => "varchar(1) NOT NULL default '0'"
               ),
               'skill5' => array
               (
@@ -224,7 +224,7 @@ $GLOBALS['TL_DCA']['tl_voting'] = array
                      'options'                 => array('0','1', '2', '3', '4'),
                      'reference'               => &$GLOBALS['TL_LANG']['MSC'],
                      'eval'                    => array('mandatory'=>true,'includeBlankOption'=>false),
-                     'sql'                     => "varchar(1) NOT NULL default ''"
+                     'sql'                     => "varchar(1) NOT NULL default '0'"
               ),
               'skill6' => array
               (
@@ -234,7 +234,7 @@ $GLOBALS['TL_DCA']['tl_voting'] = array
                      'options'                 => array('0','1', '2', '3', '4'),
                      'reference'               => &$GLOBALS['TL_LANG']['MSC'],
                      'eval'                    => array('mandatory'=>true,'includeBlankOption'=>false),
-                     'sql'                     => "varchar(1) NOT NULL default ''"
+                     'sql'                     => "varchar(1) NOT NULL default '0'"
               ),
               'skill7' => array
               (
@@ -244,7 +244,7 @@ $GLOBALS['TL_DCA']['tl_voting'] = array
                      'options'                 => array('0','1', '2', '3', '4'),
                      'reference'               => &$GLOBALS['TL_LANG']['MSC'],
                      'eval'                    => array('mandatory'=>true,'includeBlankOption'=>false),
-                     'sql'                     => "varchar(1) NOT NULL default ''"
+                     'sql'                     => "varchar(1) NOT NULL default '0'"
               ),
               'skill8' => array
               (
@@ -254,7 +254,7 @@ $GLOBALS['TL_DCA']['tl_voting'] = array
                      'options'                 => array('0','1', '2', '3', '4'),
                      'reference'               => &$GLOBALS['TL_LANG']['MSC'],
                      'eval'                    => array('mandatory'=>true,'includeBlankOption'=>false),
-                     'sql'                     => "varchar(1) NOT NULL default ''"
+                     'sql'                     => "varchar(1) NOT NULL default '0'"
               )
        )
 
