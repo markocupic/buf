@@ -26,6 +26,7 @@ ClassLoader::addNamespaces(array
 ClassLoader::addClasses(array
 (
 	// Classes
+	'MCupic\BufHelper'                => 'system/modules/buf/classes/BufHelper.php',
 	'MCupic\Cipher'                   => 'system/modules/buf/classes/Cipher.php',
 
 	// Models

@@ -17,6 +17,36 @@
     <?php endif; ?>
 </ul>
 
+
+
 <?php if(\TeacherModel::getOwnClass()): ?>
 <h3>Alle vorgenommenen Beurteilungen an meiner Stammklasse</h3>
+<?php //die(print_r($this->votingsOnMyClass,true)); ?>
+<?php if($this->votingsOnMyClass): ?>
+<ul>
+<?php foreach  ($this->votingsOnMyClass as $voting): ?>
+<?php if ($voting["teacherId"] == $this->User->id): ?>
+<li>
+    <a title="bearbeiten" class="icon_edit" href="<?php echo $this->hrefVotingTable . setQueryString(array('teacher' => $voting['teacherId'], 'subject' => $voting['subjectId'], 'class' => $voting['classId'])); ?>">
+    <strong style="color:black"><?php echo \ClassModel::findByPk($voting["classId"])->name." ". \SubjectModel::findByPk($voting["subjectId"])->name;?></strong>
+    <span style="color:black; font-weight:normal">Beurteilung durch: <?php echo \TeacherModel::findByPk($voting["teacherId"])->firstname . ' ' .  \TeacherModel::findByPk($voting["teacherId"])->lastname; ?></span>
+    &nbsp;bearbeiten</a>
+</li>
+<?php else: ?>
+<li>
+    <a title="ansehen" class="icon_search" href="<?php echo $this->hrefVotingTable . setQueryString(array('teacher' => $voting['teacherId'], 'subject' => $voting['subjectId'], 'class' => $voting['classId'])); ?>">
+    <strong style="color:black"><?php echo \ClassModel::findByPk($voting["classId"])->name." ". \SubjectModel::findByPk($voting["subjectId"])->name;?></strong>
+    <span style="color:black; font-weight:normal">Beurteilung durch: <?php echo \TeacherModel::findByPk($voting["teacherId"])->firstname . ' ' .  \TeacherModel::findByPk($voting["teacherId"])->lastname; ?></span>
+    &nbsp;ansehen</a>
+</li>
+<?php endif; ?>
+<?php endforeach; ?>
+    </ul>
+    <?php endif; ?>
+
+<?php if(!$this->votingsOnMyClass): ?>
+<ul>
+<li><strong>An deiner Stammklasse wurden noch keine Beurteilungen abgegeben.</strong></li>
+</ul>
+<?php endif; ?>
 <?php endif; ?>

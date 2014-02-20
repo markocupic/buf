@@ -24,4 +24,8 @@ $GLOBALS['BE_MOD']['buf'] = array(
  * Front end modules
  */
 $GLOBALS['FE_MOD']['beurteilenfoerdern'] = array('mod_beurteilen_und_foerdern' => 'MainController');
+// config.php
+$GLOBALS['TL_HOOKS']['replaceInsertTags'][] = array('BufHelper', 'replaceInsertTags');
+
+
 

@@ -159,7 +159,6 @@ class VotingModel extends \Model
                 \Database::getInstance()->prepare('DELETE FROM tl_voting WHERE teacher=? AND student=? AND subject=?')->execute($teacher, $colOrRow, $subject);
                 return true;
             }
-            //set_error_handler(array(self,'myErrorHandler'));
 
             if ($mode == 'delete_col') {
 
@@ -214,7 +213,6 @@ class VotingModel extends \Model
                         $set = array(
                             'student' => $student,
                             'teacher' => $teacher,
-                            'class' => $class,
                             'subject' => $subject,
                             'tstamp' => time()
                         );

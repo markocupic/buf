@@ -165,7 +165,33 @@ EditTable = new Class({
             }
         });
     },
-
+    updateTeachersDeviationTolerance: function(elSelect)
+    {
+        var self = this;
+        var req = new Request({
+            method: "post",
+            url: 'ajax.php?action=fmd&id=' + self.elementId + '&act=updateTeachersDeviationTolerance',
+            data: {
+                REQUEST_TOKEN: self.request_token,
+                tolerance: elSelect.options[elSelect.selectedIndex].value
+            },
+            onComplete: function (response) {
+                if (response) {
+                    var json = JSON.decode(response);
+                    if (json.status == 'success') {
+                        self.resetTable();
+                    }
+                }
+            },
+            onException: function (headerName, value) {
+                alert('Fehler: Die Anfrage konnte nicht gespeichert werden! Überprüfe die Internetverbindung.');
+            },
+            onFailure: function (xhr) {
+                alert('Fehler: Die Anfrage konnte nicht gespeichert werden! Überprüfe die Internetverbindung.');
+            }
+        });
+        req.send();
+    },
     resetTable: function () {
         var self = this;
         $$('.beurteilungstabelle .textField').each(function (el) {

@@ -5,7 +5,7 @@
  * @param bool $encode
  * @return mixed|string
  */
-function setQueryString($arrItems, $encode = false)
+function setQueryString($arrItems, $encode = false, $blnEncode = true)
 {
     if (!is_array($arrItems) || !count($arrItems)) {
         return '';
@@ -23,6 +23,7 @@ function setQueryString($arrItems, $encode = false)
     }
 
     $queryStr = str_replace('?&', '?', $queryStr);
+    $queryStr = ampersand($queryStr, $blnEncode);
 
     // encode query if
     if ($encode) {

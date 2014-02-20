@@ -83,12 +83,14 @@ class MainController extends \Module
 
     public function generateAjax()
     {
+        if (!FE_USER_LOGGED_IN) return;
+        $this->import('FrontendUser', 'User');
 
         if (\Input::get('act') == 'resetTable') {
-                $arrTable = \VotingModel::getRows(\Input::get('class'), \Input::get('subject'), \Input::get('teacher'));
-                $arrJSON = array('status' => 'success', 'rows' => $arrTable);
-                //mail('m.cupic@gmx.ch', '', print_r($arrTable,true));
-                die(json_encode($arrJSON));
+            $arrTable = \VotingModel::getRows(\Input::get('class'), \Input::get('subject'), \Input::get('teacher'));
+            $arrJSON = array('status' => 'success', 'rows' => $arrTable);
+            //mail('m.cupic@gmx.ch', '', print_r($arrTable,true));
+            die(json_encode($arrJSON));
         }
 
         if (\Input::get('act') == 'update') {
@@ -97,6 +99,21 @@ class MainController extends \Module
                 $arrJSON = array('status' => 'success', 'rating' => $rating, 'message' => 'Submitted successfully.');
             } else {
                 $arrJSON = array('status' => 'success', 'rating' => '', 'message' => 'Invalid value submitted: ' . \Input::post('value'));
+            }
+            die(json_encode($arrJSON));
+        }
+
+        if (\Input::get('act') == 'updateTeachersDeviationTolerance') {
+
+            $arrJSON = array('status' => 'error', 'deviation' => '');
+            if (is_numeric(\Input::post('tolerance')) && \Input::post('tolerance') > 0 && \Input::post('tolerance') < 3.1) {
+                $objTeacher = \TeacherModel::findByPk($this->User->id);
+                if ($objTeacher !== null) {
+                    $objTeacher->deviation = \Input::post('tolerance');
+                    $objTeacher->save();
+                    $arrJSON['status'] = 'success';
+                    $arrJSON['deviation'] = \Input::post('tolerance');
+                }
             }
             die(json_encode($arrJSON));
         }
@@ -159,7 +176,7 @@ class MainController extends \Module
             case 'start_new_voting':
 
                 if (\Input::post('teacher') && \Input::post('class') && \Input::post('subject')) {
-                    $teacher = \TeacherModel::findByUsername(\Input::post('teacher'))->id;
+                    $teacher = $this->User->id;
                     $class = \Input::post('class');
                     $subject = \Input::post('subject');
 

@@ -4,7 +4,7 @@
         <td class="name_col">&nbsp;</td>
         <td class="name_col">&nbsp;</td>
         <?php for ($i = 1; $i < 9; $i++): ?>
-            <td id="skillHead_<?php echo $i; ?>"style="background-image: url('system/modules/buf/assets/images/Kriterien/fff/<?php echo $i; ?>.png');" class="description col_<?php echo $i; ?>">&nbsp;</td>
+            <td id="skillHead_<?php echo $i; ?>" style="background-image: url('system/modules/buf/assets/images/Kriterien/fff/<?php echo $i; ?>.png');" class="description col_<?php echo $i; ?>">&nbsp;</td>
         <?php endfor; ?>
         <td class="edit_col">&nbsp;</td>
         <td class="delete_col">&nbsp;</td>
@@ -52,7 +52,7 @@
             <td id="skillCell_s_<?php echo $Datensatz['student']; ?>_k_<?php echo $i; ?>" class="row_<?php echo $Datensatz['student']; ?> skillCell col_<?php echo $i; ?>">
                 <span class="rating"><?php echo $value; ?></span>
 
-      <?php if (\TeacherModel::getOwnClass() == $this->teacherId && $Datensatz["skill" . $i]["deviation"] != ""): ?>
+      <?php if (\TeacherModel::getOwnClass() == $this->classId && $Datensatz["skill" . $i]["deviation"] != ""): ?>
             <span class="deviation" style="color:#<?php echo $Datensatz['skill' . $i]['color']; ?>;"><br>Abw:<br><?php echo $Datensatz['skill' . $i]['deviation']; ?></span>
             <?php endif; ?>
             </td>

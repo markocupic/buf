@@ -65,8 +65,4 @@ class VotingTableController extends \Frontend
         $objTemplate->votingTable = $objTable->parse();
         return $objTemplate;
     }
-
-
-
-
 }

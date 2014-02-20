@@ -24,7 +24,7 @@
 
 
         <p><strong>Erklärung:<br/></strong>
-            1 = vollumfünglich erfüllt<br/>
+            1 = vollumfänglich erfüllt<br/>
             2 = mehrheitlich erfüllt<br/>
             3 = teilweise erfüllt<br/>
             4 = nicht erfüllt<br/></p>
@@ -109,12 +109,12 @@
         </div>
 
 
-        <?php if (\TeacherModel::getOwnClass() == $this->Klasse): ?>
+        <?php if (\TeacherModel::getOwnClass() == $this->classId): ?>
 
         <p>
             <strong>Abweichungstoleranz hier einstellen:</strong><br/>
-            <select id="Abweichung" onChange="javascript:doRequest('');">
-                <option><?php echo $this->Abweichungstoleranz; ?></option>
+            <select id="devTolerance" onChange="EvalTable.updateTeachersDeviationTolerance(this);">
+                <option><?php echo $this->User->deviation; ?></option>
                 <?php $Abweichung = 0; ?>
                 <?php for ($i = 0; $i < 30; $i++): ?>
                 <?php $Abweichung = $Abweichung + 0.1; ?>

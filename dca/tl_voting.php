@@ -38,7 +38,6 @@ $GLOBALS['TL_DCA']['tl_voting'] = array
                             'id' => 'primary',
                             'teacher' => 'index',
                             'student' => 'index',
-                            'class' => 'index'
                      )
               )
        ),
@@ -133,19 +132,6 @@ $GLOBALS['TL_DCA']['tl_voting'] = array
                      'flag'                    => 1,
                      'inputType'               => 'select',
                      'foreignKey'              => 'tl_student.lastname',
-                     'eval'                    => array('mandatory'=>true, 'maxlength'=>255),
-                     'sql'                     => "int(10) unsigned NOT NULL default '0'",
-                     'relation'                => array('type'=>'belongsTo', 'load'=>'lazy')
-              ),
-              'class' => array
-              (
-                     'label'                   => &$GLOBALS['TL_LANG']['tl_voting']['class'],
-                     'exclude'                 => true,
-                     'search'                  => true,
-                     'sorting'                 => true,
-                     'flag'                    => 1,
-                     'inputType'               => 'select',
-                     'foreignKey'              => 'tl_class.name',
                      'eval'                    => array('mandatory'=>true, 'maxlength'=>255),
                      'sql'                     => "int(10) unsigned NOT NULL default '0'",
                      'relation'                => array('type'=>'belongsTo', 'load'=>'lazy')
