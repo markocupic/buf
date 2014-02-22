@@ -27,47 +27,46 @@ namespace MCupic;
  */
 class StartNewVotingController extends \Frontend
 {
-       public function __construct()
-       {
-              $this->import('FrontendUser', 'User');
-              return parent::__construct();
-       }
+    /**
+     * @var $objMainController
+     */
+    protected $objMainController;
 
-       /**
-        * Generate the module
-        */
-       public function setTemplate($objTemplate)
-       {
+    public function __construct($objMainController)
+    {
+        $this->objMainController = $objMainController;
+        $this->import('FrontendUser', 'User');
+        return parent::__construct();
+    }
 
-              global $objPage;
+    /**
+     * Generate the module
+     */
+    public function setTemplate($objTemplate)
+    {
 
-              $objTemplate->hrefBack = $this->generateFrontendUrl($objPage->row(), '/do/menu');
+        global $objPage;
 
+        // get option tags for classes
+        $opt = '<option value="0">leer</option>';
+        $objClass = \ClassModel::findAll();
+        if ($objClass !== null) {
+            while ($objClass->next()) {
+                $opt .= sprintf('<option value="%s">%s</option>', $objClass->id, $objClass->name);
+            }
+        }
+        $objTemplate->classes = $opt;
 
-              // get option tags for classes
-              $opt = '<option value="0">leer</option>';
-              $objClass = \ClassModel::findAll();
-              if ($objClass !== null)
-              {
-                     while ($objClass->next())
-                     {
-                            $opt .= sprintf('<option value="%s">%s</option>', $objClass->id, $objClass->name);
-                     }
-              }
-              $objTemplate->classes = $opt;
+        // get option tags for subjects
+        $opt = '<option value="0">leer</option>';
+        $objSubject = \SubjectModel::findAll();
+        if ($objSubject !== null) {
+            while ($objSubject->next()) {
+                $opt .= sprintf('<option value="%s">%s</option>', $objSubject->id, $objSubject->name);
+            }
+        }
+        $objTemplate->subjects = $opt;
 
-              // get option tags for subjects
-              $opt = '<option value="0">leer</option>';
-              $objSubject = \SubjectModel::findAll();
-              if ($objSubject !== null)
-              {
-                     while ($objSubject->next())
-                     {
-                            $opt .= sprintf('<option value="%s">%s</option>', $objSubject->id, $objSubject->name);
-                     }
-              }
-              $objTemplate->subjects = $opt;
-
-              return $objTemplate;
-       }
+        return $objTemplate;
+    }
 }

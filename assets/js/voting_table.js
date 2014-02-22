@@ -211,8 +211,8 @@ EditTable = new Class({
         });
 
         var req = new Request({
-            method: "post",
-            url: 'ajax.php?action=fmd&id=' + self.elementId + '&act=resetTable&class=' + self.class + '&subject=' + self.subject + '&teacher=' + self.teacher,
+            method: 'post',
+            url: 'ajax.php?action=fmd&id=' + self.elementId + '&act=reset_table&class=' + self.class + '&subject=' + self.subject + '&teacher=' + self.teacher,
             data: {
                 REQUEST_TOKEN: self.request_token
             },

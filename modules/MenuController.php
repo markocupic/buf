@@ -28,8 +28,14 @@ namespace MCupic;
 class MenuController extends \Frontend
 {
 
-    public function __construct()
+    /**
+     * @var $objMainController
+     */
+    protected $objMainController;
+
+    public function __construct($objMainController)
     {
+        $this->objMainController = $objMainController;
         $this->import('FrontendUser', 'User');
         return parent::__construct();
     }
@@ -66,6 +72,19 @@ class MenuController extends \Frontend
             $objDb = \Database::getInstance()->prepare($sql)->execute($classTeacher);
             $objTemplate->votingsOnMyClass = $objDb->fetchAllAssoc();
         }
+
+        //set new password link
+        $url = $this->generateFrontendUrl($objPage->row(), '/do/account_settings');
+        $arrQuery = array('act' => 'set_password');
+        $url .= setQueryString($arrQuery);
+        $objTemplate->setPasswordLink = $url;
+
+
+        //edit classlist link
+        $url = $this->generateFrontendUrl($objPage->row(), '/do/edit_classlist');
+        $objTemplate->editClasslistLink = $url;
+
+
 
 
         return $objTemplate;

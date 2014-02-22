@@ -26,21 +26,24 @@ ClassLoader::addNamespaces(array
 ClassLoader::addClasses(array
 (
 	// Classes
-	'MCupic\BufHelper'                => 'system/modules/buf/classes/BufHelper.php',
-	'MCupic\Cipher'                   => 'system/modules/buf/classes/Cipher.php',
+	'MCupic\BufHelper'                 => 'system/modules/buf/classes/BufHelper.php',
+	'MCupic\Cipher'                    => 'system/modules/buf/classes/Cipher.php',
 
 	// Models
-	'MCupic\ClassModel'               => 'system/modules/buf/models/ClassModel.php',
-	'MCupic\VotingModel'              => 'system/modules/buf/models/VotingModel.php',
-	'MCupic\SubjectModel'             => 'system/modules/buf/models/SubjectModel.php',
-	'MCupic\StudentModel'             => 'system/modules/buf/models/StudentModel.php',
-	'MCupic\TeacherModel'             => 'system/modules/buf/models/TeacherModel.php',
+	'MCupic\ClassModel'                => 'system/modules/buf/models/ClassModel.php',
+	'MCupic\VotingModel'               => 'system/modules/buf/models/VotingModel.php',
+	'MCupic\SubjectModel'              => 'system/modules/buf/models/SubjectModel.php',
+	'MCupic\StudentModel'              => 'system/modules/buf/models/StudentModel.php',
+	'MCupic\TeacherModel'              => 'system/modules/buf/models/TeacherModel.php',
 
 	// Modules
-	'MCupic\MenuController'           => 'system/modules/buf/modules/MenuController.php',
-	'MCupic\VotingTableController'    => 'system/modules/buf/modules/VotingTableController.php',
-	'MCupic\MainController'           => 'system/modules/buf/modules/MainController.php',
-	'MCupic\StartNewVotingController' => 'system/modules/buf/modules/StartNewVotingController.php',
+	'MCupic\LoginController'           => 'system/modules/buf/modules/LoginController.php',
+	'MCupic\MenuController'            => 'system/modules/buf/modules/MenuController.php',
+	'MCupic\VotingTableController'     => 'system/modules/buf/modules/VotingTableController.php',
+	'MCupic\MainController'            => 'system/modules/buf/modules/MainController.php',
+	'MCupic\StartNewVotingController'  => 'system/modules/buf/modules/StartNewVotingController.php',
+	'MCupic\AccountSettingsController' => 'system/modules/buf/modules/AccountSettingsController.php',
+	'MCupic\EditClasslistController'   => 'system/modules/buf/modules/EditClasslistController.php',
 ));
 
 
@@ -49,8 +52,11 @@ ClassLoader::addClasses(array
  */
 TemplateLoader::addFiles(array
 (
+	'edit_classlist'       => 'system/modules/buf/templates',
 	'voting_table_partial' => 'system/modules/buf/templates',
 	'voting_table'         => 'system/modules/buf/templates',
 	'menu'                 => 'system/modules/buf/templates',
+	'login'                => 'system/modules/buf/templates',
 	'start_new_voting'     => 'system/modules/buf/templates',
+	'account_settings'     => 'system/modules/buf/templates',
 ));

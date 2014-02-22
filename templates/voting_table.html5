@@ -9,7 +9,7 @@
 <div style="width:100%">
     <div id="Beurteilungstabelle" style="float:left; width:66.66em; position:relative;">
         <div style="width:100%; position:relative;">
-            <a class="icon_back float_left" href="<?php echo $this->hrefBack; ?>" title="zurueck">zurück zu Home</a>
+            {{buf::menu_link}}
             <a target="_blank" class="icon_print float_right" href="" title="drucken">Tabelle drucken</a>
         </div>
         <?php echo $this->votingTable; ?>

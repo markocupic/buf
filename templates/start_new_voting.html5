@@ -1,7 +1,7 @@
 <div id="neueBeurteilungstarten">
     <h2>Neue Beurteilung beginnen</h2>
 
-    <a class="icon_back" href="<?php echo $this->hrefBack; ?>">zurück</a>
+    {{buf::menu_link}}
 
     <div class="formBody width50">
         <form name="neue_Beurteilung_starten" method="post" action="<?php echo $this->action; ?>">

@@ -25,8 +25,14 @@ namespace MCupic;
 class VotingTableController extends \Frontend
 {
 
-    public function __construct()
+    /**
+     * @var $objMainController
+     */
+    protected $objMainController;
+
+    public function __construct($objMainController)
     {
+        $this->objMainController = $objMainController;
         $this->import('FrontendUser', 'User');
         return parent::__construct();
     }
@@ -38,8 +44,8 @@ class VotingTableController extends \Frontend
     {
         global $objPage;
 
-        // back href
-        $objTemplate->hrefBack = $this->generateFrontendUrl($objPage->row(), '/do/menu');
+        // set element id (needed for ajax requests)
+        $objTemplate->elId = $this->objMainController->id;
 
         // delete table href
         $arrQuery = array('teacher' => \Input::get('teacher'), 'subject' => \Input::get('subject'), 'class' => \Input::get('class'));

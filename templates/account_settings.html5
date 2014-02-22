@@ -1,0 +1,18 @@
+<h2>Kontoeinstellungen</h2>
+{{buf::menu_link}}
+
+<h3>Passwort ändern</h3>
+<?php if (!$this->submitted): ?>
+<form id="<?php echo $this->formId; ?>" action="<?php echo $this->action; ?>" method="<?php echo $this->method; ?>" enctype="<?php echo $this->enctype; ?>">
+    <input type="hidden" name="REQUEST_TOKEN" value="{{request_token}}">
+    <input type="hidden" name="FORM_SUBMIT" value="tl_member_set_password">
+    <table>
+        <?php echo $this->fields; ?>
+    </table>
+    <input type="submit" class="submit" value="<?php echo $this->slabel; ?>">
+</form>
+
+<?php else: ?>
+<p>Passwort erfolgreich geändert.</p>
+<?php endif; ?>
+
