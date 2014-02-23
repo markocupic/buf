@@ -29,3 +29,10 @@ $GLOBALS['TL_HOOKS']['replaceInsertTags'][] = array('BufHelper', 'replaceInsertT
 
 
 
+// set to InnoDb and add foreign keys (constraints)
+$GLOBALS['TL_HOOKS']['postLogin'][] = array('BufHelper', 'changeToInnoDb');
+$GLOBALS['TL_HOOKS']['postLogin'][] = array('BufHelper', 'addForeignKeys');
+
+
+
+

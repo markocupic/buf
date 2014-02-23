@@ -145,7 +145,7 @@ class MainController extends \Module
 
         // update voting table
         if (\Input::get('act') == 'update') {
-            $rating = \VotingModel::update(\Input::post('student'), \Input::post('class'), \Input::post('teacher'), \Input::post('subject'), \Input::post('skill'), \Input::post('value'));
+            $rating = \VotingModel::update(\Input::post('student'), \Input::post('teacher'), \Input::post('subject'), \Input::post('skill'), \Input::post('value'));
             if ($rating) {
                 $arrJSON = array('status' => 'success', 'rating' => $rating, 'message' => 'Submitted successfully.');
             } else {

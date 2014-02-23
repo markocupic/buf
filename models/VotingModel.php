@@ -186,15 +186,14 @@ class VotingModel extends \Model
      * @param int $value
      * @return bool|int|string
      */
-    public static function update($student, $class, $teacher, $subject, $skill, $value = 0)
+    public static function update($student, $teacher, $subject, $skill, $value = 0)
     {
 
         $objUser = \System::importStatic('FrontendUser');
         if (intval($teacher) == $objUser->id) {
-
-            $value = $value == '' ? 0 : intval(trim($value));
-            if (is_integer($value) && $value >= 0 && $value < 5) {
-                //if($value==0)$value='';
+            $value = trim($value);
+            $value = $value == '' ? 0 : $value;
+            if (preg_match('/^[0-4]{0,1}$/',$value)) {
                 $objVoting = \Database::getInstance()->prepare('SELECT * FROM tl_voting WHERE teacher=? AND student=? AND subject=?')->execute($teacher, $student, $subject);
                 if ($objVoting->numRows) {
 
@@ -227,7 +226,6 @@ class VotingModel extends \Model
                 if ($value == 0) {
                     $value = '';
                 }
-
 
                 return $value;
             }

@@ -38,6 +38,7 @@ $GLOBALS['TL_DCA']['tl_voting'] = array
                             'id' => 'primary',
                             'teacher' => 'index',
                             'student' => 'index',
+                            'subject' => 'index',
                      )
               )
        ),

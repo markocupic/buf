@@ -18,9 +18,6 @@ $GLOBALS['TL_DCA']['tl_class'] = array(
     'config' => array(
         'dataContainer' => 'Table',
         'enableVersioning' => true,
-        'onload_callback' => array(
-            array('tl_class', 'changeToInnoDb')
-        ),
         'sql' => array(
             'keys' => array('id' => 'primary', 'name' => 'unique')
         )
@@ -119,17 +116,6 @@ class tl_class extends Backend
         $this->import('BackendUser', 'User');
     }
 
-    /**
-     * change Engine From MyIsam To InnoDb
-     */
-    public function changeToInnoDb()
-    {
-        $db = Database::getInstance();
-        $db->query('ALTER TABLE tl_class ENGINE = InnoDB;');
-        $db->query('ALTER TABLE tl_member ENGINE = InnoDB;');
-        $db->query('ALTER TABLE tl_student ENGINE = InnoDB;');
-        $db->query('ALTER TABLE tl_voting ENGINE = InnoDB;');
-        $db->query('ALTER TABLE tl_subject ENGINE = InnoDB;');
-    }
+
 }
 

@@ -22,24 +22,12 @@ $GLOBALS['TL_DCA']['tl_subject'] = array
        (
               'dataContainer'               => 'Table',
               'enableVersioning'            => true,
-              'onsubmit_callback' => array
-              (
-                     //array('tl_member', 'storeDateAdded'),
-                     //array('tl_member', 'checkRemoveSession')
-              ),
-              'ondelete_callback' => array
-              (
-                     //array('tl_member', 'removeSession')
-              ),
-              'onload_callback' => array
-              (
-                     //array('tl_class', 'changeToInnoDb')
-              ),
               'sql' => array
               (
                      'keys' => array
                      (
                             'id' => 'primary',
+                            'name' => 'unique',
                             'acronym' => 'unique'
                      )
               )
@@ -128,7 +116,7 @@ $GLOBALS['TL_DCA']['tl_subject'] = array
                      'sorting'                 => true,
                      'flag'                    => 1,
                      'inputType'               => 'text',
-                     'eval'                    => array('mandatory'=>true, 'maxlength'=>255),
+                     'eval'                    => array('unique' => true, 'mandatory'=>true, 'maxlength'=>255),
                      'sql'                     => "varchar(255) NOT NULL default ''"
               ),
               'acronym' => array
@@ -139,7 +127,7 @@ $GLOBALS['TL_DCA']['tl_subject'] = array
                      'sorting'                 => true,
                      'flag'                    => 1,
                      'inputType'               => 'text',
-                     'eval'                    => array('mandatory'=>true, 'maxlength'=>5),
+                     'eval'                    => array('unique' => true, 'mandatory'=>true, 'maxlength'=>5),
                      'sql'                     => "varchar(5) NOT NULL default ''"
               )
        )

@@ -60,16 +60,14 @@ EditTable = new Class({
         var self = this;
         var elCell = elInput.getParent('td');
 
-        var intValue = elInput.value.toString();
-        if (intValue == '0') {
-            elInput.value = '';
-        }
+        var intValue = elInput.value.toString().trim();
 
-        if (intValue == '' || intValue === false || intValue == "1" || intValue == "2" || intValue == "3" || intValue == "4") {
+        if (intValue.match(/^[1-4]{0,1}$/)) {
+            elInput.value = intValue;
             var match = elInput.id.match(/^skillInput_s_(.*)_k_(.*)$/);
             intStudentId = match[1].toString();
             intCriterium = match[2].toString();
-            if (intValue === false) {
+            if (intValue == '') {
                 intValue = 0;
             }
 
@@ -165,8 +163,7 @@ EditTable = new Class({
             }
         });
     },
-    updateTeachersDeviationTolerance: function(elSelect)
-    {
+    updateTeachersDeviationTolerance: function (elSelect) {
         var self = this;
         var req = new Request({
             method: "post",

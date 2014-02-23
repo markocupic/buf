@@ -49,7 +49,7 @@ class StartNewVotingController extends \Frontend
 
         // get option tags for classes
         $opt = '<option value="0">leer</option>';
-        $objClass = \ClassModel::findAll();
+        $objClass = \ClassModel::findAll(array('order'=> 'name ASC'));
         if ($objClass !== null) {
             while ($objClass->next()) {
                 $opt .= sprintf('<option value="%s">%s</option>', $objClass->id, $objClass->name);
@@ -59,7 +59,7 @@ class StartNewVotingController extends \Frontend
 
         // get option tags for subjects
         $opt = '<option value="0">leer</option>';
-        $objSubject = \SubjectModel::findAll();
+        $objSubject = \SubjectModel::findAll(array('order'=> 'name ASC'));
         if ($objSubject !== null) {
             while ($objSubject->next()) {
                 $opt .= sprintf('<option value="%s">%s</option>', $objSubject->id, $objSubject->name);

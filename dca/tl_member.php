@@ -13,7 +13,8 @@
 /**
 * Table tl_member
 */
-$GLOBALS['TL_DCA']['tl_member']['sql']['keys']['class'] = 'unique';
+$GLOBALS['TL_DCA']['tl_member']['config']['sql']['keys']['class'] = 'unique';
+
 
 $GLOBALS['TL_DCA']['tl_member']['fields']['isTeacher'] = array
 (
@@ -35,7 +36,7 @@ $GLOBALS['TL_DCA']['tl_member']['fields']['class'] = array
        'inputType'               => 'select',
        'foreignKey'              => 'tl_class.name',
        'eval'                    => array('unique' => true,'mandatory'=>false, 'maxlength'=>255, 'includeBlankOption'=>true),
-       'sql'                     => "int(10) unsigned NOT NULL default '0'",
+       'sql'                     => "int(10) unsigned NULL",
        'relation'                => array('type'=>'belongsTo', 'load'=>'lazy')
 );
 
