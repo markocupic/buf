@@ -73,8 +73,12 @@ class MainController extends \Module
             } elseif (FE_USER_LOGGED_IN && !\Input::get('do')) {
                 $this->redirect($this->addToUrl('do=menu'));
             } elseif (FE_USER_LOGGED_IN && \Input::get('do') != '') {
-                // set template
-                $this->strTemplate = \Input::get('do');
+                if (\Input::get('do') == 'print_table') {
+                    $this->strTemplate = null;
+                }else{
+                    $this->strTemplate = \Input::get('do');
+
+                }
             } else {
                 // logout and redirect to the login form
                 if (FE_USER_LOGGED_IN) {
@@ -95,7 +99,6 @@ class MainController extends \Module
     {
         if (!FE_USER_LOGGED_IN) return;
         $this->import('FrontendUser', 'User');
-
 
 
         // edit student
@@ -124,8 +127,7 @@ class MainController extends \Module
         if (\Input::get('act') == 'delete_student') {
             $arrJSON = array();
 
-            if(\TeacherModel::getOwnClass())
-            {
+            if (\TeacherModel::getOwnClass()) {
                 $objStudent = \StudentModel::findByPk(\Input::post('id'));
                 if ($objStudent !== null) {
                     $objStudent->delete();
@@ -188,6 +190,8 @@ class MainController extends \Module
 
             die(json_encode($arrJSON));
         }
+
+
     }
 
     /**
@@ -263,6 +267,17 @@ class MainController extends \Module
 
                 $objController = new \VotingTableController($this);
                 $this->Template = $objController->setTemplate($this->Template);
+                break;
+
+            case 'print_table':
+
+                // register fpdf class
+                \ClassLoader::addClasses(array
+                (
+                    'FPDF' => 'system/modules/buf/plugins/fpdf/fpdf.php'
+                ));
+                $objController = new \FpdfController($this);
+                $objController->printTable();
                 break;
 
             case 'delete_table':

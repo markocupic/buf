@@ -1,16 +1,16 @@
 <h2>Beurteilungsraster </h2>
 
 <ul>
-    <li><strong>Fach: </strong><?php echo \SubjectModel::findByPk($this->subjectId)->name; ?></li>
-    <li><strong>Beurteilt durch: </strong><?php echo \TeacherModel::findByPk($this->teacherId)->username; ?></li>
-    <li><strong>Klasse: </strong><?php echo \ClassModel::findByPk($this->classId)->name; ?></li>
+    <li><strong>Fach: </strong><?php echo \SubjectModel::getName($this->subjectId); ?></li>
+    <li><strong>Beurteilt durch: </strong><?php echo \TeacherModel::getFullName($this->teacherId); ?></li>
+    <li><strong>Klasse: </strong><?php echo \ClassModel::getName($this->classId); ?></li>
 </ul>
 
 <div style="width:100%">
     <div id="Beurteilungstabelle" style="float:left; width:66.66em; position:relative;">
         <div style="width:100%; position:relative;">
             {{buf::menu_link}}
-            <a target="_blank" class="icon_print float_right" href="" title="drucken">Tabelle drucken</a>
+            <a target="_blank" class="icon_print float_right" href="<?php echo $this->hrefPrintTable; ?>" title="drucken">Tabelle drucken</a>
         </div>
         <?php echo $this->votingTable; ?>
     </div>
@@ -23,14 +23,14 @@
 <?php endif; ?>
 
 
-        <p><strong>Erklärung:<br/></strong>
-            1 = vollumfänglich erfüllt<br/>
-            2 = mehrheitlich erfüllt<br/>
-            3 = teilweise erfüllt<br/>
-            4 = nicht erfüllt<br/></p>
+        <p><strong>Erklärung:<br></strong>
+            1 = vollumfänglich erfüllt<br>
+            2 = mehrheitlich erfüllt<br>
+            3 = teilweise erfüllt<br>
+            4 = nicht erfüllt<br></p>
 
 
-        <p><strong>Hinweis:</strong><br/>Mit der Tabulatortaste kann praktisch zum nächsten Feld gesprungen
+        <p><strong>Hinweis:</strong><br>Mit der Tabulatortaste kann praktisch zum nächsten Feld gesprungen
             werden.</p>
         <!--Ajax Anwendung Abweichungstoleranz-->
 
@@ -112,7 +112,7 @@
         <?php if (\TeacherModel::getOwnClass() == $this->classId): ?>
 
         <p>
-            <strong>Abweichungstoleranz hier einstellen:</strong><br/>
+            <strong>Abweichungstoleranz hier einstellen:</strong><br>
             <select id="devTolerance" onChange="EvalTable.updateTeachersDeviationTolerance(this);">
                 <option><?php echo $this->User->deviation; ?></option>
                 <?php $Abweichung = 0; ?>
@@ -124,9 +124,9 @@
             </select>
         </p>
 
-        <p><strong>Abweichung zum Mittelwert:</strong><br/>Bei grüner Farbe ist diese Bewertung höher
+        <p><strong>Abweichung zum Mittelwert:</strong><br>Bei grüner Farbe ist diese Bewertung höher
             ausgefallen, wie der Mittelwert, aller bisher erstellten Bewertungen.
-            <br/><br/>
+            <br><br>
             Bei roter Farbe ist diese Bewertung tiefer ausgefallen, wie der Mittelwert, aller bisher
             erstellten Bewertungen.</p>
         <?php endif; ?>
@@ -217,8 +217,9 @@
             });
         });
         el = $('skillDetails_' + index);
-        el.fade('in');
+        el.setStyle('opacity','0');
         el.setStyle('display','block');
+        el.fade('in');
    }
 
     function hideSkillDetails(index) {

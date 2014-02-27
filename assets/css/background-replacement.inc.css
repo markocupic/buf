@@ -1,0 +1,142 @@
+/*background-replacement.inc.css*/
+
+.icon_add{
+    background:transparent url(/../../system/modules/buf/assets/images/add.gif) no-repeat;
+    padding-left:20px;
+}
+.icon_Schloss{
+	list-style-image:url(/../../system/modules/buf/assets/images/logout.png);
+}
+
+.icon_saving{
+    background:transparent left 5px url(/../../system/modules/buf/assets/images/saving.png) no-repeat;
+	padding-left:15px;
+}
+
+.icon_edit{
+	background:transparent url(/../../system/modules/buf/assets/images/edit.png) no-repeat;
+	padding-left:20px;
+}
+
+.icon_search {
+   padding: 1px 0 1px 20px;
+   background: url('/../../system/modules/buf/assets/images/search.png') no-repeat center left;
+   }
+
+.icon_login {
+   padding: 1px 0 1px 20px;
+   background: url('/../../system/modules/buf/assets/images/login.gif') no-repeat center left;
+   }
+.icon_delete {
+   padding: 1px 0 1px 20px;
+   background: url('/../../system/modules/buf/assets/images/loeschen.png') no-repeat center left;
+   } 
+.bg_delete {
+  background-image:url('/../../system/modules/buf/assets/images/loeschen.png') ;
+  background-position:center center;
+  background-repeat:no-repeat;
+  }
+.bg_edit {
+  background-image:url('/../../system/modules/buf/assets/images/edit.png') ;
+  background-position:center center;
+  background-repeat:no-repeat;
+  }
+.icon_back {
+	padding: 1px 0 1px 20px;
+	background:url('/../../system/modules/buf/assets/images/arrow_back.gif') no-repeat center left;
+}
+.icon_print {
+	padding: 1px 0 1px 20px;
+	background: url('/../../system/modules/buf/assets/images/print.png') no-repeat center left;
+}
+.icon_logout {
+   padding: 1px 0 1px 20px;
+   background: url('/../../system/modules/buf/assets/images/logout.png') no-repeat center left;
+   }         
+.icon_house {
+	padding: 1px 0 1px 20px;
+	background: url('/../../system/modules/buf/assets/images/house.png') no-repeat center left;
+	} 
+.icon_user {
+	padding: 1px 0 1px 20px;
+	background: url('/../../system/modules/buf/assets/images/user.png') no-repeat center left;
+	} 
+.icon_key {
+	padding: 1px 0 1px 20px;
+	background: url('/../../system/modules/buf/assets/images/key.png') no-repeat center left;
+	} 
+.icon_comment {	
+	padding: 1px 0 1px 20px;
+	background: url('/../../system/modules/buf/assets/images/comments.gif') no-repeat center left;
+}
+.icon_check {	
+	padding: 1px 0 1px 20px;
+	background: url('/../../system/modules/buf/assets/images/action_check.gif') no-repeat center left;
+}
+
+
+.bg_Kriterium1{
+	background: url('../inc/gd/images.php?text=selbst�ndig arbeiten&Kriterium=1') no-repeat bottom center;
+	text-indent:-9999px;
+	padding:0.5em;
+	height:15em !important;
+}  
+.bg_Kriterium2{
+	background:  url("../inc/gd/images.php?text=sorgf�ltig arbeiten&Kriterium=2") no-repeat bottom center;
+	text-indent:-9999px;
+	padding:0.5em;
+}  
+.bg_Kriterium3{
+	background: url("../inc/gd/images.php?text=sich aktiv am***Unterricht beteiligen&Kriterium=3") no-repeat bottom center;
+	text-indent:-9999px;
+	padding:0.5em;
+}  
+.bg_Kriterium4{
+	background:  url("../inc/gd/images.php?text=eigene F�higkeiten***einsch�tzen&Kriterium=4") no-repeat bottom center;
+	text-indent:-9999px;
+	padding:0.5em;
+}  
+.bg_Kriterium5{
+	background:  url("../inc/gd/images.php?text=mit anderen***zusammenarbeiten&Kriterium=5") no-repeat bottom center;
+	text-indent:-9999px;
+	padding:0.5em;
+}  
+.bg_Kriterium6{
+	background:  url("../inc/gd/images.php?text=konstruktiv mit***Kritik umgehen&Kriterium=6") no-repeat bottom center;
+	text-indent:-9999px;
+	padding:0.5em;
+}  
+.bg_Kriterium7{
+	background:  url("../inc/gd/images.php?text=respektvoll mit anderen***umgehen&Kriterium=7") no-repeat bottom center;
+	text-indent:-9999px;
+	padding:0.5em;
+}  
+.bg_Kriterium8{
+	background: url("../inc/gd/images.php?text=Regeln einhalten&Kriterium=8") no-repeat bottom center;
+	text-indent:-9999px;
+	padding:0.5em;
+	
+}  
+
+/*******************/
+
+
+th.Beurteilungstabelle_grau {
+	background-color: #ddd;
+	text-indent:-9999px;
+	height:15em;
+	padding:0.5em;
+	background-position:bottom center;
+	background-repeat:no-repeat;
+} 
+ 
+th.Beurteilungstabelle_weiss {
+	background-color: #fff;
+	text-indent:-9999px;
+	height:15em;
+	padding:0.5em;
+	background-position:bottom center;
+	background-repeat:no-repeat;
+}  
+
+	  

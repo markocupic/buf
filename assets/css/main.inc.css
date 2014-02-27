@@ -1,0 +1,416 @@
+/* main.inc.css */
+
+/* general settings*/
+html > body {
+    font-size: 12px;
+}
+
+body {
+    font-size: 75%;
+    font-family: trebuchet ms, verdana, sans-serif;
+    background-image: url(/../../system/modules/buf/assets/images/brick.jpg);
+    background-repeat: repeat;
+}
+
+hr {
+    border: solid #999 1px;
+    height: 1px;
+}
+
+table {
+    border-collapse: collapse;
+}
+
+td {
+    padding: 5px;
+    border: 1px solid #e5e5e5;
+    vertical-align: middle;
+}
+
+.invisible, .hidden {
+    visibility: hidden;
+}
+
+.float_left {
+    float: left;
+}
+
+.float_right {
+    float: right;
+}
+
+.clearing {
+    clear: both;
+}
+
+.textaligncenter {
+    text-align: center;
+}
+
+.align_right {
+    text-align: right !important;
+}
+
+.align_left {
+    text-align: left !important;
+}
+
+table.beurteilungstabelle {
+    width: 100%;
+    table-layout: fixed;
+    border-collapse: collapse;
+    border-collapse: collapse;
+}
+
+.beurteilungstabelle td {
+    border: 1px solid #999;
+    text-align: center;
+    vertical-align: middle;
+    overflow: hidden;
+}
+
+.width5 {
+    width: 5% !important;
+}
+
+.width6 {
+    width: 6% !important;
+}
+
+.width7 {
+    width: 7% !important;
+}
+
+.width5 {
+    width: 5% !important;
+}
+
+.width8 {
+    width: 8% !important;
+}
+
+.width10 {
+    width: 9% !important;
+}
+
+.width20 {
+    width: 20% !important;
+}
+
+.width25 {
+    width: 25% !important;
+}
+
+.width30 {
+    width: 30% !important;
+}
+
+.width40 {
+    width: 40% !important;
+}
+
+.width50 {
+    width: 50% !important;
+}
+
+.width60 {
+    width: 60% !important;
+}
+
+.width70 {
+    width: 70% !important;
+}
+
+.width80 {
+    width: 80% !important;
+}
+
+.width90 {
+    width: 90% !important;
+}
+
+.width100 {
+    width: 100% !important;
+}
+
+/*banner*/
+#subheader {
+    position: relative;
+    top: 8.7em;
+    width: 100%;
+    color: #ddd;
+
+}
+
+
+#info_logged_user {
+    float: left;
+    margin-left: 1.66em;
+
+}
+
+#info_logged_user li {
+    line-height: normal;
+}
+
+#logout {
+    float: right;
+    margin-right: 1.66em;
+    width: 300px;
+}
+
+#logout li {
+    float: right;
+    margin-left: 1.66em;
+    font-weight: bold;
+}
+
+#logout a {
+    font-weight: bold;
+    color: #ddd;
+
+}
+
+/*end banner*/
+#uliStein {
+    height: 31.6em;
+    width: 41.6em;
+    margin: 3em 0;
+    position: absolute;
+    left: 400px;
+}
+
+#login {
+    margin-top: 2em;
+}
+
+/**************** Beurteilungstabelle ***************************/
+#Beurteilungstabelle td {
+    height: 4em;
+    text-align: center;
+    vertical-align: middle;
+}
+
+#Beurteilungstabelle pre {
+    font-size: 9px;
+}
+
+.beurteilungstabelle td.description {
+    height: 14em !important;
+    background-repeat: no-repeat;
+    background-position: bottom center;
+}
+
+/*hide the criterium name, because there is a bg-image*/
+td.description span {
+    visibility: hidden;
+}
+
+#requestStatusBox {
+    overflow: visible;
+}
+
+#requestStatusBox p {
+    visibility: hidden;
+    color: #bbb;
+    margin: 0px;
+    overflow: visible;
+}
+
+#neueBeurteilungstarten td {
+    padding: 5px;
+    height: 50px;
+    border-collapse: collapse;
+    border-spacing: 0px;
+}
+
+/*Beurteilung editieren*/
+#Beurteilungstabelle .edit_icon, #Beurteilungstabelle .delete_icon {
+    cursor: pointer;
+}
+
+#Beurteilungstabelle td.name_col {
+    width: 16%;
+    text-align: left;
+    padding: 0 5px;
+}
+
+#Beurteilungstabelle td.skillCell {
+    width: 7%;
+}
+
+#Beurteilungstabelle td.edit_col, #Beurteilungstabelle td.delete_col {
+    padding: 0 !important;
+    width: 6% !important;
+}
+
+#Beurteilungstabelle .active {
+    background-color: #ccc;
+}
+
+#Beurteilungstabelle .rating,
+#Beurteilungstabelle .deviation,
+#Beurteilungstabelle .active .submit_button {
+    display: inline;
+}
+
+#Beurteilungstabelle .active .rating,
+#Beurteilungstabelle .active .deviation,
+#Beurteilungstabelle .submit_button {
+    display: none;
+}
+
+#Beurteilungstabelle .active .edit_icon {
+    display: none;
+}
+
+#Beurteilungstabelle .valueSaved {
+    background-color: #58BA47;
+
+}
+
+/*Mittelwerttabelle*/
+table#Mittelwerttabelle td {
+    padding: 1em;
+}
+
+/* Strichliste*/
+table.beurteilungstabelle td.odd {
+    background-color: #ddd !important;
+}
+
+table#Strichliste td {
+    padding: 2px 1em;
+    font-size: 11px;
+    vertical-align: middle;
+    line-height: 15px;
+    empty-cells: show;
+}
+
+table#Strichliste td.textaligncenter {
+    padding: 1px;
+}
+
+/* End Strichliste*/
+
+/* Ajax Strichliste*/
+#InfoBox {
+    width: 18em;
+    font-size: 1em;
+    padding: 0.84em;
+    position: fixed;
+    top: 40%;
+    overflow: hidden;
+    background-color: #000000;
+    font-family: Verdana, Arial, Helvetica, sans-serif;
+    color: #FFFFFF;
+    z-index: 90;
+}
+
+#InfoBox th, #InfoBox td {
+    border: 0;
+}
+
+#InfoBox td {
+    padding-top: 5px;
+    line-height: 1.5em;
+}
+
+#InfoBox th {
+    border-bottom: 1px solid #fff;
+    padding-bottom: 1em;
+}
+
+#InfoBox table {
+    width: 100%;
+    margin: 0;
+}
+
+#InfoBox .blue {
+    color: #3399FF;
+    line-height: 2em;
+    font-size: 14px;
+}
+
+#InfoBox .red {
+    color: #FF9900;
+}
+
+.green {
+    color: #00CC00;
+}
+
+/* End Ajax Strichliste*/
+
+/*Ajax Schueler Bearbeien*/
+#editClasslist {
+    width: 70%;
+}
+
+#editClasslist td {
+    height: 2.2em;
+    padding: 0.5em;
+}
+
+#editClasslist .submit_row {
+    padding: 2px 4px;
+    margin: 0;
+}
+
+#editClasslist td.active .content {
+    display: none;
+}
+
+#editClasslist td .gender,
+#editClasslist td .text,
+#editClasslist td .submit_row,
+#editClasslist td.active .edit_row {
+    display: none;
+}
+
+#editClasslist td.active .gender,
+#editClasslist td.active .text,
+#editClasslist td.active .submit_row {
+    display: inline;
+}
+
+.display-none {
+    display: none;
+}
+
+.display_inline {
+    display: inline;
+}
+
+td > p {
+    line-height: 1em !important;
+    margin: 0 !important;
+}
+
+/*End Ajax Schueler Bearbeien*/
+
+/* neue Beurteilung starten */
+#neueBeurteilungstarten td {
+    border: 0;
+}
+
+/*footer*/
+#p_footer_bottom {
+    margin: 2em;
+}
+
+div.skillDetailsLayer {
+    height: 400px;
+}
+
+.skillDetails ul {
+    list-style-type: disc;
+}
+
+.skillDetails li {
+    margin-left: 15px;
+}
+
+.skillDetails p {
+    margin-bottom: 0;
+}

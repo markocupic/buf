@@ -39,6 +39,7 @@ ClassLoader::addClasses(array
 	// Modules
 	'MCupic\LoginController'           => 'system/modules/buf/modules/LoginController.php',
 	'MCupic\MenuController'            => 'system/modules/buf/modules/MenuController.php',
+	'MCupic\FpdfController'            => 'system/modules/buf/modules/FpdfController.php',
 	'MCupic\VotingTableController'     => 'system/modules/buf/modules/VotingTableController.php',
 	'MCupic\MainController'            => 'system/modules/buf/modules/MainController.php',
 	'MCupic\StartNewVotingController'  => 'system/modules/buf/modules/StartNewVotingController.php',

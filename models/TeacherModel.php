@@ -55,5 +55,19 @@ class TeacherModel extends \Model
               } return null;
        }
 
+    /**
+     * @param $id
+     * @return null|string
+     */
+    public static function getFullName($id)
+    {
+        $objDb = static::findByPk($id);
+        if($objDb !== null)
+        {
+            return $objDb->firstname . ' ' . $objDb->lastname;
+        }
+        return null;
+    }
+
 
 }

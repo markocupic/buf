@@ -27,11 +27,24 @@ namespace MCupic;
 class ClassModel extends \Model
 {
 
-       /**
-        * Table name
-        * @var string
-        */
-       protected static $strTable = 'tl_class';
+    /**
+     * Table name
+     * @var string
+     */
+    protected static $strTable = 'tl_class';
+
+    /**
+     * @param $id
+     * @return null|string
+     */
+    public static function getName($id)
+    {
+        $objDb = static::findByPk($id);
+        if ($objDb !== null) {
+            return $objDb->name;
+        }
+        return null;
+    }
 
 
 }

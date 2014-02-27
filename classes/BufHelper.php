@@ -23,7 +23,16 @@ class BufHelper
 
         if ($strTag == 'buf::menu_link') {
             $url = \Frontend::generateFrontendUrl($objPage->row(), '/do/menu');
-            return sprintf('<a href="%s" title="zurück zum Menü">Zurück zum Menü</a>', $url);
+            return sprintf('<a href="%s" title="zurück zum Menü" class="icon_back">Zurück zum Menü</a>', $url);
+        }
+
+        if ($strTag == 'buf::logout_user') {
+            // Login and redirect
+            if (FE_USER_LOGGED_IN)
+            {
+                $url = \Frontend::generateFrontendUrl($objPage->row(), '/do/login') . setQueryString(array('act' => 'logout'));
+                return '<a href="' . $url . '" title="logout" class="icon_logout">Logout</a>';
+            }
         }
 
 

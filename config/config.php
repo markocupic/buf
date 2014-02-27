@@ -33,6 +33,9 @@ $GLOBALS['TL_HOOKS']['replaceInsertTags'][] = array('BufHelper', 'replaceInsertT
 $GLOBALS['TL_HOOKS']['postLogin'][] = array('BufHelper', 'changeToInnoDb');
 $GLOBALS['TL_HOOKS']['postLogin'][] = array('BufHelper', 'addForeignKeys');
 
-
+if (TL_MODE == 'FE')
+{
+    $GLOBALS['TL_CSS'][]  = 'system/modules/buf/assets/css/base.css';
+}
 
 

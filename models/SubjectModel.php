@@ -27,11 +27,24 @@ namespace MCupic;
 class SubjectModel extends \Model
 {
 
-       /**
-        * Table name
-        * @var string
-        */
-       protected static $strTable = 'tl_subject';
+    /**
+     * Table name
+     * @var string
+     */
+    protected static $strTable = 'tl_subject';
 
-      
+    /**
+     * @param $id
+     * @return null|string
+     */
+    public static function getName($id)
+    {
+        $objDb = static::findByPk($id);
+        if ($objDb !== null) {
+            return $objDb->name;
+        }
+        return null;
+    }
+
+
 }

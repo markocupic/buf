@@ -1,0 +1,109 @@
+/*typographie*/
+#main *	{
+    font-family:'Trebuchet ms', Arial, sans-serif;
+}
+
+p {
+	line-height:1.5em;
+	margin-top: 1.5em;
+	margin-bottom: 1.5em;
+}
+
+
+h1 {
+	font:1.67em/0.9em 'Trebuchet ms', Arial, sans-serif;
+	margin-top: 1em;
+	margin-bottom: 1em;
+	color:#58BA47;
+    font-weight:400;
+}
+
+h2 {
+    font: 400 1.67em/0.9em 'Trebuchet ms',Arial,sans-serif;
+    margin-top: 1em;
+    margin-bottom: 1em;
+    color: rgb(88, 186, 71);
+}
+
+
+h3 {
+	font:1.33em/1.13em trebuchet ms, verdana, sans-serif;
+	margin-top: 2em;
+	margin-bottom: 1em;
+	color:#D61E1E;
+}
+
+h3:first
+{
+    margin-top:1em;
+}
+h4 {
+	font:1.17em/1.29em trebuchet ms, verdana, sans-serif;
+	margin-top: 1.29em;
+	margin-bottom: 1.29em;
+	color:	#B90000;
+    color:#E3252D;
+	font-weight:bold;
+}
+
+h5 {
+	margin-top: 1.29em;
+	margin-bottom: 1.29em;
+}
+
+h6 {
+	font: 1em/1.5em trebuchet ms, verdana, sans-serif;
+	margin-top: 0em;
+	margin-bottom: 1.29em;
+}
+
+strong, b {
+	font-weight:bold;
+}
+
+a, a:visited {
+	text-decoration:none;
+	color:#346AE4;
+	font-weight:bold;
+}
+.deviation{
+    font-size:9px;
+
+}
+a:hover {
+	color:	#D61E1E;
+}
+
+p,li,a{
+	font:1em/1.5em trebuchet ms, verdana, sans-serif;
+}
+
+#maincontent li{
+	line-height:2em;
+}
+
+table {
+	margin-bottom:1em;
+}
+
+
+#neue_Schueler p{
+	line-height:normal !important;
+	margin:0px !important;
+}
+
+
+/*google color scheme*/
+.red{
+color:#D61E1E !important;
+}
+.blue {
+	color:#0185F8 !important;
+}
+.green{
+	color:#0A9D32 !important;
+}
+.yellow{
+    color:#ECB41F !important;
+}
+

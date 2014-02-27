@@ -27,12 +27,24 @@ namespace MCupic;
 class StudentModel extends \Model
 {
 
-       /**
-        * Table name
-        * @var string
-        */
-       protected static $strTable = 'tl_student';
+    /**
+     * Table name
+     * @var string
+     */
+    protected static $strTable = 'tl_student';
 
+    /**
+     * @param $id
+     * @return null|string
+     */
+    public static function getFullName($id)
+    {
+        $objDb = static::findByPk($id);
+        if ($objDb !== null) {
+            return $objDb->firstname . ' ' . $objDb->lastname;
+        }
+        return null;
+    }
 
 
 }
