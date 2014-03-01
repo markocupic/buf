@@ -49,8 +49,9 @@ class MainController extends \Module
 
     public function generate()
     {
-        //set_error_handler(array($this,'myErrorHandler'));
+        global $objPage;
 
+        //set_error_handler(array($this,'myErrorHandler'));
         if (TL_MODE == 'BE') {
             $objTemplate = new \BackendTemplate('be_wildcard');
 
@@ -66,18 +67,21 @@ class MainController extends \Module
 
         if (TL_MODE == 'FE') {
 
-            if (!FE_USER_LOGGED_IN && !\Input::get('do')) {
-                $this->redirect($this->addToUrl('do=login'));
+            if (!FE_USER_LOGGED_IN && \Input::get('do') != 'login') {
+                \Input::resetCache();
+                $url = $this->generateFrontendUrl($objPage->row(), '/do/login');
+                $this->redirect($url);
             } elseif (!FE_USER_LOGGED_IN && \Input::get('do') == 'login') {
                 $this->strTemplate = \Input::get('do');
             } elseif (FE_USER_LOGGED_IN && !\Input::get('do')) {
-                $this->redirect($this->addToUrl('do=menu'));
+                \Input::resetCache();
+                $url = $this->generateFrontendUrl($objPage->row(), '/do/menu');
+                $this->redirect($url);
             } elseif (FE_USER_LOGGED_IN && \Input::get('do') != '') {
                 if (\Input::get('do') == 'print_table') {
                     $this->strTemplate = null;
-                }else{
+                } else {
                     $this->strTemplate = \Input::get('do');
-
                 }
             } else {
                 // logout and redirect to the login form
@@ -85,7 +89,9 @@ class MainController extends \Module
                     $this->import('FrontendUser', 'User');
                     $this->User->logout();
                 }
-                $this->redirect($this->addToUrl('do=login'));
+                \Input::resetCache();
+                $url = $this->generateFrontendUrl($objPage->row(), '/do/login');
+                $this->redirect($url);
             }
         }
 
@@ -190,6 +196,21 @@ class MainController extends \Module
 
             die(json_encode($arrJSON));
         }
+        // appear the info Box in the tally sheet mode
+        if (\Input::get('act') == 'tally_sheet') {
+            if (\VotingModel::getInfoBox(\Input::post('studentId'), \Input::post('skillId'))) {
+                $arrJSON = array(
+                    'status' => 'success',
+                    'html' => \VotingModel::getInfoBox(\Input::post('studentId'), \Input::post('skillId'))
+                );
+            } else {
+                $arrJSON = array(
+                    'status' => 'error',
+                    'html' => ''
+                );
+            }
+            die(json_encode($arrJSON));
+        }
 
 
     }
@@ -273,9 +294,9 @@ class MainController extends \Module
 
                 // register fpdf class
                 \ClassLoader::addClasses(array
-                (
-                    'FPDF' => 'system/modules/buf/plugins/fpdf/fpdf.php'
-                ));
+                                         (
+                                         'FPDF' => 'system/modules/buf/plugins/fpdf/fpdf.php'
+                                         ));
                 $objController = new \FpdfController($this);
                 $objController->printTable();
                 break;
@@ -319,6 +340,16 @@ class MainController extends \Module
 
                     die(json_encode($arrJSON));
                 }
+                break;
+            case 'average_table':
+                $objController = new \AverageTableController($this);
+                $this->Template = $objController->setTemplate($this->Template);
+                break;
+            case 'tally_sheet':
+                //die(\VotingModel::getInfoBox(27, 1));
+                $GLOBALS['TL_JAVASCRIPT'][] = '/system/modules/buf/assets/js/tally_sheet.js';
+                $objController = new \TallySheetController($this);
+                $this->Template = $objController->setTemplate($this->Template);
                 break;
 
         }

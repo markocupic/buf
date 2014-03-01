@@ -37,7 +37,9 @@ ClassLoader::addClasses(array
 	'MCupic\TeacherModel'              => 'system/modules/buf/models/TeacherModel.php',
 
 	// Modules
+	'MCupic\AverageTableController'    => 'system/modules/buf/modules/AverageTableController.php',
 	'MCupic\LoginController'           => 'system/modules/buf/modules/LoginController.php',
+	'MCupic\TallySheetController'      => 'system/modules/buf/modules/TallySheetController.php',
 	'MCupic\MenuController'            => 'system/modules/buf/modules/MenuController.php',
 	'MCupic\FpdfController'            => 'system/modules/buf/modules/FpdfController.php',
 	'MCupic\VotingTableController'     => 'system/modules/buf/modules/VotingTableController.php',
@@ -53,10 +55,12 @@ ClassLoader::addClasses(array
  */
 TemplateLoader::addFiles(array
 (
+	'average_table'        => 'system/modules/buf/templates',
 	'edit_classlist'       => 'system/modules/buf/templates',
 	'voting_table_partial' => 'system/modules/buf/templates',
 	'voting_table'         => 'system/modules/buf/templates',
 	'menu'                 => 'system/modules/buf/templates',
+	'tally_sheet'          => 'system/modules/buf/templates',
 	'login'                => 'system/modules/buf/templates',
 	'start_new_voting'     => 'system/modules/buf/templates',
 	'account_settings'     => 'system/modules/buf/templates',

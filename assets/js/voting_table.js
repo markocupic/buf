@@ -234,6 +234,11 @@ EditTable = new Class({
                                     cell.getChildren('.deviation')[0].destroy();
                                 }
 
+                                // add the rating to the text fields value-property, this only if the text-field is opened
+                                if (cell.getChildren('.textField')[0]) {
+                                    cell.getChildren('.textField')[0].set('value', rating);
+                                }
+
                                 // display deviation
                                 var deviation = row['skill' + col]['deviation'];
                                 if (deviation != '') {
@@ -245,6 +250,7 @@ EditTable = new Class({
                                     elSpan.innerHTML = '<br>Abw:<br>' + deviation;
                                     elSpan.setStyle('color', '#' + color);
                                     elSpan.inject(cell);
+
                                 }
                             }
                         }

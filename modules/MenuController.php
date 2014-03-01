@@ -84,6 +84,14 @@ class MenuController extends \Frontend
         $url = $this->generateFrontendUrl($objPage->row(), '/do/edit_classlist');
         $objTemplate->editClasslistLink = $url;
 
+        //average Table link
+        $url = $this->generateFrontendUrl($objPage->row(), '/do/average_table');
+        $objTemplate->averageTableLink = $url;
+
+        //tally sheet link
+        $url = $this->generateFrontendUrl($objPage->row(), '/do/tally_sheet');
+        $objTemplate->tallySheetLink = $url;
+
 
 
 

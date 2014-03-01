@@ -54,8 +54,8 @@
 <h3>Administrative Aufgaben für den Klassenlehrer</h3>
 <ul>
     <li><a title="Klassenliste bearbeiten" class="icon_edit" href="<?php echo $this->editClasslistLink; ?>"><span style="color:black; font-weight:bold">Die Klassenliste </span>bearbeiten</a></li>
-    <li><a title="Mittelwerte der Stammklasse" class="icon_search"  href=""><span style="color:black; font-weight:bold">Mittelwerte (&quot;Sammelblatt&quot;) meiner Stammklasse </span>ansehen</a></li>
-    <li><a title="Strichliste" class="icon_search"  href=""><span style="color:black; font-weight:bold">Strichliste (&quot;Sammelblatt&quot;) meiner Stammklasse </span>ansehen</a></li>
+    <li><a title="Mittelwerte der Stammklasse" class="icon_search"  href="<?php echo $this->averageTableLink; ?>"><span style="color:black; font-weight:bold">Mittelwerte (&quot;Sammelblatt&quot;) meiner Stammklasse </span>ansehen</a></li>
+    <li><a title="Strichliste" class="icon_search"  href="<?php echo $this->tallySheetLink; ?>"><span style="color:black; font-weight:bold">Strichliste (&quot;Sammelblatt&quot;) meiner Stammklasse </span>ansehen</a></li>
 </ul>
 
 <?php endif; ?>

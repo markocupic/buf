@@ -2,9 +2,7 @@
 
 /**
  * Contao Open Source CMS
- *
  * Copyright (c) 2005-2014 Leo Feyer
- *
  * @package Core
  * @link    https://contao.org
  * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL
@@ -19,7 +17,6 @@ namespace MCupic;
 
 /**
  * Reads and writes classes
- *
  * @package   Models
  * @author    Leo Feyer <https://github.com/leofeyer>
  * @copyright Leo Feyer 2005-2014
@@ -44,8 +41,7 @@ class VotingModel extends \Model
         $objUser = \System::importStatic('FrontendUser');
         $tolerance = $objUser->deviation;
 
-        if (!self::isOwner() && \TeacherModel::getOwnClass() != $Klasse)
-        {
+        if (!self::isOwner() && \TeacherModel::getOwnClass() != $Klasse) {
             //return;
         }
 
@@ -92,7 +88,7 @@ class VotingModel extends \Model
                     //average
                     //Nur für den Klassenlehrer an seiner Stammklasse ersichtlich
                     if ($skill > 0 && \TeacherModel::getOwnClass() == $Klasse) {
-                        $sql = sprintf('SELECT AVG(skill%s) AS average FROM tl_voting WHERE student = ? AND skill%s > 0 AND skill%s < 5 AND id != ?',$i,$i,$i);
+                        $sql = sprintf('SELECT AVG(skill%s) AS average FROM tl_voting WHERE student = ? AND skill%s > 0 AND skill%s < 5 AND id != ?', $i, $i, $i);
                         $stmt3 = \Database::getInstance()->prepare($sql)->execute($objStudent->id, $dataRecord['id']);
                         $rowAverage = $stmt3->fetchAssoc();
                         $intAverage = $rowAverage['average'];
@@ -105,7 +101,7 @@ class VotingModel extends \Model
                             $color = "000000";
                         }
                     } else {
-                       $intAverage = 0;
+                        $intAverage = 0;
                         $color = "000000";
                     }
 
@@ -115,7 +111,7 @@ class VotingModel extends \Model
                         $deviation = "";
                     }
                     $array_name = "unterarray" . $i;
-                    $$array_name = array("value" => $skill, "deviation" => $deviation, "color" => $color, "average" =>$intAverage);
+                    $$array_name = array("value" => $skill, "deviation" => $deviation, "color" => $color, "average" => $intAverage);
 
                 }
                 //end for
@@ -193,7 +189,7 @@ class VotingModel extends \Model
         if (intval($teacher) == $objUser->id) {
             $value = trim($value);
             $value = $value == '' ? 0 : $value;
-            if (preg_match('/^[0-4]{0,1}$/',$value)) {
+            if (preg_match('/^[0-4]{0,1}$/', $value)) {
                 $objVoting = \Database::getInstance()->prepare('SELECT * FROM tl_voting WHERE teacher=? AND student=? AND subject=?')->execute($teacher, $student, $subject);
                 if ($objVoting->numRows) {
 
@@ -202,11 +198,11 @@ class VotingModel extends \Model
                     );
                     $set['skill' . $skill] = $value;
                     \Database::getInstance()->prepare('UPDATE tl_voting %s WHERE id=?')
-                        ->set($set)
-                        ->execute($objVoting->id);
+                    ->set($set)
+                    ->execute($objVoting->id);
                     // delete all empty rows
                     \Database::getInstance()->prepare('DELETE FROM tl_voting WHERE id=? AND (skill1 + skill2 + skill3 + skill4 + skill5 + skill6 + skill7 + skill8) < 1')
-                                            ->execute($objVoting->id);
+                    ->execute($objVoting->id);
                 } else {
                     if ($value > 0) {
                         $set = array(
@@ -219,8 +215,8 @@ class VotingModel extends \Model
                         $set['skill' . $skill] = $value;
 
                         \Database::getInstance()->prepare('INSERT INTO tl_voting %s')
-                            ->set($set)
-                            ->execute();
+                        ->set($set)
+                        ->execute();
                     }
                 }
                 if ($value == 0) {
@@ -233,6 +229,31 @@ class VotingModel extends \Model
         return false;
     }
 
+    public static function getInfoBox($studentId, $skillId)
+    {
+        if (!\TeacherModel::getOwnClass()) {
+            return false;
+        }
+
+        $objVoting = \Database::getInstance()->prepare('SELECT * FROM tl_voting WHERE student = ? AND skill' . $skillId . ' > ? ORDER BY id')
+        ->execute($studentId, '0');
+        if ($objVoting->numRows) {
+            $output = "<table>";
+            $i = 0;
+            while ($objVoting->next()) {
+                $skill = 'skill' . $skillId;
+                $i++;
+                if ($i == 1) {
+                    $output .= "<tr><th colspan=\"3\"><span class=\"blue strong\">KRITERIUM " . $skillId . "</span><br /><span class=\"green strong\">Schueler: " . substr(\StudentModel::findByPk($studentId)->firstname, 0, 1) . ". " . \StudentModel::findByPk($studentId)->lastname . "</span></th></tr>";
+                }
+                $output .=  "<tr><td><strong><span class=\"red strong\">" . $objVoting->$skill . "&nbsp;</span></strong></td><td class=\"green strong\">&nbsp;" . \SubjectModel::findByPk($objVoting->subject)->acronym . "&nbsp;</td><td class=\"strong\">&nbsp;" . substr(\TeacherModel::findByPk($objVoting->teacher)->firstname, 0, 1) . ". " . \TeacherModel::findByPk($objVoting->teacher)->lastname . "</td></tr>";
+            }
+            $output .=  "</table>";
+        }
+
+
+        return $output;
+    }
 
     /**
      * @return bool
