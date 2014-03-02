@@ -59,74 +59,50 @@ class TallySheetController extends \Frontend
     {
         $output = "";
         $js = "";
+        $cellId = 0;
+
         $Klasse = \TeacherModel::getOwnClass();
 
         $output .= "\r\n\r\n";
         $objStudent = $this->Database->prepare('SELECT * FROM tl_student WHERE class = ? ORDER BY gender ASC,lastname,firstname')->execute($Klasse);
-        $Zell_ID = 0;
         while ($objStudent->next()) {
-            $output .= "<tr>";
-            $output .= "<td class=\"align_left\">" . $objStudent->lastname . "</td>";
-            $output .= "<td class=\"align_left\">" . $objStudent->firstname . "</td>";
+            $output .= '<tr>';
+            $output .= '<td class="align_left">' . $objStudent->lastname . '</td>';
+            $output .= '<td class="align_left">' . $objStudent->firstname . '</td>';
 
             for ($i = 1; $i < 9; $i++) {
-                //Schnittberechnung f&uuml;r die farbliche Hervorhebung
-                $stmt2 = $this->Database->prepare("SELECT * FROM tl_voting WHERE  student = ? AND skill" . $i . " > ?")->execute($objStudent->id, '0');
-                $AnzahlBeurteilungen = $stmt2->numRows;
+                // get the skill average
+                $objAverage = $this->Database->prepare("SELECT AVG(skill$i) AS 'average' FROM tl_voting WHERE student = ? AND skill$i > 0")->execute($objStudent->id);
+                $rowAverage = $objAverage->fetchAssoc();
+                $skillAverage = abs(round($rowAverage["average"]-0.0000001, 0));
 
-                $stmt3 = $this->Database->prepare("SELECT AVG(skill$i) AS 'Mittelwert' FROM tl_voting WHERE student = ? AND skill$i > 0")->execute($objStudent->id);
-                $rowMittelwert = $stmt3->fetchRow();
-                $SchnittKriterium = round($rowMittelwert["Mittelwert"], 0);
-                //Ende Schnittberechnung
+                $class = ($i % 2 != 0) ? 'tallycell textaligncenter odd' : 'tallycell textaligncenter even';
 
-                if ($i % 2 != 0) {
-                    $HintergrundGeradeSpalten = " odd";
-                } else {
-                    $HintergrundGeradeSpalten = " even";
-                }
                 for ($m = 1; $m < 5; $m++) {
                     //Die Zelle mit dem Durchschnitt wird farblich hervorgehoben
-                    if ($SchnittKriterium == $m && $AnzahlBeurteilungen > 0) {
-                        $bgColorDurchschnitt = "background-color:#ffcccc";
-                    } else {
-                        $bgColorDurchschnitt = "";
-                    }
-                    $Zell_ID++;
+                    $tdClass =  ($skillAverage == $m) ? $class . ' bg_red' : $class;
+                    $cellId++;
+                    $output .= sprintf('<td id="Zelle_%s" title="&oslash; avg: %s" class="%s">',$cellId,abs(round($rowAverage["average"]-0.0000001, 1)),$tdClass);
 
-                    $output .= "<td id=\"Zelle_" . $Zell_ID . "\" title=\"&oslash; avg: " . round($rowMittelwert["Mittelwert"], 2) . "\" ";
-                    //Nur wenn auch eine zum Kriterium passende Bewertung vorhanden ist, wird die Ajax-Anwendun aktiviert.
-                    $output .= "class=\"Strichliste textaligncenter" . $HintergrundGeradeSpalten . "\" style=\"width:2.5%; height:45px;" . $bgColorDurchschnitt . "\">";
-                    if ($AnzahlBeurteilungen > 0) {
-                        $js .= sprintf("
-							document.id('Zelle_%s').addEvent('mouseenter', function(event) {
-								//event.stopPropagation();
-								objTallySheet.showInfoBox(%s,%s);
-							});
-                        ", $Zell_ID, $objStudent->id, $i);
-                        $js .= sprintf("
-							document.id('Zelle_%s').addEvent('mouseleave', function(event) {
-								event.stopPropagation();
-								objTallySheet.destroyInfoBox();
-							});
-                        ", $Zell_ID);
-                    }
+                    $js .= sprintf("
+    document.id('Zelle_%s').addEvent('mouseenter', function(event) {
+        event.stop();
+        event.stopPropagation();
+        objTallySheet.showInfoBox(this,%s,%s);
+    });
+                    ", $cellId, $objStudent->id, $i);
+
                     $objVoting = $this->Database->prepare("SELECT * FROM tl_voting WHERE student = ? AND skill$i = ?")->execute($objStudent->id, $m);
-                    $br = 1;
+                    $br = 0;
                     while ($objVoting->next()) {
-                        if ($objVoting->teacher == $this->User->id) {
-                            $output .= "<span style=\"text-decoration:underline; font-weight:bold; font-size:1em;\">I</span>";
-                        } else {
-                            $output .= "I";
-                        }
+                            $output .= ($objVoting->teacher == $this->User->id) ? '<span style="text-decoration:underline; font-weight:bold; font-size:1em;">I</span>' : 'I';
                         $br++;
-                        if ($br == 6) {
-                            $br = 1;
-                            $output .= "<br>";
+                        if ($br == 5) {
+                            $br = 0;
+                            $output .= '<br>';
                         }
                     }
-                    //end while
-                    $output .= "</td>\r\n";
-                    unset($bgColorDurchschnitt);
+                    $output .= '</td>' . "\r\n";
                 }
                 //end for
                 unset($HintergrundGeradeSpalten);

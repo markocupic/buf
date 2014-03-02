@@ -8,7 +8,7 @@
 <table id="Strichliste" class="beurteilungstabelle">
 
     <tr>
-        <td style="width:10%" class="Vertikalschrift Beurteilungsraster description">&nbsp;</td>
+        <td id="requestStatus" style="width:10%" class="Vertikalschrift Beurteilungsraster description textalignbottom">&nbsp;</td>
         <td style="width:10%" class="Vertikalschrift Beurteilungsraster description">&nbsp;</td>
 <?php for($i=1;$i<9;$i++): ?>
 <?php if($i%2!=0){$bgcolor="dddddd"; $Hintergrund="odd";}else{$bgcolor="ffffff";$Hintergrund="even";} ?>
@@ -21,12 +21,12 @@
 
 <script>
 window.addEvent('domready', function() {
-objTallySheet = new TallySheet({
-request_token: '{{request_token}}',
-element_id: '<?php echo $this->elementId; ?>'
-});
+    objTallySheet = new TallySheet({
+        request_token: '{{request_token}}',
+        element_id: '<?php echo $this->elementId; ?>'
+    });
 
 <?php echo $this->js; ?>
-});
 
+});
 </script>

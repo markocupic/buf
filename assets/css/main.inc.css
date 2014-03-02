@@ -42,7 +42,9 @@ td {
 .clearing {
     clear: both;
 }
-
+.textalignbottom {
+    vertical-align:bottom !important;
+}
 .textaligncenter {
     text-align: center;
 }
@@ -275,8 +277,11 @@ table#Mittelwerttabelle td {
 }
 
 /* Strichliste*/
-table.beurteilungstabelle td.odd {
-    background-color: #ddd !important;
+table#Strichliste td.odd {
+    background-color: #ddd;
+}
+table#Strichliste td.bg_red {
+    background-color: #ffcccc;
 }
 
 table#Strichliste td {
@@ -285,6 +290,12 @@ table#Strichliste td {
     vertical-align: middle;
     line-height: 15px;
     empty-cells: show;
+}
+
+table#Strichliste td.tallycell {
+    width:2.5%;
+    height:45px;
+    cursor:pointer;
 }
 
 table#Strichliste td.textaligncenter {

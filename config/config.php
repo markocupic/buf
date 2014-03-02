@@ -16,9 +16,24 @@
  */
 $GLOBALS['BE_MOD']['buf'] = array(
 
-       // Beurteilen Und Foerdern  modules
-
-       'class' => array('tables' => array('tl_class')), 'student' => array('tables' => array('tl_student')), 'voting' => array('tables' => array('tl_voting')), 'subject' => array('tables' => array('tl_subject')));
+    // Beurteilen Und Foerdern  modules
+    'class' => array(
+        'tables' => array('tl_class'),
+        'icon' => 'system/modules/buf/assets/images/backend/mgroup.gif'
+    ),
+    'student' => array(
+        'tables' => array('tl_student'),
+        'icon' => 'system/modules/buf/assets/images/backend/member.gif'
+    ),
+    'voting' => array(
+        'tables' => array('tl_voting'),
+        'icon' => 'system/modules/buf/assets/images/backend/preview.gif'
+    ),
+    'subject' => array(
+        'tables' => array('tl_subject'),
+        'icon' => 'system/modules/buf/assets/images/backend/featured.gif'
+    )
+);
 
 /**
  * Front end modules
@@ -28,14 +43,12 @@ $GLOBALS['FE_MOD']['beurteilenfoerdern'] = array('mod_beurteilen_und_foerdern' =
 $GLOBALS['TL_HOOKS']['replaceInsertTags'][] = array('BufHelper', 'replaceInsertTags');
 
 
-
 // set to InnoDb and add foreign keys (constraints)
 $GLOBALS['TL_HOOKS']['postLogin'][] = array('BufHelper', 'changeToInnoDb');
 $GLOBALS['TL_HOOKS']['postLogin'][] = array('BufHelper', 'addForeignKeys');
 
-if (TL_MODE == 'FE')
-{
-    $GLOBALS['TL_CSS'][]  = 'system/modules/buf/assets/css/base.css';
+if (TL_MODE == 'FE') {
+    $GLOBALS['TL_CSS'][] = 'system/modules/buf/assets/css/base.css';
 }
 
 

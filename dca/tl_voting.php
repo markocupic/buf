@@ -122,7 +122,9 @@ $GLOBALS['TL_DCA']['tl_voting'] = array
               ),
               'tstamp' => array
               (
-                     'sql'                     => "int(10) unsigned NOT NULL default '0'"
+                  'search'                  => true,
+                  'sorting'                 => true,
+                  'sql'                     => "int(10) unsigned NOT NULL default '0'"
               ),
               'student' => array
               (

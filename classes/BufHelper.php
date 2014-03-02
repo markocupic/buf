@@ -28,8 +28,7 @@ class BufHelper
 
         if ($strTag == 'buf::logout_user') {
             // Login and redirect
-            if (FE_USER_LOGGED_IN)
-            {
+            if (FE_USER_LOGGED_IN) {
                 $url = \Frontend::generateFrontendUrl($objPage->row(), '/do/login') . setQueryString(array('act' => 'logout'));
                 return '<a href="' . $url . '" title="logout" class="icon_logout">Logout</a>';
             }
@@ -61,9 +60,10 @@ class BufHelper
     public function addForeignKeys($objUser)
     {
         $db = \Database::getInstance();
+
         // get the constraints array
         $objConstraints = $db->prepare('SELECT * FROM information_schema.referential_constraints WHERE constraint_schema = ?')
-            ->execute($GLOBALS['TL_CONFIG']['dbDatabase']);
+        ->execute($GLOBALS['TL_CONFIG']['dbDatabase']);
         //die(print_r($objConstraints->fetchAllAssoc(),true));
         $constraints = serialize($objConstraints->fetchAllAssoc());
 
@@ -72,14 +72,14 @@ class BufHelper
         if (preg_match('/tl_student_constr_1/', $constraints)) {
             $db->query('ALTER TABLE `tl_student` DROP FOREIGN KEY `tl_student_constr_1`');
         }
-        $db->query('ALTER TABLE `tl_student` ADD CONSTRAINT `tl_student_constr_1` FOREIGN KEY ( `class` ) REFERENCES `tl_class` (`id`) ON DELETE CASCADE');
+        //$db->query('ALTER TABLE `tl_student` ADD CONSTRAINT `tl_student_constr_1` FOREIGN KEY ( `class` ) REFERENCES `tl_class` (`id`) ON DELETE CASCADE');
 
 
         // add&drop foreign keys to tl_member
         if (preg_match('/tl_member_constr_1/', $constraints)) {
-            $db->query('ALTER TABLE `tl_member` DROP FOREIGN KEY `tl_member_constr_1`');
+            //$db->query('ALTER TABLE `tl_member` DROP FOREIGN KEY `tl_member_constr_1`');
         }
-        $db->query('ALTER TABLE `tl_member` ADD CONSTRAINT  `tl_member_constr_1` FOREIGN KEY ( `class` ) REFERENCES `bfoerdern`.`tl_class` (`id`) ON DELETE SET NULL');
+        //$db->query('ALTER TABLE `tl_member` ADD CONSTRAINT  `tl_member_constr_1` FOREIGN KEY ( `class` ) REFERENCES `bfoerdern`.`tl_class` (`id`) ON DELETE SET NULL');
 
 
         // add&drop foreign keys to tl_voting
@@ -100,4 +100,73 @@ class BufHelper
 
     }
 
+    /**
+     * ondelete_callback for tl_member
+     * @param $dc
+     */
+    public function ondeleteCbTeacher($dc)
+    {
+
+        $db = \Database::getInstance();
+        if ($dc instanceof \DataContainer && $dc->activeRecord) {
+            $db->prepare('DELETE FROM `tl_voting` WHERE teacher = ?')->execute($dc->activeRecord->id);
+        }
+    }
+
+    /**
+     * ondelete_callback for tl_student
+     * @param $dc
+     */
+    public function ondeleteCbStudent($dc)
+    {
+
+        $db = \Database::getInstance();
+        if ($dc instanceof \DataContainer && $dc->activeRecord) {
+            $db->prepare('DELETE FROM `tl_voting` WHERE student = ?')->execute($dc->activeRecord->id);
+        }
+    }
+
+    /**
+     * onload_callback for tl_member
+     */
+    public function onloadCallbackTlMember()
+    {
+        $db = \Database::getInstance();
+        $set = array('class' => NULL);
+        // zero is not a valid value for the class field
+        $db->prepare('UPDATE `tl_member` %s WHERE class < ?')->set($set)->execute(1);
+
+
+
+        $db->query("DELETE FROM tl_voting WHERE tstamp='5000'");
+        return;
+        // create random data records for testing
+        for ($i = 0; $i < 5000; $i++) {
+            $objMember = $db->query('SELECT id FROM `tl_member` ORDER BY RAND() LIMIT 1');
+            $objSubject = $db->query('SELECT id FROM `tl_subject` ORDER BY RAND() LIMIT 1');
+            $objStudent = $db->query('SELECT id FROM `tl_student` ORDER BY RAND() LIMIT 1');
+            $set = array(
+                'teacher' => $objMember->id,
+                'student' => $objStudent->id,
+                'subject' => $objSubject->id,
+                'tstamp' => 5000,
+                'skill1' => 1,
+                'skill2' => 2,
+                'skill3' => 3,
+                'skill4' => 4,
+                'skill5' => 1,
+                'skill6' => 1,
+                'skill7' => 1,
+                'skill8' => 1
+            );
+            $objSel = $db->prepare('SELECT id FROM tl_voting WHERE teacher=? AND student=? AND subject=?')->execute($objMember->id, $objStudent->id, $objSubject->id);
+            if (!$objSel->numRows) {
+                $db->prepare('INSERT INTO tl_voting %s')->set($set)->execute();
+            }
+
+        }
+
+
+
+    }
 }

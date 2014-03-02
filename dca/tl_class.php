@@ -68,7 +68,7 @@ $GLOBALS['TL_DCA']['tl_class'] = array(
 
     // Palettes
     'palettes' => array( //'__selector__'                => array('login', 'assignDir'),
-        'default' => '{personal_legend},name',
+        'default' => 'name',
     ),
 
     // Subpalettes
@@ -86,7 +86,7 @@ $GLOBALS['TL_DCA']['tl_class'] = array(
             'sql' => "int(10) unsigned NOT NULL default '0'"
         ),
         'name' => array(
-            'label' => &$GLOBALS['TL_LANG']['tl_member']['firstname'],
+            'label' => &$GLOBALS['TL_LANG']['tl_class']['name'],
             'exclude' => true, 'search' => true, 'sorting' => true,
             'flag' => 1,
             'inputType' => 'text',

@@ -14,6 +14,8 @@
 * Table tl_member
 */
 $GLOBALS['TL_DCA']['tl_member']['config']['sql']['keys']['class'] = 'unique';
+$GLOBALS['TL_DCA']['tl_member']['config']['onload_callback'][] = array('BufHelper','onloadCallbackTlMember');
+$GLOBALS['TL_DCA']['tl_member']['config']['ondelete_callback'][] = array('BufHelper','ondeleteCbTeacher');
 
 
 $GLOBALS['TL_DCA']['tl_member']['fields']['isTeacher'] = array
@@ -24,6 +26,16 @@ $GLOBALS['TL_DCA']['tl_member']['fields']['isTeacher'] = array
        'inputType'               => 'checkbox',
        'eval'                    => array('submitOnChange'=>true),
        'sql'                     => "char(1) NOT NULL default ''"
+);
+
+$GLOBALS['TL_DCA']['tl_member']['fields']['isClassTeacher'] = array
+(
+    'label'                   => &$GLOBALS['TL_LANG']['tl_member']['isClassTeacher'],
+    'exclude'                 => true,
+    'filter'                  => true,
+    'inputType'               => 'checkbox',
+    'eval'                    => array('submitOnChange'=>true),
+    'sql'                     => "char(1) NOT NULL default ''"
 );
 
 $GLOBALS['TL_DCA']['tl_member']['fields']['class'] = array
@@ -55,13 +67,14 @@ $GLOBALS['TL_DCA']['tl_member']['fields']['deviation'] = array
 
 $GLOBALS['TL_DCA']['tl_member']['palettes'] = array
 (
-       '__selector__'                => array('login'),
+       '__selector__'                => array('isClassTeacher','login'),
        //'default'                     => '{personal_legend},firstname,lastname,dateOfBirth,gender;{address_legend:hide},company,street,postal,city,state,country;{contact_legend},phone,mobile,fax,email,website,language;{groups_legend},groups;{login_legend},login;{homedir_legend:hide},assignDir;{account_legend},disable,start,stop',
-       'default'                     => '{personal_legend},isTeacher,class,firstname,lastname,deviation;{login_legend},login;{account_legend},disable',
+       'default'                     => '{personal_legend},isTeacher,isClassTeacher,firstname,lastname,deviation;{login_legend},login;{account_legend},disable',
 );
 
 // Subpalettes
 $GLOBALS['TL_DCA']['tl_member']['subpalettes'] = array
 (
-       'login'                       => 'username,password'
+    'isClassTeacher'              =>'class',
+    'login'                       => 'username,password'
 );

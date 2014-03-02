@@ -29,7 +29,7 @@ $GLOBALS['TL_DCA']['tl_student'] = array
               ),
               'ondelete_callback' => array
               (
-                     //array('tl_member', 'removeSession')
+                  array('BufHelper','ondeleteCbStudent'),
               ),
               'sql' => array
               (
@@ -124,7 +124,7 @@ $GLOBALS['TL_DCA']['tl_student'] = array
               ),
               'gender' => array
               (
-                     'label'                   => &$GLOBALS['TL_LANG']['tl_member']['gender'],
+                     'label'                   => &$GLOBALS['TL_LANG']['tl_student']['gender'],
                      'exclude'                 => true,
                      'inputType'               => 'select',
                      'options'                 => array('male', 'female'),
@@ -134,7 +134,7 @@ $GLOBALS['TL_DCA']['tl_student'] = array
               ),
               'lastname' => array
               (
-                     'label'                   => &$GLOBALS['TL_LANG']['tl_member']['lastname'],
+                     'label'                   => &$GLOBALS['TL_LANG']['tl_student']['lastname'],
                      'exclude'                 => true,
                      'search'                  => true,
                      'sorting'                 => true,
@@ -145,7 +145,7 @@ $GLOBALS['TL_DCA']['tl_student'] = array
               ),
               'firstname' => array
               (
-                     'label'                   => &$GLOBALS['TL_LANG']['tl_member']['firstname'],
+                     'label'                   => &$GLOBALS['TL_LANG']['tl_student']['firstname'],
                      'exclude'                 => true,
                      'search'                  => true,
                      'sorting'                 => true,
@@ -156,7 +156,7 @@ $GLOBALS['TL_DCA']['tl_student'] = array
               ),
               'class' => array
               (
-                     'label'                   => &$GLOBALS['TL_LANG']['tl_member']['class'],
+                     'label'                   => &$GLOBALS['TL_LANG']['tl_student']['class'],
                      'exclude'                 => true,
                      'search'                  => true,
                      'sorting'                 => true,
