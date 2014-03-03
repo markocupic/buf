@@ -5,8 +5,10 @@
  * @param bool $encode
  * @return mixed|string
  */
-function setQueryString($arrItems, $encode = false, $blnEncode = true)
+function setQueryString($arrItems, $encode = false)
 {
+    $encode = true;
+    $blnEncode = false;
     if (!is_array($arrItems) || !count($arrItems)) {
         return '';
     }

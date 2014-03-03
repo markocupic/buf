@@ -78,7 +78,7 @@ class MainController extends \Module
                 $url = $this->generateFrontendUrl($objPage->row(), '/do/menu');
                 $this->redirect($url);
             } elseif (FE_USER_LOGGED_IN && \Input::get('do') != '') {
-                if (\Input::get('do') == 'print_table') {
+                if (\Input::get('do') == 'print_table' || \Input::get('do') == 'print_tally_sheet') {
                     $this->strTemplate = null;
                 } else {
                     $this->strTemplate = \Input::get('do');
@@ -228,9 +228,7 @@ class MainController extends \Module
             $plaintext_dec = \Cipher::decrypt(\Input::get('vars'));
             $arrGet = explode('&', $plaintext_dec);
             foreach ($arrGet as $chunk) {
-
                 $arrItem = explode('=', $chunk);
-                echo $arrItem[0] . $arrItem[1];
                 \Input::setGet($arrItem[0], $arrItem[1]);
             }
         }
@@ -292,13 +290,13 @@ class MainController extends \Module
 
             case 'print_table':
 
-                // register fpdf class
-                \ClassLoader::addClasses(array
-                                         (
-                                         'FPDF' => 'system/modules/buf/plugins/fpdf/fpdf.php'
-                                         ));
                 $objController = new \FpdfController($this);
                 $objController->printTable();
+                break;
+
+            case 'print_tally_sheet':
+                $objController = new \FpdfController($this);
+                $objController->printTallySheet();
                 break;
 
             case 'delete_table':

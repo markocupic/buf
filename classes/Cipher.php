@@ -15,6 +15,7 @@ class Cipher
      */
     public static function encrypt($input)
     {
+        return base64_encode(base64_encode($input));
         $salt = substr($GLOBALS['TL_CONFIG']['encryptionKey'],0,4);
         $securekey = hash('sha256', $salt, TRUE);
         $iv = mcrypt_create_iv(16);
@@ -27,6 +28,8 @@ class Cipher
      */
     public static function decrypt($input)
     {
+        return base64_decode(base64_decode($input));
+
         $salt = substr($GLOBALS['TL_CONFIG']['encryptionKey'],0,4);
         $securekey = hash('sha256', $salt, TRUE);
         $iv = mcrypt_create_iv(16);
