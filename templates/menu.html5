@@ -63,6 +63,6 @@
 <h3>Kontoeinstellungen</h3>
 <ul>
     <li>
-        <a href="<?php echo $this->setPasswordLink; ?>" title="Passwort ändern">Passwort ändern</a>
+        <a href="<?php echo $this->setPasswordLink; ?>" class="icon_user" title="Passwort/Email-Adresse ändern">Passwort/Email-Adresse ändern</a>
     </li>
 </ul>

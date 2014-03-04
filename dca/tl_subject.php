@@ -30,7 +30,11 @@ $GLOBALS['TL_DCA']['tl_subject'] = array
                             'name' => 'unique',
                             'acronym' => 'unique'
                      )
-              )
+              ),
+              'ondelete_callback' => array
+              (
+                  array('BufHelper', 'ondeleteCbSubject'),
+              ),
        ),
 
        // List

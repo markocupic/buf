@@ -307,7 +307,7 @@ class MainController extends \Module
             case 'delete_table':
                 if (\Input::get('teacher') == $this->User->id) {
                     $this->import('Database');
-                    $this->Database->prepare('DELETE FROM tl_voting WHERE teacher=? AND subject=? AND class=?')->execute((int)\Input::get('teacher'), (int)\Input::get('subject'), (int)\Input::get('class'));
+                    $this->Database->prepare('DELETE FROM tl_voting WHERE teacher=? AND subject=? AND student IN (SELECT id FROM tl_student WHERE class=?)')->execute((int)\Input::get('teacher'), (int)\Input::get('subject'), (int)\Input::get('class'));
                 }
                 $url = $this->generateFrontendUrl($objPage->row(), '/do/menu');
                 $this->redirect($url);

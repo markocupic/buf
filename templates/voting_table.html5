@@ -18,7 +18,7 @@
 
     <div style="width:15em; margin-left:-20px; margin-top:0.25em; float:right;" id="Erklaerung">
 
-<?php if ($this->User->id == $this->idTeacher): ?>
+<?php if ($this->User->id == $this->teacherId): ?>
         <a class="icon_delete" title="Ganze Tabelle löschen" id="delete_table" href="<?php echo $this->hrefDeleteTable; ?>" onclick="if(!confirm('Warnung! Sollen alle Datensätze der Tabelle unwiderruflich gelöscht werden?')) return false;">Ganze Tabelle löschen</a>
 <?php endif; ?>
 

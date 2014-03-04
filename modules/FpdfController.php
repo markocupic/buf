@@ -78,19 +78,19 @@ class FpdfController extends \System
             $pdf->SetFont('Arial', 'B', 11);
             $pdf->Cell(30, 6, 'Schule: ', 0, '', 'L');
             $pdf->SetFont('Arial', '', 11);
-            $pdf->Cell(30, 6, $GLOBALS['TL_CONFIG']['buf_name_school'], 0, '', 'L');
+            $pdf->Cell(30, 6, utf8_decode($GLOBALS['TL_CONFIG']['buf_name_school']), 0, '', 'L');
             $pdf->Ln();
 
             $pdf->SetFont('Arial', 'B', 11);
             $pdf->Cell(30, 6, 'Lehrperson: ', 0, '', 'L');
             $pdf->SetFont('Arial', '', 11);
-            $pdf->Cell(30, 6, \TeacherModel::getFullName($teacher), 0, '', 'L');
+            $pdf->Cell(30, 6, utf8_decode(\TeacherModel::getFullName($teacher)), 0, '', 'L');
 
             $pdf->Ln();
             $pdf->SetFont('Arial', 'B', 11);
             $pdf->Cell(30, 6, 'Klasse: ', 0, '', 'L');
             $pdf->SetFont('Arial', '', 11);
-            $pdf->Cell(30, 6, \ClassModel::getName($class), 0, '', 'L');
+            $pdf->Cell(30, 6, utf8_decode(\ClassModel::getName($class)), 0, '', 'L');
 
             $pdf->Ln();
             $pdf->SetFont('Arial', 'B', 11);

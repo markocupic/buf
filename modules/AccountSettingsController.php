@@ -56,7 +56,6 @@ class AccountSettingsController extends \Frontend
                 $this->loadDataContainer('tl_member');
 
                 $objTemplate->fields = '';
-                $objTemplate->tableless = $this->tableless;
 
                 $doNotSubmit = false;
                 $row = 0;
@@ -64,7 +63,9 @@ class AccountSettingsController extends \Frontend
                 $blnModified = false;
                 $objMember = \MemberModel::findByPk($this->User->id);
 
-                $arrFields = array('password');
+                $arrFields = array('password', 'email');
+
+                $temp = '';
                 // Build the form
                 foreach ($arrFields as $field) {
                     $arrData = & $GLOBALS['TL_DCA']['tl_member']['fields'][$field];
@@ -78,7 +79,7 @@ class AccountSettingsController extends \Frontend
                     $varValue = $this->User->$field;
 
                     $objWidget = new $strClass($strClass::getAttributesFromDca($arrData, $field, $varValue, '', '', $this));
-
+                    $objWidget->tableless = true;
                     $objWidget->storeValues = true;
                     $objWidget->rowClass = 'row_' . $row . (($row == 0) ? ' row_first' : '') . ((($row % 2) == 0) ? ' even' : ' odd');
 
@@ -89,7 +90,7 @@ class AccountSettingsController extends \Frontend
                     }
 
                     // Validate the form data
-                    if (\Input::post('FORM_SUBMIT') == 'tl_member_set_password') {
+                    if (\Input::post('FORM_SUBMIT') == 'tl_member_account_settings') {
                         $objWidget->validate();
                         $varValue = $objWidget->value;
 
@@ -115,7 +116,7 @@ class AccountSettingsController extends \Frontend
                     }
 
 
-                    $temp = $objWidget->parse();
+                    $temp .= $objWidget->parse();
 
                     $objTemplate->fields .= $temp;
                     $arrFields[$strGroup][$field] .= $temp;
@@ -134,7 +135,7 @@ class AccountSettingsController extends \Frontend
                 $objTemplate->hasError = $doNotSubmit;
 
                 $objTemplate->method = 'post';
-                $objTemplate->formId = 'tl_member_set_password';
+                $objTemplate->formId = 'tl_member_account_settings';
                 $objTemplate->slabel = specialchars($GLOBALS['TL_LANG']['MSC']['saveData']);
                 $objTemplate->action = $this->generateFrontendUrl($objPage->row(), '/do/account_settings') . setQueryString(array('act' => 'set_password'));
                 $objTemplate->enctype = 'application/x-www-form-urlencoded';

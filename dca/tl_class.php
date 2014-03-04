@@ -20,7 +20,11 @@ $GLOBALS['TL_DCA']['tl_class'] = array(
         'enableVersioning' => true,
         'sql' => array(
             'keys' => array('id' => 'primary', 'name' => 'unique')
-        )
+        ),
+        'ondelete_callback' => array
+        (
+            array('BufHelper', 'ondeleteCbClass'),
+        ),
     ),
 
     // List
@@ -67,14 +71,13 @@ $GLOBALS['TL_DCA']['tl_class'] = array(
     ),
 
     // Palettes
-    'palettes' => array( //'__selector__'                => array('login', 'assignDir'),
+    'palettes' => array(
+        //'__selector__'                => array('login', 'assignDir'),
         'default' => 'name',
     ),
 
     // Subpalettes
-    'subpalettes' => array( //'login'                       => 'username,password',
-        //'assignDir'                   => 'homeDir'
-    ),
+    'subpalettes' => array(),
 
 
     // Fields
@@ -83,11 +86,15 @@ $GLOBALS['TL_DCA']['tl_class'] = array(
             'sql' => "int(10) unsigned NOT NULL auto_increment"
         ),
         'tstamp' => array(
+            'search' => true,
+            'sorting' => true,
             'sql' => "int(10) unsigned NOT NULL default '0'"
         ),
         'name' => array(
             'label' => &$GLOBALS['TL_LANG']['tl_class']['name'],
             'exclude' => true, 'search' => true, 'sorting' => true,
+            'search' => true,
+            'sorting' => true,
             'flag' => 1,
             'inputType' => 'text',
             'eval' => array('mandatory' => true, 'maxlength' => 255),

@@ -27,8 +27,8 @@ td {
     vertical-align: middle;
 }
 
-.invisible, .hidden {
-    visibility: hidden;
+.invisible {
+    display: none;
 }
 
 .float_left {
@@ -271,13 +271,14 @@ td.description span {
 
 }
 
+
 /*Mittelwerttabelle*/
 table#Mittelwerttabelle td {
     padding: 1em;
 }
 
 /* Strichliste*/
-table#Strichliste td.odd {
+.beurteilungstabelle td.odd {
     background-color: #ddd;
 }
 table#Strichliste td.bg_red {

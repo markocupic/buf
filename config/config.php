@@ -42,11 +42,6 @@ $GLOBALS['FE_MOD']['beurteilenfoerdern'] = array('mod_beurteilen_und_foerdern' =
 // config.php
 $GLOBALS['TL_HOOKS']['replaceInsertTags'][] = array('BufHelper', 'replaceInsertTags');
 
-
-// set to InnoDb and add foreign keys (constraints)
-$GLOBALS['TL_HOOKS']['postLogin'][] = array('BufHelper', 'changeToInnoDb');
-$GLOBALS['TL_HOOKS']['postLogin'][] = array('BufHelper', 'addForeignKeys');
-
 if (TL_MODE == 'FE') {
     $GLOBALS['TL_CSS'][] = 'system/modules/buf/assets/css/base.css';
 }
