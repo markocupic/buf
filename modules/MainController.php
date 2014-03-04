@@ -51,6 +51,11 @@ class MainController extends \Module
     {
         global $objPage;
 
+        // dependencies
+        if(!file_exists(TL_ROOT . '/ajax.php')){
+            die(utf8_decode('Die Erweiterung "Beurteilen Und Fördern" ist abhängig von der Erweiterung "Ajax" von A. Schempp. Bitte die Erweiterung nachinstallieren!'));
+        }
+
         //set_error_handler(array($this,'myErrorHandler'));
         if (TL_MODE == 'BE') {
             $objTemplate = new \BackendTemplate('be_wildcard');
