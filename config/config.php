@@ -39,11 +39,14 @@ $GLOBALS['BE_MOD']['buf'] = array(
  * Front end modules
  */
 $GLOBALS['FE_MOD']['beurteilenfoerdern'] = array('mod_beurteilen_und_foerdern' => 'MainController');
-// config.php
-$GLOBALS['TL_HOOKS']['replaceInsertTags'][] = array('BufHelper', 'replaceInsertTags');
-
 if (TL_MODE == 'FE') {
     $GLOBALS['TL_CSS'][] = 'system/modules/buf/assets/css/base.css';
 }
+
+// replace insert tags Hook
+$GLOBALS['TL_HOOKS']['replaceInsertTags'][] = array('BufHelper', 'replaceInsertTags');
+
+// revise Table Hook
+$GLOBALS['TL_HOOKS']['reviseTable'][] = array('BufHelper', 'reviseTables');
 
 

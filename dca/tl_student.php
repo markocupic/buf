@@ -21,10 +21,6 @@ $GLOBALS['TL_DCA']['tl_student'] = array
     (
         'dataContainer' => 'Table',
         'enableVersioning' => true,
-        'onsubmit_callback' => array
-        ( //array('tl_member', 'storeDateAdded'),
-            //array('tl_member', 'checkRemoveSession')
-        ),
         'ondelete_callback' => array
         (
             array('BufHelper', 'ondeleteCbStudent'),

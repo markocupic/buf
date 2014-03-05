@@ -117,7 +117,15 @@ $GLOBALS['TL_DCA']['tl_voting'] = array
             'sorting' => true,
             'flag' => 1,
             'inputType' => 'select',
-            'foreignKey' => 'tl_student.lastname',
+            'options_callback' => function () {
+               $options = array();
+                   $objStudent = \StudentModel::findAll(array('order' => 'class,gender,lastname,firstname'));
+                   while ($objStudent->next()) {
+                     $options[$objStudent->id] = $objStudent->firstname . ' ' . $objStudent->lastname;
+                   }
+                   return $options;
+            },
+            'foreignKey' => 'tl_student.id',
             'eval' => array('mandatory' => true, 'maxlength' => 255),
             'sql' => "int(10) unsigned NOT NULL default '0'",
             'relation' => array('type' => 'belongsTo', 'load' => 'lazy')
@@ -132,7 +140,7 @@ $GLOBALS['TL_DCA']['tl_voting'] = array
             'inputType' => 'select',
             'options_callback' => function () {
                 $options = array();
-                $objTeacher = \TeacherModel::findAll();
+                $objTeacher = \TeacherModel::findBy('isTeacher','1');
                 while ($objTeacher->next()) {
                     $options[$objTeacher->id] = $objTeacher->firstname . ' ' . $objTeacher->lastname;
                 }
@@ -151,7 +159,15 @@ $GLOBALS['TL_DCA']['tl_voting'] = array
             'sorting' => true,
             'flag' => 1,
             'inputType' => 'select',
-            'foreignKey' => 'tl_subject.name',
+            'options_callback' => function () {
+               $options = array();
+               $objSubject = \SubjectModel::findAll();
+               while ($objSubject->next()) {
+                      $options[$objSubject->id] = $objSubject->name . ' (' . $objSubject->acronym . ')';
+               }
+               return $options;
+            },
+            'foreignKey' => 'tl_subject.id',
             'eval' => array('mandatory' => true, 'maxlength' => 255),
             'sql' => "int(10) unsigned NOT NULL default '0'",
             'relation' => array('type' => 'belongsTo', 'load' => 'lazy')

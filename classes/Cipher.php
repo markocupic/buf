@@ -16,21 +16,29 @@ namespace MCupic;
 
 class Cipher
 {
+    protected static $strKey = 'auTzTVbNmijUhHgDCVYd';
+
     /**
-     * @param $input
+     * @param $pure_string
      * @return string
      */
-    public static function encrypt($input)
-    {
-        return base64_encode(base64_encode($input));
+    public static function encrypt($pure_string, $key='') {
+        if ($key == ''){
+            $key = static::$strKey;
+        }
+        $encrypted_string = base64_encode(base64_encode(base64_encode($pure_string)) . $key);
+        return $encrypted_string;
     }
 
     /**
-     * @param $input
+     * @param $encrypted_string
      * @return string
      */
-    public static function decrypt($input)
-    {
-        return base64_decode(base64_decode($input));
+    public static function decrypt($encrypted_string, $key='') {
+        if ($key==''){
+            $key = self::$strKey;
+        }
+        $decrypted_string = base64_decode(base64_decode(str_replace($key,'',base64_decode($encrypted_string))));
+        return $decrypted_string;
     }
 }
