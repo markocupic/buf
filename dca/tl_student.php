@@ -3,7 +3,8 @@
 /**
  * Contao Open Source CMS
  * Copyright (c) 2005-2014 Leo Feyer
- * @package Core
+ * @package BUF (Beurteilen und Fördern)
+ * @author Marko Cupic m.cupic@gmx.ch, 2014
  * @link    https://contao.org
  * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL
  */
@@ -21,7 +22,7 @@ $GLOBALS['TL_DCA']['tl_student'] = array
         'dataContainer' => 'Table',
         'enableVersioning' => true,
         'onsubmit_callback' => array
-        (//array('tl_member', 'storeDateAdded'),
+        ( //array('tl_member', 'storeDateAdded'),
             //array('tl_member', 'checkRemoveSession')
         ),
         'ondelete_callback' => array
@@ -102,7 +103,7 @@ $GLOBALS['TL_DCA']['tl_student'] = array
 
     // Subpalettes
     'subpalettes' => array
-    (//'login'                       => 'username,password',
+    ( //'login'                       => 'username,password',
         //'assignDir'                   => 'homeDir'
     ),
 
@@ -112,6 +113,7 @@ $GLOBALS['TL_DCA']['tl_student'] = array
     (
         'id' => array
         (
+            'label' => &$GLOBALS['TL_LANG']['tl_student']['id'],
             'sql' => "int(10) unsigned NOT NULL auto_increment"
         ),
         'tstamp' => array

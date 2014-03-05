@@ -3,7 +3,8 @@
 /**
  * Contao Open Source CMS
  * Copyright (c) 2005-2014 Leo Feyer
- * @package Core
+ * @package BUF (Beurteilen und Fördern)
+ * @author Marko Cupic m.cupic@gmx.ch, 2014
  * @link    https://contao.org
  * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL
  */
@@ -83,6 +84,7 @@ $GLOBALS['TL_DCA']['tl_class'] = array(
     // Fields
     'fields' => array(
         'id' => array(
+            'label' => &$GLOBALS['TL_LANG']['tl_class']['id'],
             'sql' => "int(10) unsigned NOT NULL auto_increment"
         ),
         'tstamp' => array(

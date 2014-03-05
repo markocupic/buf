@@ -3,7 +3,8 @@
 /**
  * Contao Open Source CMS
  * Copyright (c) 2005-2014 Leo Feyer
- * @package Core
+ * @package BUF (Beurteilen und Fördern)
+ * @author Marko Cupic m.cupic@gmx.ch, 2014
  * @link    https://contao.org
  * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL
  */
@@ -229,7 +230,7 @@ class MainController extends \Module
         global $objPage;
 
         // decode, if query string is encoded
-        if (\Input::get('vars')) {
+        if (\Input::get('vars') && $GLOBALS['TL_CONFIG']['buf_encode_params']) {
             $plaintext_dec = \Cipher::decrypt(\Input::get('vars'));
             $arrGet = explode('&', $plaintext_dec);
             foreach ($arrGet as $chunk) {
