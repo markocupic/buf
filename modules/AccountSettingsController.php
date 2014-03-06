@@ -18,7 +18,6 @@ namespace MCupic;
 
 /**
  * Class AccountSettingsController
- *
  * Front end module buf
  * @copyright  Leo Feyer 2005-2014
  * @author     Leo Feyer <https://contao.org>
@@ -44,104 +43,100 @@ class AccountSettingsController extends \Frontend
     public function setTemplate($objTemplate)
     {
         global $objPage;
+        $this->import('FrontendUser', 'User');
+        $GLOBALS['TL_LANGUAGE'] = $objPage->language;
 
-        switch (\Input::get('act')) {
-            case 'set_password':
-                $this->import('FrontendUser', 'User');
+        \System::loadLanguageFile('tl_member');
+        $this->loadDataContainer('tl_member');
 
-                $GLOBALS['TL_LANGUAGE'] = $objPage->language;
+        $objTemplate->fields = '';
 
-                \System::loadLanguageFile('tl_member');
-                $this->loadDataContainer('tl_member');
+        $doNotSubmit = false;
+        $row = 0;
 
-                $objTemplate->fields = '';
+        $blnModified = false;
+        $objMember = \MemberModel::findByPk($this->User->id);
 
-                $doNotSubmit = false;
-                $row = 0;
+        $arrFields = array('password', 'email');
 
-                $blnModified = false;
-                $objMember = \MemberModel::findByPk($this->User->id);
+        $temp = '';
+        // Build the form
+        foreach ($arrFields as $field) {
+            $arrData = & $GLOBALS['TL_DCA']['tl_member']['fields'][$field];
+            $strClass = $GLOBALS['TL_FFL'][$arrData['inputType']];
 
-                $arrFields = array('password', 'email');
+            $strGroup = $arrData['eval']['feGroup'];
 
-                $temp = '';
-                // Build the form
-                foreach ($arrFields as $field) {
-                    $arrData = & $GLOBALS['TL_DCA']['tl_member']['fields'][$field];
-                    $strClass = $GLOBALS['TL_FFL'][$arrData['inputType']];
+            $arrData['eval']['required'] = true;
+            $arrData['eval']['tableless'] = false;
 
-                    $strGroup = $arrData['eval']['feGroup'];
+            $varValue = $this->User->$field;
 
-                    $arrData['eval']['required'] = true;
-                    $arrData['eval']['tableless'] = false;
+            $objWidget = new $strClass($strClass::getAttributesFromDca($arrData, $field, $varValue, '', '', $this));
+            $objWidget->tableless = true;
+            $objWidget->storeValues = true;
+            $objWidget->rowClass = 'row_' . $row . (($row == 0) ? ' row_first' : '') . ((($row % 2) == 0) ? ' even' : ' odd');
 
-                    $varValue = $this->User->$field;
+            // Increase the row count if it is a password field
+            if ($objWidget instanceof \FormPassword) {
+                ++$row;
+                $objWidget->rowClassConfirm = 'row_' . $row . ((($row % 2) == 0) ? ' even' : ' odd');
+            }
 
-                    $objWidget = new $strClass($strClass::getAttributesFromDca($arrData, $field, $varValue, '', '', $this));
-                    $objWidget->tableless = true;
-                    $objWidget->storeValues = true;
-                    $objWidget->rowClass = 'row_' . $row . (($row == 0) ? ' row_first' : '') . ((($row % 2) == 0) ? ' even' : ' odd');
+            // Validate the form data
+            if (\Input::post('FORM_SUBMIT') == 'tl_member_account_settings') {
+                $objWidget->validate();
+                $varValue = $objWidget->value;
 
-                    // Increase the row count if it is a password field
-                    if ($objWidget instanceof \FormPassword) {
-                        ++$row;
-                        $objWidget->rowClassConfirm = 'row_' . $row . ((($row % 2) == 0) ? ' even' : ' odd');
+                // Do not submit the field if there are errors
+                if ($objWidget->hasErrors()) {
+                    $doNotSubmit = true;
+                } elseif ($objWidget->submitInput()) {
+                    // Store the form data
+                    $_SESSION['FORM_DATA'][$field] = $varValue;
+
+                    // Set the correct empty value (see #6284, #6373)
+                    if ($varValue === '') {
+                        $varValue = $objWidget->getEmptyValue();
                     }
 
-                    // Validate the form data
-                    if (\Input::post('FORM_SUBMIT') == 'tl_member_account_settings') {
-                        $objWidget->validate();
-                        $varValue = $objWidget->value;
+                    // Set the new value
+                    $this->User->$field = $varValue;
 
-                        // Do not submit the field if there are errors
-                        if ($objWidget->hasErrors()) {
-                            $doNotSubmit = true;
-                        } elseif ($objWidget->submitInput()) {
-                            // Store the form data
-                            $_SESSION['FORM_DATA'][$field] = $varValue;
-
-                            // Set the correct empty value (see #6284, #6373)
-                            if ($varValue === '') {
-                                $varValue = $objWidget->getEmptyValue();
-                            }
-
-                            // Set the new value
-                            $this->User->$field = $varValue;
-
-                            // Set the new field in the member model
-                            $blnModified = true;
-                            $objMember->$field = $varValue;
-                        }
-                    }
-
-
-                    $temp .= $objWidget->parse();
-
-                    $objTemplate->fields .= $temp;
-                    $arrFields[$strGroup][$field] .= $temp;
-                    ++$row;
+                    // Set the new field in the member model
+                    $blnModified = true;
+                    $objMember->$field = $varValue;
                 }
-
-                // Save the model
-                if ($blnModified) {
-                    $objMember->save();
-                    $objTemplate->submitted = true;
-                }
-
-                $objTemplate->fields = $temp;
-                $objTemplate->backLink = $this->generateFrontendUrl($objPage->row(), '/do/menu');
-
-                $objTemplate->hasError = $doNotSubmit;
-
-                $objTemplate->method = 'post';
-                $objTemplate->formId = 'tl_member_account_settings';
-                $objTemplate->slabel = specialchars($GLOBALS['TL_LANG']['MSC']['saveData']);
-                $objTemplate->action = $this->generateFrontendUrl($objPage->row(), '/do/account_settings') . setQueryString(array('act' => 'set_password'));
-                $objTemplate->enctype = 'application/x-www-form-urlencoded';
-                $objTemplate->rowLast = 'row_' . $row . ((($row % 2) == 0) ? ' even' : ' odd');
+            }
 
 
+            $temp .= $objWidget->parse();
+
+            $objTemplate->fields .= $temp;
+            $arrFields[$strGroup][$field] .= $temp;
+            ++$row;
         }
+
+        // Save the model
+        if ($blnModified) {
+            $objMember->save();
+            $objTemplate->submitted = true;
+        }
+
+        $objTemplate->fields = $temp;
+        $objTemplate->backLink = $this->generateFrontendUrl($objPage->row(), '/do/menu');
+
+        $objTemplate->hasError = $doNotSubmit;
+
+        $objTemplate->method = 'post';
+        $objTemplate->formId = 'tl_member_account_settings';
+        $objTemplate->slabel = specialchars($GLOBALS['TL_LANG']['MSC']['saveData']);
+        $objTemplate->action = $this->generateFrontendUrl($objPage->row(), '/do/account_settings') . setQueryString(array('act' => 'set_password'));
+        $objTemplate->enctype = 'application/x-www-form-urlencoded';
+        $objTemplate->rowLast = 'row_' . $row . ((($row % 2) == 0) ? ' even' : ' odd');
+
+
+
         return $objTemplate;
     }
 }

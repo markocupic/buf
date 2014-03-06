@@ -19,12 +19,9 @@ $GLOBALS['TL_DCA']['tl_class'] = array(
     'config' => array(
         'dataContainer' => 'Table',
         'enableVersioning' => true,
+        'buf_ctable' => array('tl_student'),
         'sql' => array(
             'keys' => array('id' => 'primary', 'name' => 'unique')
-        ),
-        'ondelete_callback' => array
-        (
-            array('BufHelper', 'ondeleteCbClass'),
         ),
     ),
 

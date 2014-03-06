@@ -44,9 +44,9 @@ if (TL_MODE == 'FE') {
 }
 
 // replace insert tags Hook
-$GLOBALS['TL_HOOKS']['replaceInsertTags'][] = array('BufHelper', 'replaceInsertTags');
+$GLOBALS['TL_HOOKS']['replaceInsertTags'][] = array('BufHelper', 'bufReplaceInsertTags');
 
 // revise Table Hook
-$GLOBALS['TL_HOOKS']['reviseTable'][] = array('BufHelper', 'reviseTables');
-
+$GLOBALS['TL_HOOKS']['reviseTable'][] = array('BufHelper', 'checkForReferentialIntegrity');
+$GLOBALS['TL_HOOKS']['reviseTable'][] = array('BufHelper', 'bufReviseTableHook');
 

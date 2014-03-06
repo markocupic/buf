@@ -6,6 +6,7 @@
     <div class="formBody width50">
         <form name="neue_Beurteilung_starten" method="post" action="<?php echo $this->action; ?>">
             <input type="hidden" name="REQUEST_TOKEN" value="<?php echo REQUEST_TOKEN; ?>"/>
+            <input type="hidden" name="TL_FORM" value="start_new_voting">
 
             <h4>Parameter</h4>
             <table>

@@ -14,8 +14,8 @@
  * Table tl_member
  */
 $GLOBALS['TL_DCA']['tl_member']['config']['sql']['keys']['class'] = 'unique';
+$GLOBALS['TL_DCA']['tl_member']['config']['buf_ctable'][] = 'tl_voting';
 $GLOBALS['TL_DCA']['tl_member']['config']['onload_callback'][] = array('BufHelper', 'onloadCallbackTlMember');
-$GLOBALS['TL_DCA']['tl_member']['config']['ondelete_callback'][] = array('BufHelper', 'ondeleteCbTeacher');
 
 
 $GLOBALS['TL_DCA']['tl_member']['fields']['isTeacher'] = array

@@ -72,12 +72,9 @@ class MenuController extends \Frontend
             $objTemplate->votingsOnMyClass = $objDb->fetchAllAssoc();
         }
 
-        //set new password link
+        //account settings link
         $url = $this->generateFrontendUrl($objPage->row(), '/do/account_settings');
-        $arrQuery = array('act' => 'set_password');
-        $url .= setQueryString($arrQuery);
         $objTemplate->setPasswordLink = $url;
-
 
         //edit classlist link
         $url = $this->generateFrontendUrl($objPage->row(), '/do/edit_classlist');

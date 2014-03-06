@@ -21,10 +21,7 @@ $GLOBALS['TL_DCA']['tl_student'] = array
     (
         'dataContainer' => 'Table',
         'enableVersioning' => true,
-        'ondelete_callback' => array
-        (
-            array('BufHelper', 'ondeleteCbStudent'),
-        ),
+        'buf_ctable' => array('tl_voting'),
         'sql' => array
         (
             'keys' => array
@@ -160,7 +157,15 @@ $GLOBALS['TL_DCA']['tl_student'] = array
             'sorting' => true,
             'flag' => 1,
             'inputType' => 'select',
-            'foreignKey' => 'tl_class.name',
+            'options_callback' => function () {
+                $options = array();
+                $objClass = \ClassModel::findAll();
+                while ($objClass->next()) {
+                    $options[$objClass->id] = $objClass->name;
+                }
+                return $options;
+            },
+            'foreignKey' => 'tl_class.id',
             'eval' => array('mandatory' => true, 'maxlength' => 255),
             'sql' => "int(10) unsigned NOT NULL default '0'",
             'relation' => array('type' => 'belongsTo', 'load' => 'lazy')
