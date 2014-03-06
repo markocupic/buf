@@ -87,7 +87,7 @@ EditClasslist = new Class({
                         self.resetTable();
                     }
                     if (json.status == 'error') {
-                        alert('Beim Versuch den Datensatz zu löschen kam es zu einem Fehler.');
+                        alert('Beim Versuch den Datensatz zu löschen, kam es zu einem Fehler.');
                         return;
                     }
                 }

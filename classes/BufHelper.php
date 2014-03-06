@@ -87,7 +87,6 @@ class BufHelper extends \Controller
                         $query = "DELETE FROM " . $ctable . " WHERE " . $ctable . '.' . $cfield . " NOT IN (SELECT " . $pfield . " FROM " . $ptable . ")";
                         $objStmt = $db->prepare($query)->execute();
                         if ($objStmt->affectedRows > 0) {
-                            mail('m.cupic@gmx.ch', $query, $query);
                             $method = __FUNCTION__;
                             while (self::$method($ctable) === true) {
                                 self::$method($ctable);
