@@ -72,6 +72,7 @@ class BufHelper extends \Controller
         */
        public static function checkForReferentialIntegrity($table = '', $new_records = '', $parent_table = '', $child_tables = '')
        {
+              $reload = false;
               // Delete all records of the child table that are not related to the current table
               $arrCtable = $GLOBALS['TL_DCA'][$table]['config']['buf_ctable'];
 
@@ -95,6 +96,7 @@ class BufHelper extends \Controller
                                           // 'foreignKey' => 'tl_parent.id'
                                           if (!preg_match('/^(.+)\.(.+)$/', $arrField['foreignKey']))
                                           {
+                                                 // skip to next field, if foreign key isn't valid
                                                  continue;
                                           }
                                           list($ptable, $pfield) = explode('.', $arrField['foreignKey']);
@@ -104,6 +106,7 @@ class BufHelper extends \Controller
                                           // check for a valid tablename
                                           if (!in_array($ptable, $db->listTables()))
                                           {
+                                                 // skip to next field, if foreign key isn't valid
                                                  continue;
                                           }
 
@@ -119,6 +122,7 @@ class BufHelper extends \Controller
                                           }
                                           if (!$blnFieldExists)
                                           {
+                                                 // skip to next field, if foreign key isn't valid
                                                  continue;
                                           }
 
@@ -132,15 +136,22 @@ class BufHelper extends \Controller
                                                  {
                                                         self::$method($ctable);
                                                  }
-                                                 // return true for a reload
-                                                 return true;
+                                                 $reload = true;
                                           }
                                    }
                             }
                      }
               }
-              // return false for no reload
-              return false;
+
+              // return true for a relaod
+              if ($reload)
+              {
+                     return true;
+              }
+              else
+              {
+                     return false;
+              }
        }
 
        /**
