@@ -21,6 +21,7 @@ $GLOBALS['TL_DCA']['tl_voting'] = array
     (
         'dataContainer' => 'Table',
         'enableVersioning' => true,
+        'buf_ptable' => array('tl_member', 'tl_student', 'tl_subject'),
         'sql' => array
         (
             'keys' => array
