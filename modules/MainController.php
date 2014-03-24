@@ -240,7 +240,6 @@ class MainController extends \Module
                 break;
 
             case 'voting_table':
-
                 $GLOBALS['TL_JAVASCRIPT'][] = '/system/modules/buf/assets/js/voting_table.js';
                 $blnError = false;
                 if (!is_numeric(\Input::get('teacher')) || !is_numeric(\Input::get('class')) || !is_numeric(\Input::get('subject'))) {
@@ -307,6 +306,7 @@ class MainController extends \Module
                 $objController = new \AverageTableController($this);
                 $this->Template = $objController->setTemplate($this->Template);
                 break;
+
             case 'tally_sheet':
                 if (!\TeacherModel::getOwnClass()) {
                     $url = $this->generateFrontendUrl($objPage->row(), '/do/menu');
