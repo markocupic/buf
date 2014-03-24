@@ -215,7 +215,7 @@ class FpdfController extends \System
         if ($cellHeight < 6) {
             $cellHeight = 6;
         }
-        //Ende ZeilenhÃ¶he
+        //Ende Zeilenhöhe
 
 
         //Instanzierung
@@ -232,17 +232,17 @@ class FpdfController extends \System
         $pdf->SetFont('Arial', 'B', 11);
         $pdf->Cell(40, 6, "Schule: ", 0, '', 'L');
         $pdf->SetFont('Arial', '', 11);
-        $pdf->Cell(30, 6, $GLOBALS['TL_CONFIG']['buf_name_school'], 0, '', 'L');
+        $pdf->Cell(30, 6, utf8_decode($GLOBALS['TL_CONFIG']['buf_name_school']), 0, '', 'L');
         $pdf->Ln();
         $pdf->SetFont('Arial', 'B', 11);
         $pdf->Cell(40, 6, "Klasse: ", 0, '', 'L');
         $pdf->SetFont('Arial', '', 11);
-        $pdf->Cell(30, 6, \ClassModel::getName($ID_Klasse), 0, '', 'L');
+        $pdf->Cell(30, 6, utf8_decode(\ClassModel::getName($ID_Klasse)), 0, '', 'L');
         $pdf->Ln();
         $pdf->SetFont('Arial', 'B', 11);
         $pdf->Cell(40, 6, "Klassenlehrperson: ", 0, '', 'L');
         $pdf->SetFont('Arial', '', 11);
-        $pdf->Cell(30, 6, \TeacherModel::getFullName($ID_LP), 0, '', 'L');
+        $pdf->Cell(30, 6, utf8_decode(\TeacherModel::getFullName($ID_LP)), 0, '', 'L');
 
         $pdf->Ln();
         $pdf->SetFont('Arial', 'B', 11);

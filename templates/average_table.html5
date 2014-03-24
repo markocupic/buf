@@ -1,7 +1,7 @@
 <h2>Mittelwerte (&quot;Sammelblatt&quot;) Stammklasse <?php echo  \ClassModel::getName($this->classId); ?></h2>
 <div style="width:100%; position:relative;">
     {{buf::menu_link}}
-</div>
+    <a class="icon_print" target="_blank" style="float:right" href="javascript:window.print(); return false" title="drucken">Tabelle drucken</a>
 <div class="clearing"></div>
 <table id="Mittelwerttabelle" class="beurteilungstabelle">
     <tr>

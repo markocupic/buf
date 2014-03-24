@@ -45,8 +45,10 @@ TallySheet = new Class({
         this.request_id = null;
         if (document.id('InfoBox')) {
             document.id('InfoBox').fade('out');
-            var destroy = (function(){
-                document.id('InfoBox').destroy();
+            var destroy = (function () {
+                if (document.id('InfoBox')) {
+                    document.id('InfoBox').destroy();
+                }
             }.delay(500));
         }
     },

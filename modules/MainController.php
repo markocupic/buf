@@ -268,7 +268,7 @@ class MainController extends \Module
                 break;
 
             case 'print_tally_sheet':
-                if (\TeacherModel::getOwnClass() != \Input::get('class')) {
+                if (!\TeacherModel::getOwnClass()) {
                     $url = $this->generateFrontendUrl($objPage->row(), '/do/menu');
                     $this->redirect($url);
                 }

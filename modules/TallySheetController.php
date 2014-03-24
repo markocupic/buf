@@ -67,7 +67,7 @@ class TallySheetController extends \Frontend
               $Klasse = \TeacherModel::getOwnClass();
 
               $output .= "\r\n\r\n";
-              $objStudent = $this->Database->prepare('SELECT * FROM tl_student WHERE class = ? ORDER BY gender ASC,lastname,firstname')->execute($Klasse);
+              $objStudent = $this->Database->prepare('SELECT * FROM tl_student WHERE class = ? ORDER BY gender DESC, lastname, firstname')->execute($Klasse);
               while ($objStudent->next())
               {
                      $output .= '<tr>';
