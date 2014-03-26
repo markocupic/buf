@@ -7,4 +7,11 @@ window.addEvent('domready', function () {
             this.value = this.value.toLowerCase();
         }
     });
+
+    $$('.mod_account_settings input[name=email]').addEvents({
+        keyup: function () {
+            this.value = this.value.toLowerCase();
+        }
+    });
+
 });

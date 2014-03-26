@@ -1,13 +1,9 @@
 /* main.inc.css */
 
 /* general settings*/
-html > body {
-    font-size: 12px;
-}
 
 body {
-    font-size: 75%;
-    font-family: trebuchet ms, verdana, sans-serif;
+
     background-image: url(/../../system/modules/buf/assets/images/brick.jpg);
     background-repeat: repeat;
 }
@@ -43,7 +39,7 @@ td {
     clear: both;
 }
 .textalignbottom {
-    vertical-align:bottom !important;
+    vertical-align: bottom !important;
 }
 .textaligncenter {
     text-align: center;
@@ -138,12 +134,11 @@ table.beurteilungstabelle {
 /*banner*/
 #subheader {
     position: relative;
-    top: 8.7em;
+    top: 110px;
     width: 100%;
     color: #ddd;
 
 }
-
 
 #info_logged_user {
     float: left;
@@ -187,6 +182,15 @@ table.beurteilungstabelle {
 }
 
 /**************** Beurteilungstabelle ***************************/
+#BeurteilungstabelleColumnRight {
+    width: 15em;
+    margin-left: -20px;
+    margin-top: 12px;
+    float: right;
+}
+#Beurteilungstabelle {
+    margin-top: 12px;
+}
 #Beurteilungstabelle td {
     height: 4em;
     text-align: center;
@@ -271,7 +275,6 @@ td.description span {
 
 }
 
-
 /*Mittelwerttabelle*/
 table#Mittelwerttabelle td {
     padding: 1em;
@@ -294,9 +297,9 @@ table#Strichliste td {
 }
 
 table#Strichliste td.tallycell {
-    width:2.5%;
-    height:45px;
-    cursor:pointer;
+    width: 2.5%;
+    height: 45px;
+    cursor: pointer;
 }
 
 table#Strichliste td.textaligncenter {
@@ -412,7 +415,7 @@ td > p {
 }
 
 div.skillDetailsLayer {
-    height: 400px;
+    height: 300px;
 }
 
 .skillDetails ul {
