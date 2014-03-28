@@ -45,11 +45,11 @@
                 </td>
                 <!-- Das Symbol um Schüler zu löschen -->
                 <td class="col_4">
-                    <img src="system/modules/buf/assets/images/loeschen.png" title="Schüler löschen" alt="delete_row" onclick="EditClasslist.deleteRow(this,<?php echo $student['id']; ?>)" class="delete_row">
+                    <img src="system/modules/buf/assets/images/icons/delete.png" title="Schüler löschen" alt="delete_row" onclick="EditClasslist.deleteRow(this,<?php echo $student['id']; ?>)" class="delete_row">
                 </td>
                 <!-- Das Symbol um Schüler zu bearbeiten -->
                 <td class="col_5">
-                    <img src="system/modules/buf/assets/images/edit.png" title="Namen bearbeiten" alt="edit_row" onclick="EditClasslist.editRow(this)" class="edit_row">
+                    <img src="system/modules/buf/assets/images/icons/pencil.png" title="Namen bearbeiten" alt="edit_row" onclick="EditClasslist.editRow(this)" class="edit_row">
                     <input class="submit_row" type="button" value="ok" onclick="EditClasslist.send(this,<?php echo $student['id']; ?>)">
                 </td>
             </tr>

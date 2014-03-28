@@ -2,100 +2,64 @@
 
 .icon_add {
     padding: 1px 0 1px 20px;
-    background: url('/../../system/modules/buf/assets/images/add.gif') no-repeat center left;
-    background-size:auto 1rem;
-
+    background: url('/../../system/modules/buf/assets/images/icons/pencil_add.png') no-repeat center left;
+    background-size: auto 1rem;
 }
-
-.icon_Schloss {
-    list-style-image: url(/../../system/modules/buf/assets/images/logout.png);
-    background-size:auto 1rem;
-
-}
-
-.icon_saving {
-    background: transparent left 5px url(/../../system/modules/buf/assets/images/saving.png) no-repeat;
-    padding-left: 15px;
-    background-size:auto 1rem;
-
-}
-
 
 .icon_search {
     padding: 1px 0 1px 20px;
-    background: url('/../../system/modules/buf/assets/images/search.png') no-repeat center left;
-    background-size:auto 1rem;
+    background: url('/../../system/modules/buf/assets/images/icons/table_tab_search.png') no-repeat center left;
+    background-size: auto 1rem;
 
 }
 
-.icon_login {
+.icon_table_delete {
     padding: 1px 0 1px 20px;
-    background: url('/../../system/modules/buf/assets/images/login.gif') no-repeat center left;
-    background-size:auto 1rem;
+    background: url('/../../system/modules/buf/assets/images/icons/table_delete.png') no-repeat center left;
+    background-size: auto 1rem;
 
 }
 
-.icon_delete {
-    padding: 1px 0 1px 20px;
-    background: url('/../../system/modules/buf/assets/images/loeschen.png') no-repeat center left;
-    background-size:auto 1rem;
-
-}
-
-.bg_delete {
-    background-image: url('/../../system/modules/buf/assets/images/loeschen.png');
-    background-position: center center;
-    background-repeat: no-repeat;
-    background-size:auto 1rem;
-}
 .icon_edit {
     padding: 1px 0 1px 20px;
-    background: url('/../../system/modules/buf/assets/images/edit.png') no-repeat center left;
-    background-size:auto 1rem;
-}
-.bg_edit {
-    background-image: url('/../../system/modules/buf/assets/images/edit.png');
-    background-position: center center;
-    background-repeat: no-repeat;
-    background-size:auto 1rem;
+    background: url('/../../system/modules/buf/assets/images/icons/table_edit.png') no-repeat center left;
+    background-size: auto 1rem;
 }
 
 .icon_back {
     padding: 1px 0 1px 20px;
-    background: url('/../../system/modules/buf/assets/images/arrow_back.gif') no-repeat center left;
-    background-size:auto 1rem;
+    background: url('/../../system/modules/buf/assets/images/icons/arrow_left.png') no-repeat center left;
+    background-size: auto 1rem;
 }
 
 .icon_print {
     padding: 1px 0 1px 20px;
-    background: url('/../../system/modules/buf/assets/images/print.png') no-repeat center left;
-    background-size:auto 1rem;
+    background: url('/../../system/modules/buf/assets/images/icons/printer.png') no-repeat center left;
+    background-size: auto 1rem;
 }
 
 .icon_logout {
     padding: 1px 0 1px 20px;
-    background: url('/../../system/modules/buf/assets/images/logout.png') no-repeat center left;
-    background-size:auto 1rem;
+    background: url('/../../system/modules/buf/assets/images/icons/door_out.png') no-repeat center left;
+    background-size: auto 1rem;
 }
 
 .icon_house {
     padding: 1px 0 1px 20px;
-    background: url('/../../system/modules/buf/assets/images/house.png') no-repeat center left;
-    background-size:auto 1rem;
+    background: url('/../../system/modules/buf/assets/images/icons/house_two.png') no-repeat center left;
+    background-size: auto 1rem;
 
 }
+.icon_change_password {
+    padding: 1px 0 1px 20px;
+    background: url('/../../system/modules/buf/assets/images/icons/change_password.png') no-repeat center left;
+    background-size: auto 1rem;
 
+}
 .icon_user {
     padding: 1px 0 1px 20px;
-    background: url('/../../system/modules/buf/assets/images/user.png') no-repeat center left;
-    background-size:auto 1rem;
-
-}
-
-.icon_comment {
-    padding: 1px 0 1px 20px;
-    background: url('/../../system/modules/buf/assets/images/comments.gif') no-repeat center left;
-    background-size:auto 1rem;
+    background: url('/../../system/modules/buf/assets/images/icons/user_cowboy.png') no-repeat center left;
+    background-size: auto 1rem;
 
 }
 

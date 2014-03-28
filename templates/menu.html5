@@ -8,7 +8,7 @@
     <?php foreach ($this->myVotings as $voting): ?>
     <li>
         <a class="icon_edit" title="bearbeiten" href="<?php echo $this->hrefVotingTable . setQueryString(array('teacher' => $voting['teacherId'], 'subject' => $voting['subjectId'], 'class' => $voting['classId'])); ?>">
-            <strong style="color:black"><?php echo $voting["classname"] ." " . $voting["subjectname"]; ?> </strong>&nbsp;bearbeiten
+            <strong><?php echo $voting["classname"] ." " . $voting["subjectname"]; ?> </strong>&nbsp;bearbeiten
         </a>
     </li>
     <?php endforeach; ?>
@@ -20,22 +20,21 @@
 
 <?php if(\TeacherModel::getOwnClass()): ?>
 <h3>Alle vorgenommenen Beurteilungen an meiner Stammklasse</h3>
-<?php //die(print_r($this->votingsOnMyClass,true)); ?>
 <?php if($this->votingsOnMyClass): ?>
 <ul>
     <?php foreach  ($this->votingsOnMyClass as $voting): ?>
     <?php if ($voting["teacherId"] == $this->User->id): ?>
     <li>
         <a title="bearbeiten" class="icon_edit" href="<?php echo $this->hrefVotingTable . setQueryString(array('teacher' => $voting['teacherId'], 'subject' => $voting['subjectId'], 'class' => $voting['classId'])); ?>">
-            <strong style="color:black"><?php echo \ClassModel::getName($voting["classId"]) ." ". \SubjectModel::getName($voting["subjectId"]);?></strong>
-             - <span style="color:black; font-weight:normal">Beurteilung durch: <?php echo \TeacherModel::getFullName($voting["teacherId"]); ?></span>
+            <strong><?php echo \ClassModel::getName($voting["classId"]) ." ". \SubjectModel::getName($voting["subjectId"]);?></strong>
+             - <span>Beurteilung durch: <?php echo \TeacherModel::getFullName($voting["teacherId"]); ?></span>
             &nbsp;bearbeiten</a>
     </li>
     <?php else: ?>
     <li>
         <a title="ansehen" class="icon_search" href="<?php echo $this->hrefVotingTable . setQueryString(array('teacher' => $voting['teacherId'], 'subject' => $voting['subjectId'], 'class' => $voting['classId'])); ?>">
-            <strong style="color:black"><?php echo \ClassModel::getName($voting["classId"]) ." ". \SubjectModel::getName($voting["subjectId"]);?></strong>
-             - <span style="color:black; font-weight:normal">Beurteilung durch: <?php echo \TeacherModel::getFullName($voting["teacherId"]); ?></span>
+            <strong><?php echo \ClassModel::getName($voting["classId"]) ." ". \SubjectModel::getName($voting["subjectId"]);?></strong>
+             - <span>Beurteilung durch: <?php echo \TeacherModel::getFullName($voting["teacherId"]); ?></span>
             &nbsp;ansehen</a>
     </li>
     <?php endif; ?>
@@ -53,9 +52,9 @@
 
 <h3>Administrative Aufgaben für den Klassenlehrer</h3>
 <ul>
-    <li><a title="Klassenliste bearbeiten" class="icon_edit" href="<?php echo $this->editClasslistLink; ?>"><span style="color:black; font-weight:bold">Die Klassenliste </span>bearbeiten</a></li>
-    <li><a title="Mittelwerte der Stammklasse" class="icon_search"  href="<?php echo $this->averageTableLink; ?>"><span style="color:black; font-weight:bold">Mittelwerte (&quot;Sammelblatt&quot;) meiner Stammklasse </span>ansehen</a></li>
-    <li><a title="Strichliste" class="icon_search"  href="<?php echo $this->tallySheetLink; ?>"><span style="color:black; font-weight:bold">Strichliste (&quot;Sammelblatt&quot;) meiner Stammklasse </span>ansehen</a></li>
+    <li><a title="Klassenliste bearbeiten" class="icon_edit" href="<?php echo $this->editClasslistLink; ?>"><span>Die Klassenliste </span>bearbeiten</a></li>
+    <li><a title="Mittelwerte der Stammklasse" class="icon_search"  href="<?php echo $this->averageTableLink; ?>"><span>Mittelwerte (&quot;Sammelblatt&quot;) meiner Stammklasse </span>ansehen</a></li>
+    <li><a title="Strichliste" class="icon_search"  href="<?php echo $this->tallySheetLink; ?>"><span>Strichliste (&quot;Sammelblatt&quot;) meiner Stammklasse </span>ansehen</a></li>
 </ul>
 
 <?php endif; ?>
@@ -63,6 +62,6 @@
 <h3>Kontoeinstellungen</h3>
 <ul>
     <li>
-        <a href="<?php echo $this->setPasswordLink; ?>" class="icon_user" title="Passwort/Email-Adresse ändern">Passwort/Email-Adresse ändern</a>
+        <a href="<?php echo $this->setPasswordLink; ?>" class="icon_change_password" title="Passwort/Email-Adresse ändern">Passwort/Email-Adresse ändern</a>
     </li>
 </ul>
