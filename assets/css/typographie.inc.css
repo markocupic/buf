@@ -78,6 +78,11 @@ p, li, li span {
     color: #222;
 }
 
+td,label{
+    font-size: 12px;
+    font-size: 0.75rem;
+}
+
 p, li, a {
     font-size: 12px;
     font-size: 0.75rem;
