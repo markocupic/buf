@@ -1,119 +1,111 @@
 /*typographie*/
-
-html{
-    font-size:12px;
+html {
+    font-size: 16px;
 }
+
 body {
     font-family: trebuchet ms, verdana, sans-serif;
     background-image: url(/../../system/modules/buf/assets/images/brick.jpg);
     background-repeat: repeat;
+    font-size: 100%;
 }
-#header *{
-    font-size: 1rem;
+
+#header * {
+    font-size: 12px;
+    font-size: 0.75rem;
 }
+
 #subheader * {
-    color:#ccc;
+    color: #ccc;
 }
-#main *	{
-    font-family:'Trebuchet ms', Arial, sans-serif;
+
+#footer {
+    font-size: 12px;
+    font-size: 0.75rem;
 }
-#footer{
-font-size:1rem;
-}
-.beurteilungstabelle td{
-    font-size:1rem;
+
+.beurteilungstabelle td {
+    font-size: 12px;
+    font-size: 0.75rem;
 }
 
 p {
-	line-height:1.5rem;
-	margin-top: 1.5em;
-	margin-bottom: 1.5em;
-}
-
-
-h1 {
-	font:1.67rem/0.9rem 'Trebuchet ms', Arial, sans-serif;
-	margin-top: 1em;
-	margin-bottom: 1em;
-	color:#58BA47;
-    font-weight:400;
+    line-height: 1.5rem;
+    margin-top: 1.5em;
+    margin-bottom: 1.5em;
 }
 
 h2 {
-    font: 400 1.25rem/0.9rem 'Trebuchet ms',Arial,sans-serif;
-    margin-top: 1em;
-    margin-bottom: 1em;
-    color: rgb(88, 186, 71);
+    font-weight: 400;
+    font-size: 20px;
+    font-size: 1.25rem;
+    margin-top: 16px;
+    margin-top: 1rem;
+    margin-bottom: 16px;
+    margin-bottom: 1rem;
+    color: #58BA47;
 }
-
 
 h3 {
-	font:1.125rem/1.13rem trebuchet ms, verdana, sans-serif;
-	margin-top: 2em;
-	margin-bottom: 1em;
-	color:#D61E1E;
+    font-weight: 400;
+    font-size: 18px;
+    font-size: 1.125rem;
+    margin-top: 32px;
+    margin-top: 2rem;
+    margin-bottom: 16px;
+    margin-bottom: 1em;
+    color: #D61E1E;
 }
-
-h3:first
-{
-    margin-top:1em;
-}
-h4 {
-	font:1.125rem/1.29rem trebuchet ms, verdana, sans-serif;
-	margin-top: 1.29em;
-	margin-bottom: 1.29em;
-	color:	#B90000;
-    color:#E3252D;
-	font-weight:bold;
-}
-
 
 strong, b {
-	font-weight:bold;
+    font-weight: bold;
 }
 
 a, a:visited {
-	text-decoration:none;
-	color:#15c;
-	font-weight:bold;
+    text-decoration: none;
+    color: #15c;
+    font-weight: bold;
 }
-.deviation{
-    font-size:9px;
+.deviation {
+    font-size: 9px;
+    font-size: 0.563rem;
 }
 a:hover {
-	color:	#D61E1E;
+    color: #D61E1E;
 }
 
-p,li,li span{
-    color:#222;
-}
-p,li,a{
-	font:1rem/1.5rem trebuchet ms, verdana, sans-serif;
+p, li, li span {
+    color: #222;
 }
 
+p, li, a {
+    font-size: 12px;
+    font-size: 0.75rem;
+    line-height: 24px;
+    line-height: 1.5rem;
+}
 
 table {
-	margin-bottom:1em;
+    margin-bottom: 16px;
+    margin-bottom: 1rem;
 }
 
-
-#neue_Schueler p{
-	line-height:normal !important;
-	margin:0px !important;
+#neue_Schueler p {
+    line-height: normal !important;
+    margin: 0 !important;
 }
-
 
 /*google color scheme*/
-.red{
-color:#D61E1E !important;
+.red {
+    color: #D61E1E !important;
 }
 .blue {
-	color:#0185F8 !important;
+    color: #0185F8 !important;
 }
-.green{
-	color:#0A9D32 !important;
+.green {
+    color: #0A9D32 !important;
 }
-.yellow{
-    color:#ECB41F !important;
+.yellow {
+    color: #ECB41F !important;
 }
 

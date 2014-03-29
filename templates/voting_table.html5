@@ -7,7 +7,7 @@
 </ul>
 
 <div style="width:100%">
-    <div id="Beurteilungstabelle" style="float:left; width:66.66em; position:relative;">
+    <div id="Beurteilungstabelle">
         <div style="width:100%; position:relative;">
             {{buf::menu_link}}
             <a target="_blank" class="icon_print float_right" href="<?php echo $this->hrefPrintTable; ?>" title="drucken">Tabelle drucken</a>
@@ -34,7 +34,30 @@
             werden.</p>
         <!--Ajax Anwendung Abweichungstoleranz-->
 
+
+        <?php if (\TeacherModel::getOwnClass() == $this->classId): ?>
+        <p>
+            <strong>Abweichungstoleranz hier einstellen:</strong><br>
+            <select id="devTolerance" onChange="EvalTable.updateTeachersDeviationTolerance(this);">
+                <option><?php echo $this->User->deviation; ?></option>
+                <?php $Abweichung = 0; ?>
+                <?php for ($i = 0; $i < 30; $i++): ?>
+                <?php $Abweichung = $Abweichung + 0.1; ?>
+                <?php settype($Abweichung, "float"); ?>
+                <option><?php echo $Abweichung; ?></option>
+                <?php endfor; ?>
+            </select>
+        </p>
+
+        <p><strong>Abweichung zum Mittelwert:</strong><br>Bei grüner Farbe ist diese Bewertung höher
+            ausgefallen, wie der Mittelwert, aller bisher erstellten Bewertungen.
+            <br><br>
+            Bei roter Farbe ist diese Bewertung tiefer ausgefallen, wie der Mittelwert, aller bisher
+            erstellten Bewertungen.</p>
+        <?php endif; ?>
+
         <div class="skillDetailsLayer">
+            <p><strong>Näheres zu den Kompetenzen:</strong></p>
             <div id="skillDetails_1" class="skillDetails display-none">
                 <p><strong>Selbstständig arbeiten:</strong></p>
                 <ul>
@@ -104,35 +127,19 @@
                     <li>Ist pünktlich</li>
                 </ul>
             </div>
-            <p class="green">Fahre mit der Maus über die blauen Spaltenüberschriften, um genaueres zu den einzelnen
-                Kompetenzen zu erfahren.</p>
+            <ul class="navlist">
+                <li class="first active"><a href="javascript:void(1);">1</a></li>
+                <li><a href="javascript:void(2);">2</a></li>
+                <li><a href="javascript:void(3);">3</a></li>
+                <li><a href="javascript:void(4);">4</a></li>
+                <li><a href="javascript:void(5);">5</a></li>
+                <li><a href="javascript:void(6);">6</a></li>
+                <li><a href="javascript:void(7);">7</a></li>
+                <li class="last"><a href="javascript:void(8);">8</a></li>
+            </ul>
         </div>
 
 
-        <?php if (\TeacherModel::getOwnClass() == $this->classId): ?>
-
-        <p>
-            <strong>Abweichungstoleranz hier einstellen:</strong><br>
-            <select id="devTolerance" onChange="EvalTable.updateTeachersDeviationTolerance(this);">
-                <option><?php echo $this->User->deviation; ?></option>
-                <?php $Abweichung = 0; ?>
-                <?php for ($i = 0; $i < 30; $i++): ?>
-                <?php $Abweichung = $Abweichung + 0.1; ?>
-                <?php settype($Abweichung, "float"); ?>
-                <option><?php echo $Abweichung; ?></option>
-                <?php endfor; ?>
-            </select>
-        </p>
-
-        <p><strong>Abweichung zum Mittelwert:</strong><br>Bei grüner Farbe ist diese Bewertung höher
-            ausgefallen, wie der Mittelwert, aller bisher erstellten Bewertungen.
-            <br><br>
-            Bei roter Farbe ist diese Bewertung tiefer ausgefallen, wie der Mittelwert, aller bisher
-            erstellten Bewertungen.</p>
-        <?php endif; ?>
-        <div id="requestStatusBox">
-            <p class="icon_saving"></p>
-        </div>
     </div>
     <div class="clearing"></div>
 </div>
@@ -152,61 +159,18 @@
 
 <script type="text/javascript">
     window.addEvent('domready', function() {
-        $('skillHead_1').addEvent('mouseover', function (event) {
-            displaySkillDetails(1);
-        });
-        $('skillHead_2').addEvent('mouseover', function (event) {
-            displaySkillDetails(2);
-        });
-        $('skillHead_3').addEvent('mouseover', function (event) {
-            displaySkillDetails(3);
-        });
-        $('skillHead_4').addEvent('mouseover', function (event) {
-            displaySkillDetails(4);
-        });
-        $('skillHead_5').addEvent('mouseover', function (event) {
-            displaySkillDetails(5);
-        });
-        $('skillHead_6').addEvent('mouseover', function (event) {
-            displaySkillDetails(6);
-        });
-        $('skillHead_7').addEvent('mouseover', function (event) {
-            displaySkillDetails(7);
-        });
-        $('skillHead_8').addEvent('mouseover', function (event) {
-            displaySkillDetails(8);
+        $$('.skillDetailsLayer .navlist li a').addEvent('click', function (event) {
+            var index = this.innerHTML;
+            $$('.skillDetailsLayer .navlist li.active').removeClass('active');
+            $$('.skillDetailsLayer .navlist li')[index-1].addClass('active');
+            displaySkillDetails(index);
         });
 
         // fade in first skillDetail
         displaySkillDetails(1);
 
     });
-    window.addEvent('domready', function() {
-        $('skillHead_1').addEvent('mouseout', function (event) {
-            hideSkillDetails();
-        });
-        $('skillHead_2').addEvent('mouseout', function (event) {
-            hideSkillDetails();
-        });
-        $('skillHead_3').addEvent('mouseout', function (event) {
-            hideSkillDetails();
-        });
-        $('skillHead_4').addEvent('mouseout', function (event) {
-            hideSkillDetails();
-        });
-        $('skillHead_5').addEvent('mouseout', function (event) {
-            hideSkillDetails();
-        });
-        $('skillHead_6').addEvent('mouseout', function (event) {
-            hideSkillDetails();
-        });
-        $('skillHead_7').addEvent('mouseout', function (event) {
-            hideSkillDetails();
-        });
-        $('skillHead_8').addEvent('mouseout', function (event) {
-            hideSkillDetails();
-        });
-    });
+
 
 
     function displaySkillDetails(index) {
@@ -222,13 +186,5 @@
         el.fade('in');
    }
 
-    function hideSkillDetails(index) {
-        return;
-        $$('div.skillDetails').each(function (el) {
-            el.setStyle({
-                'display': 'none'
-            });
-        });
 
-    }
 </script>

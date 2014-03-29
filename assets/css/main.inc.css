@@ -2,12 +2,6 @@
 
 /* general settings*/
 
-body {
-
-    background-image: url(/../../system/modules/buf/assets/images/brick.jpg);
-    background-repeat: repeat;
-}
-
 hr {
     border: solid #999 1px;
     height: 1px;
@@ -38,9 +32,11 @@ td {
 .clearing {
     clear: both;
 }
+
 .textalignbottom {
     vertical-align: bottom !important;
 }
+
 .textaligncenter {
     text-align: center;
 }
@@ -183,14 +179,22 @@ table.beurteilungstabelle {
 
 /**************** Beurteilungstabelle ***************************/
 #BeurteilungstabelleColumnRight {
-    width: 15em;
-    margin-left: -20px;
+    width: 25%;
+    margin-left: -5%;
     margin-top: 12px;
     float: right;
+    position: relative;
 }
+
 #Beurteilungstabelle {
+    width: 70%;
+    float: left;
     margin-top: 12px;
+    margin-right: 5%;
+    position: relative;
+
 }
+
 #Beurteilungstabelle td {
     height: 4em;
     text-align: center;
@@ -284,6 +288,7 @@ table#Mittelwerttabelle td {
 .beurteilungstabelle td.odd {
     background-color: #ddd;
 }
+
 table#Strichliste td.bg_red {
     background-color: #ffcccc;
 }
@@ -415,7 +420,28 @@ td > p {
 }
 
 div.skillDetailsLayer {
-    height: 300px;
+    height: 350px;
+}
+.skillDetailsLayer>p {
+    margin: 0 !important;
+}
+.skillDetailsLayer ul.navlist {
+    display: block;
+    overflow: auto;
+    width: 100%;
+    margin-top:10px;
+}
+
+.skillDetailsLayer ul.navlist li {
+    float: left;
+    width: 10%;
+    text-align:center;
+    border: 1px solid #fff;
+    padding:2px 0;
+}
+
+.skillDetailsLayer ul.navlist li.active {
+   border:1px solid #ccc;
 }
 
 .skillDetails ul {
@@ -427,5 +453,6 @@ div.skillDetailsLayer {
 }
 
 .skillDetails p {
-    margin-bottom: 0;
+    margin: 0 !important;
+    color:green;
 }

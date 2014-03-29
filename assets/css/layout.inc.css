@@ -1,39 +1,43 @@
 /*layout.inc.css*/
-#wrapper{
-    width:1040px;
-	margin-left:auto;
-	margin-right:auto;
-	position:relative;
-	border:1px solid #999;
-	margin-bottom:1em;
-	background-color:#ddd;
+body {
+
+    background-image: url(/../../system/modules/buf/assets/images/brick.jpg);
+    background-repeat: repeat;
+}
+#wrapper {
+    width: 1040px;
+    margin-left: auto;
+    margin-right: auto;
+    position: relative;
+    border: 1px solid #999;
+    background-color: #ddd;
 }
 
-#header{
-	width:100%;
-	background: black url(/../../system/modules/buf/assets/images/banner_eckig.png) no-repeat;
-    height:160px;
-	position:relative;
+#header {
+    width: 100%;
+    background: black url(/../../system/modules/buf/assets/images/banner_eckig.png) no-repeat;
+    height: 160px;
+    position: relative;
 }
 
-
-#container{
-	width:100%;
-    min-height:400px;
-	background-color:#FFFFFF;
-	overflow:hidden;
-	}
-
-#main{
-	margin:0 1.5em 1.5em 1.5em;
-	background-color:#FFFFFF;
+#container {
+    width: 100%;
+    min-height: 400px;
+    background-color: #FFFFFF;
+    overflow: hidden;
 }
 
-#footer{
-	width:100%; 
-    background-color:transparent;
-	color:#666;
-	position:relative;
+#main {
+    margin: 0 24px 24px 24px;
+    margin: 0 1.5rem 1.5rem 1.5rem;
+    background-color: #FFFFFF;
+}
+
+#footer {
+    width: 100%;
+    background-color: transparent;
+    color: #666;
+    position: relative;
 }
 
 

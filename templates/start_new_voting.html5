@@ -11,14 +11,14 @@
             <h4>Parameter</h4>
             <table>
                 <tr>
-                    <td width="158"><strong>Name der Lehrperson:</strong></td>
-                    <td width="184">
+                    <td width="180"><strong>Name der Lehrperson:</strong></td>
+                    <td>
                         <input name="teacher" type="text" readonly value="{{user::username}}"/>
                     </td>
                 </tr>
                 <tr>
-                    <td width="158"><strong>Beurteilung an Klasse: </strong></td>
-                    <td width="184">
+                    <td width="180"><strong>Beurteilung an Klasse: </strong></td>
+                    <td>
                         <select name="class">
                             <?php echo $this->classes; ?>
                         </select>
