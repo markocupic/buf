@@ -128,13 +128,7 @@ table.beurteilungstabelle {
 }
 
 /*banner*/
-#subheader {
-    position: relative;
-    top: 110px;
-    width: 100%;
-    color: #ddd;
 
-}
 
 #info_logged_user {
     float: left;
@@ -155,13 +149,6 @@ table.beurteilungstabelle {
 #logout li {
     float: right;
     margin-left: 1.66em;
-    font-weight: bold;
-}
-
-#logout a {
-    font-weight: bold;
-    color: #ddd;
-
 }
 
 /*end banner*/

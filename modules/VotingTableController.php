@@ -53,7 +53,9 @@ class VotingTableController extends \Frontend
         $objTemplate->hrefDeleteTable = $this->generateFrontendUrl($objPage->row(), '/do/delete_table') . setQueryString($arrQuery);
         $objTemplate->hrefPrintTable = $this->generateFrontendUrl($objPage->row(), '/do/print_table') . setQueryString($arrQuery);
         $objTable = new \FrontendTemplate('voting_table_partial');
-        $objTable->rows = \VotingModel::getRows(\Input::get('class'), \Input::get('subject'), \Input::get('teacher'));
+        $aRows = \VotingModel::getRows(\Input::get('class'), \Input::get('subject'), \Input::get('teacher'));
+        $objTable->rows = $aRows['Datensaetze'];
+        $objTable->lastChange = $aRows['lastChange'];
         $objTable->classId = \Input::get('class');
         $objTable->teacherId = \Input::get('teacher');
         $objTable->subjectId = \Input::get('subject');

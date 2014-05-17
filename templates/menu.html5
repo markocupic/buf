@@ -8,7 +8,7 @@
     <?php foreach ($this->myVotings as $voting): ?>
     <li>
         <a class="icon_edit" title="bearbeiten" href="<?php echo $this->hrefVotingTable . setQueryString(array('teacher' => $voting['teacherId'], 'subject' => $voting['subjectId'], 'class' => $voting['classId'])); ?>">
-            <strong><?php echo $voting["classname"] ." " . $voting["subjectname"]; ?> </strong>&nbsp;bearbeiten
+            <?php echo $voting["classname"] ." " . $voting["subjectname"]; ?>&nbsp;bearbeiten
         </a>
     </li>
     <?php endforeach; ?>
@@ -58,10 +58,3 @@
 </ul>
 
 <?php endif; ?>
-
-<h3>Kontoeinstellungen</h3>
-<ul>
-    <li>
-        <a href="<?php echo $this->setPasswordLink; ?>" class="icon_change_password" title="Passwort/Email-Adresse ändern">Passwort/Email-Adresse ändern</a>
-    </li>
-</ul>

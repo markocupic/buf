@@ -11,6 +11,7 @@ body {
     position: relative;
     border: 1px solid #999;
     background-color: #ddd;
+    max-width: 100%;
 }
 
 #header {
@@ -18,6 +19,12 @@ body {
     background: black url(/../../system/modules/buf/assets/images/banner_eckig.png) no-repeat;
     height: 160px;
     position: relative;
+}
+
+#subheader {
+    position: relative;
+    top: 106px;
+    width: 100%;
 }
 
 #container {

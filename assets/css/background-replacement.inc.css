@@ -1,5 +1,36 @@
 /*background-replacement.inc.css*/
 
+
+#header .icon_user {
+    padding: 1px 0 1px 24px;
+    background: url('/../../system/modules/buf/assets/images/icons/header/user.png') no-repeat center left;
+    background-size: auto 1rem;
+
+}
+
+#header .icon_office {
+    padding: 2px 0 2px 24px;
+    background: url('/../../system/modules/buf/assets/images/icons/header/office.png') no-repeat center left;
+    background-size: auto 1rem;
+}
+
+#header .icon_logout {
+    padding: 1px 0 1px 24px;
+    background: url('/../../system/modules/buf/assets/images/icons/header/exit.png') no-repeat center left;
+    background-size: auto 1rem;
+}
+
+#header .icon_login {
+    padding: 1px 0 1px 24px;
+    background: url('/../../system/modules/buf/assets/images/icons/header/enter.png') no-repeat center left;
+    background-size: auto 1rem;
+}
+
+#header .icon_settings {
+    padding: 1px 0 1px 24px;
+    background: url('/../../system/modules/buf/assets/images/icons/header/cog.png') no-repeat center left;
+    background-size: auto 1rem;
+}
 .icon_add {
     padding: 1px 0 1px 20px;
     background: url('/../../system/modules/buf/assets/images/icons/pencil_add.png') no-repeat center left;
@@ -38,18 +69,9 @@
     background-size: auto 1rem;
 }
 
-.icon_logout {
-    padding: 1px 0 1px 20px;
-    background: url('/../../system/modules/buf/assets/images/icons/door_out.png') no-repeat center left;
-    background-size: auto 1rem;
-}
 
-.icon_house {
-    padding: 1px 0 1px 20px;
-    background: url('/../../system/modules/buf/assets/images/icons/house_two.png') no-repeat center left;
-    background-size: auto 1rem;
 
-}
+
 .icon_change_password {
     padding: 1px 0 1px 20px;
     background: url('/../../system/modules/buf/assets/images/icons/change_password.png') no-repeat center left;

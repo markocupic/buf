@@ -45,7 +45,20 @@ class BufHelper extends \Controller
                      if (FE_USER_LOGGED_IN)
                      {
                             $url = \Frontend::generateFrontendUrl($objPage->row(), '/do/login') . setQueryString(array('act' => 'logout'));
-                            return '<a href="' . $url . '" title="logout" class="icon_logout">Logout</a>';
+                            return '<a href="' . $url . '" title="abmelden" class="icon_logout">Abmelden</a>';
+                     } else {
+                            $url = \Frontend::generateFrontendUrl($objPage->row(), '/do/login');
+                            return '<a href="' . $url . '" title="anmelden" class="icon_login">Anmelden</a>';
+                     }
+              }
+
+              if ($strTag == 'buf::account_settings')
+              {
+                     // Login and redirect
+                     if (FE_USER_LOGGED_IN)
+                     {
+                            $url = \Frontend::generateFrontendUrl($objPage->row(), '/do/account_settings');
+                            return '<a href="' . $url . '" title="logout" class="icon_settings">Einstellungen</a>';
                      }
               }
               return false;

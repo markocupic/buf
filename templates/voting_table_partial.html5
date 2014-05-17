@@ -47,12 +47,13 @@
             <?php
             //generate the rating value
             $value = ($Datensatz["skill" . $i]["value"] == 0 ? "" : $Datensatz["skill" . $i]["value"]);
+            $date = $Datensatz["skill" . $i]["date"];
             ?>
 
-            <td id="skillCell_s_<?php echo $Datensatz['student']; ?>_k_<?php echo $i; ?>" class="row_<?php echo $Datensatz['student']; ?> skillCell col_<?php echo $i; ?>">
+            <td id="skillCell_s_<?php echo $Datensatz['student']; ?>_k_<?php echo $i; ?>" class="row_<?php echo $Datensatz['student']; ?> skillCell col_<?php echo $i; ?>" title="<?php if ($date && $value > 0): ?>Bewertung vom: <?php echo $date; ?><?php endif; ?>">
                 <span class="rating"><?php echo $value; ?></span>
 
-      <?php if (\TeacherModel::getOwnClass() == $this->classId && $Datensatz["skill" . $i]["deviation"] != ""): ?>
+            <?php if (\TeacherModel::getOwnClass() == $this->classId && $Datensatz["skill" . $i]["deviation"] != ""): ?>
             <span class="deviation" style="color:#<?php echo $Datensatz['skill' . $i]['color']; ?>;"><br>Abw:<br><?php echo $Datensatz['skill' . $i]['deviation']; ?></span>
             <?php endif; ?>
             </td>
@@ -69,3 +70,7 @@
         </tr>
     <?php endforeach; ?>
 </table>
+
+<?php if($this->lastChange): ?>
+<p>Letzte Änderung: <?php echo \Date::parse('d.m.Y', $this->lastChange); ?></p>
+<?php endif; ?>

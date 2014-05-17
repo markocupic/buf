@@ -158,6 +158,7 @@ EditTable = new Class({
         var cssSelector = mode == 'edit_row' ? 'table.beurteilungstabelle td.row_' + studentId : 'table.beurteilungstabelle td.col_' + criteriumId;
         $$(cssSelector).each(function (elCell) {
             elCell.addClass('active');
+            elCell.removeProperty('title');
             if (elCell.hasClass('skillCell')) {
                 self.injectInputField(elCell);
             }
@@ -225,6 +226,13 @@ EditTable = new Class({
                             if (document.id('skillCell_s_' + studentId + '_k_' + col)) {
                                 var cell = document.id('skillCell_s_' + studentId + '_k_' + col);
                                 var rating = row['skill' + col]['value'];
+
+                                // set the title property (last change)
+                                cell.removeProperty('title');
+                                if (row['skill' + col]['date'] !== null && rating > 0 && !cell.hasClass('active')) {
+                                    var lastChange = row['skill' + col]['date'];
+                                    cell.setProperty('title', 'Bewertung vom: ' + lastChange);
+                                }
                                 if (rating == 0) {
                                     rating = '';
                                 }

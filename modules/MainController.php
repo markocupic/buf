@@ -144,7 +144,7 @@ class MainController extends \Module
         // reset the voting table
         if (\Input::get('act') == 'reset_table') {
             $arrTable = \VotingModel::getRows(\Input::get('class'), \Input::get('subject'), \Input::get('teacher'));
-            $arrJSON = array('status' => 'success', 'rows' => $arrTable);
+            $arrJSON = array('status' => 'success', 'rows' => $arrTable['Datensaetze']);
             die(json_encode($arrJSON));
         }
 
