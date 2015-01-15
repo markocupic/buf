@@ -45,9 +45,6 @@ class VotingTableController extends \Frontend
     {
         global $objPage;
 
-        // set element id (needed for ajax requests)
-        $objTemplate->elId = $this->objMainController->id;
-
         // delete table href
         $arrQuery = array('teacher' => \Input::get('teacher'), 'subject' => \Input::get('subject'), 'class' => \Input::get('class'));
         $objTemplate->hrefDeleteTable = $this->generateFrontendUrl($objPage->row(), '/do/delete_table') . setQueryString($arrQuery);

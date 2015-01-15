@@ -26,317 +26,484 @@ namespace MCupic;
 class FpdfController extends \System
 {
 
-    /**
-     * @var $objMainController
-     */
-    protected $objMainController;
+       /**
+        * @var $objMainController
+        */
+       protected $objMainController;
 
-    public function __construct($objMainController)
-    {
-        $this->objMainController = $objMainController;
-        $this->import('FrontendUser', 'User');
-        $this->import('Database');
-        define('FPDF_FONTPATH', TL_ROOT . '/system/modules/buf/plugins/fpdf/font/');
+       public function __construct($objMainController)
+       {
+              $this->objMainController = $objMainController;
+              $this->import('FrontendUser', 'User');
+              $this->import('Database');
+              define('FPDF_FONTPATH', TL_ROOT . '/system/modules/buf/plugins/fpdf/font/');
 
-        // register fpdf classes
-        \ClassLoader::addClasses(array
-                                 (
-                                 'FPDF' => 'system/modules/buf/plugins/fpdf/fpdf.php',
-                                 'CellPDF' => 'system/modules/buf/plugins/fpdf/addOns/cellpdf.php'
-                                 ));
+              // register fpdf classes
+              \ClassLoader::addClasses(array('FPDF' => 'system/modules/buf/plugins/fpdf/fpdf.php', 'CellPDF' => 'system/modules/buf/plugins/fpdf/addOns/cellpdf.php'));
 
-        return parent::__construct();
-    }
+              return parent::__construct();
+       }
 
-    /**
-     * print voting table
-     */
-    public function printTable()
-    {
-        $teacher = \Input::get('teacher');
-        $class = \Input::get('class');
-        $subject = \Input::get('subject');
+       /**
+        * print voting table
+        */
+       public function printTable()
+       {
+              $teacher = \Input::get('teacher');
+              $class = \Input::get('class');
+              $subject = \Input::get('subject');
 
 
-        $pdf = new \FPDF('P', 'mm', 'A4');
+              $pdf = new \FPDF('P', 'mm', 'A4');
 
-        //$pdf->AliasNbPages();
-        $pdf->AddPage();
-        $pdf->SetFont('Arial', '', 18);
-        $pdf->SetFillColor(255, 255, 255);
+              //$pdf->AliasNbPages();
+              $pdf->AddPage();
+              $pdf->SetFont('Arial', '', 18);
+              $pdf->SetFillColor(255, 255, 255);
 
-        $pdf->Cell(1140, 8, 'Beurteilung des Sozial- & Arbeitsverhaltens', 'B', '', 'L');
-        $pdf->Ln();
-        $pdf->Ln();
-        $XPos = $pdf->getX();
-        $YPos = $pdf->getY();
-        $pdf->SetFont('Arial', 'B', 11);
-        $pdf->Cell(30, 6, 'Schule: ', 0, '', 'L');
-        $pdf->SetFont('Arial', '', 11);
-        $pdf->Cell(30, 6, utf8_decode($GLOBALS['TL_CONFIG']['buf_name_school']), 0, '', 'L');
-        $pdf->Ln();
+              $pdf->Cell(1140, 8, 'Beurteilung des Sozial- & Arbeitsverhaltens', 'B', '', 'L');
+              $pdf->Ln();
+              $pdf->Ln();
+              $XPos = $pdf->getX();
+              $YPos = $pdf->getY();
+              $pdf->SetFont('Arial', 'B', 11);
+              $pdf->Cell(30, 6, 'Schule: ', 0, '', 'L');
+              $pdf->SetFont('Arial', '', 11);
+              $pdf->Cell(30, 6, utf8_decode($GLOBALS['TL_CONFIG']['buf_name_school']), 0, '', 'L');
+              $pdf->Ln();
 
-        $pdf->SetFont('Arial', 'B', 11);
-        $pdf->Cell(30, 6, 'Lehrperson: ', 0, '', 'L');
-        $pdf->SetFont('Arial', '', 11);
-        $pdf->Cell(30, 6, utf8_decode(\TeacherModel::getFullName($teacher)), 0, '', 'L');
+              $pdf->SetFont('Arial', 'B', 11);
+              $pdf->Cell(30, 6, 'Lehrperson: ', 0, '', 'L');
+              $pdf->SetFont('Arial', '', 11);
+              $pdf->Cell(30, 6, utf8_decode(\TeacherModel::getFullName($teacher)), 0, '', 'L');
 
-        $pdf->Ln();
-        $pdf->SetFont('Arial', 'B', 11);
-        $pdf->Cell(30, 6, 'Klasse: ', 0, '', 'L');
-        $pdf->SetFont('Arial', '', 11);
-        $pdf->Cell(30, 6, utf8_decode(\ClassModel::getName($class)), 0, '', 'L');
+              $pdf->Ln();
+              $pdf->SetFont('Arial', 'B', 11);
+              $pdf->Cell(30, 6, 'Klasse: ', 0, '', 'L');
+              $pdf->SetFont('Arial', '', 11);
+              $pdf->Cell(30, 6, utf8_decode(\ClassModel::getName($class)), 0, '', 'L');
 
-        $pdf->Ln();
-        $pdf->SetFont('Arial', 'B', 11);
-        $pdf->Cell(30, 6, 'Fach: ', 0, '', 'L');
-        $pdf->SetFont('Arial', '', 11);
-        $pdf->Cell(30, 6, utf8_decode(\SubjectModel::getName($subject)), 0, '', 'L');
-        $pdf->Ln();
+              $pdf->Ln();
+              $pdf->SetFont('Arial', 'B', 11);
+              $pdf->Cell(30, 6, 'Fach: ', 0, '', 'L');
+              $pdf->SetFont('Arial', '', 11);
+              $pdf->Cell(30, 6, utf8_decode(\SubjectModel::getName($subject)), 0, '', 'L');
+              $pdf->Ln();
 
-        $pdf->setY($YPos);
-        $pdf->setX(140);
-        $pdf->SetFont('Arial', '', 9);
-        $pdf->Cell(10, 4, utf8_decode('A: selbständig arbeiten'), 0, '', 'L');
-        $pdf->Ln();
-        $pdf->setX(140);
-        $pdf->Cell(10, 4, utf8_decode('B: sorgfältig arbeiten'), 0, '', 'L');
-        $pdf->Ln();
-        $pdf->setX(140);
+              $pdf->setY($YPos);
+              $pdf->setX(140);
+              $pdf->SetFont('Arial', '', 9);
+              $pdf->Cell(10, 4, utf8_decode('A: selbständig arbeiten'), 0, '', 'L');
+              $pdf->Ln();
+              $pdf->setX(140);
+              $pdf->Cell(10, 4, utf8_decode('B: sorgfältig arbeiten'), 0, '', 'L');
+              $pdf->Ln();
+              $pdf->setX(140);
 
-        $pdf->Cell(10, 4, utf8_decode('C: sich aktiv am Unterricht beteiligen'), 0, '', 'L');
-        $pdf->Ln();
-        $pdf->setX(140);
+              $pdf->Cell(10, 4, utf8_decode('C: sich aktiv am Unterricht beteiligen'), 0, '', 'L');
+              $pdf->Ln();
+              $pdf->setX(140);
 
-        $pdf->Cell(10, 4, utf8_decode('D: eigene Fähigkeiten einschätzen'), 0, '', 'L');
-        $pdf->Ln();
-        $pdf->setX(140);
+              $pdf->Cell(10, 4, utf8_decode('D: eigene Fähigkeiten einschätzen'), 0, '', 'L');
+              $pdf->Ln();
+              $pdf->setX(140);
 
-        $pdf->Cell(10, 4, utf8_decode('E: mit anderen zusammenarbeiten'), 0, '', 'L');
-        $pdf->Ln();
-        $pdf->setX(140);
+              $pdf->Cell(10, 4, utf8_decode('E: mit anderen zusammenarbeiten'), 0, '', 'L');
+              $pdf->Ln();
+              $pdf->setX(140);
 
-        $pdf->Cell(10, 4, utf8_decode('F: konstruktiv mit Kritik umgehen'), 0, '', 'L');
-        $pdf->Ln();
-        $pdf->setX(140);
+              $pdf->Cell(10, 4, utf8_decode('F: konstruktiv mit Kritik umgehen'), 0, '', 'L');
+              $pdf->Ln();
+              $pdf->setX(140);
 
-        $pdf->Cell(10, 4, utf8_decode('G: respektvoll mit anderen umgehen'), 0, '', 'L');
-        $pdf->Ln();
-        $pdf->setX(140);
+              $pdf->Cell(10, 4, utf8_decode('G: respektvoll mit anderen umgehen'), 0, '', 'L');
+              $pdf->Ln();
+              $pdf->setX(140);
 
-        $pdf->Cell(10, 4, utf8_decode('H: Regeln einhalten'), 0, '', 'L');
-        $pdf->Ln();
-        $pdf->Ln();
-
-
-        $pdf->SetFont('Arial', 'B', 16);
-        $pdf->Cell(10, 10, '', 0, '', 'C');
-        $pdf->Cell(50, 10, '', 0);
-        $pdf->SetX($pdf->GetX());
-        $pdf->Cell(50, 10, '', 0);
-        $pdf->SetX($pdf->GetX() + 3);
-        $Array = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H');
-        $i = 0;
-        foreach ($Array as $skill) {
-            $i += 1;
-            $pdf->Cell(9, 10, $skill, 0, '', 'C');
-            if ($i == 4) {
-                $pdf->SetX($pdf->GetX() + 3);
-            } else {
-                $pdf->SetX($pdf->GetX());
-            }
-        }
-        //end for
-        $pdf->Ln();
-        $pdf->SetFont('Arial', '', 11);
-
-        $objStudent = $this->Database->prepare('SELECT * FROM tl_student WHERE class = ? ORDER BY gender DESC, lastname ASC, firstname ASC')->execute($class);
-        $color = $m = 0;
-        while ($objStudent->next()) {
-            $objVoting = $this->Database->prepare('SELECT * FROM tl_voting WHERE teacher = ? AND student = ? AND subject = ?')
-            ->execute($teacher, $objStudent->id, $subject);
-
-            $m += 1;
-            $color += 1;
-            if ($color == 2) {
-                $pdf->SetFillColor(220, 220, 220);
-                $color = '0';
-            }
-
-            $pdf->Cell(10, 7, $m, 1, '', 'R', 1);
-            $pdf->Cell(50, 7, utf8_decode($objStudent->lastname), 1, '', 'L', 1);
-            $pdf->SetX($pdf->GetX());
-            $pdf->Cell(50, 7, utf8_decode($objStudent->firstname), 1, '', 'L', 1);
-            $pdf->SetX($pdf->GetX() + 3);
-
-            for ($i = 1; $i < 9; $i++) {
-                $skill = $objVoting->{'skill' . $i};
-                if ($skill === 0 || $skill == 0) {
-                    $skill = '';
-                }
-                $pdf->Cell(9, 7, $skill, 1, '', 'C', 1);
-                if ($i == 4) {
-                    $pdf->SetX($pdf->GetX() + 3);
-                } else {
-                    $pdf->SetX($pdf->GetX());
-                }
-            }
-            //end for
-            $pdf->Ln();
-            $pdf->SetFillColor(255, 255, 255);
-        } //end while
-        $pdf->Ln();
-        $pdf->Cell(190, 8, date('j. M Y') . ',  Unterschrift: _________________________________________', 0, '', 'L');
-        $pdf->Output();
-    }
-
-    /**
-     * print tally sheet
-     */
-    public function printTallySheet()
-    {
-        $ID_Klasse = \TeacherModel::getOwnClass();
-        $ID_LP = $this->User->id;
-
-        //Wichtig um die Zeilenhöhe in der Strichliste zu ermitteln
-        $MaxAnzahlStriche = array();
-        $objStudent = \Database::getInstance()->prepare("SELECT * FROM tl_student WHERE class = ? ORDER BY gender ASC,lastname,firstname")->execute($ID_Klasse);
-        while ($objStudent->next()) {
-            for ($i = 1; $i < 9; $i++) {
-                for ($Niveau = 1; $Niveau < 5; $Niveau++) {
-                    $objVoting = \Database::getInstance()->prepare('SELECT * FROM tl_voting WHERE student = ? AND skill' . $i . ' = ?')->execute($objStudent->id, $Niveau);
-                    array_push($MaxAnzahlStriche, $objVoting->numRows);
-                }
-            }
-        }
-        rsort($MaxAnzahlStriche);
-        $AnzahlNoetigeZeilen = (int)($MaxAnzahlStriche[0] / 5 + 1);
-        $cellHeight = 3 * $AnzahlNoetigeZeilen + 2;
-        if ($cellHeight < 6) {
-            $cellHeight = 6;
-        }
-        //Ende Zeilenhöhe
+              $pdf->Cell(10, 4, utf8_decode('H: Regeln einhalten'), 0, '', 'L');
+              $pdf->Ln();
+              $pdf->Ln();
 
 
-        //Instanzierung
-        $pdf = new \CellPDF('L', 'mm', 'A4');
-        $pdf->AddPage();
-        $pdf->SetFont('Arial', '', 18);
-        $pdf->SetFillColor(255, 255, 255);
+              $pdf->SetFont('Arial', 'B', 16);
+              $pdf->Cell(10, 10, '', 0, '', 'C');
+              $pdf->Cell(50, 10, '', 0);
+              $pdf->SetX($pdf->GetX());
+              $pdf->Cell(50, 10, '', 0);
+              $pdf->SetX($pdf->GetX() + 3);
+              $Array = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H');
+              $i = 0;
+              foreach ($Array as $skill)
+              {
+                     $i += 1;
+                     $pdf->Cell(9, 10, $skill, 0, '', 'C');
+                     if ($i == 4)
+                     {
+                            $pdf->SetX($pdf->GetX() + 3);
+                     }
+                     else
+                     {
+                            $pdf->SetX($pdf->GetX());
+                     }
+              }
+              //end for
+              $pdf->Ln();
+              $pdf->SetFont('Arial', '', 11);
 
-        $pdf->Cell(280, 8, "Beurteilung des Sozial- & Arbeitsverhaltens (Strichliste)", 'B', '', 'L');
-        $pdf->Ln();
-        $pdf->Ln();
-        $XPos = $pdf->getX();
-        $YPos = $pdf->getY();
-        $pdf->SetFont('Arial', 'B', 11);
-        $pdf->Cell(40, 6, "Schule: ", 0, '', 'L');
-        $pdf->SetFont('Arial', '', 11);
-        $pdf->Cell(30, 6, utf8_decode($GLOBALS['TL_CONFIG']['buf_name_school']), 0, '', 'L');
-        $pdf->Ln();
-        $pdf->SetFont('Arial', 'B', 11);
-        $pdf->Cell(40, 6, "Klasse: ", 0, '', 'L');
-        $pdf->SetFont('Arial', '', 11);
-        $pdf->Cell(30, 6, utf8_decode(\ClassModel::getName($ID_Klasse)), 0, '', 'L');
-        $pdf->Ln();
-        $pdf->SetFont('Arial', 'B', 11);
-        $pdf->Cell(40, 6, "Klassenlehrperson: ", 0, '', 'L');
-        $pdf->SetFont('Arial', '', 11);
-        $pdf->Cell(30, 6, utf8_decode(\TeacherModel::getFullName($ID_LP)), 0, '', 'L');
+              $objStudent = $this->Database->prepare('SELECT * FROM tl_student WHERE class = ? ORDER BY gender DESC, lastname ASC, firstname ASC')->execute($class);
+              $color = $m = 0;
+              while ($objStudent->next())
+              {
+                     $objVoting = $this->Database->prepare('SELECT * FROM tl_voting WHERE teacher = ? AND student = ? AND subject = ?')->execute($teacher, $objStudent->id, $subject);
 
-        $pdf->Ln();
-        $pdf->SetFont('Arial', 'B', 11);
-        $pdf->Ln();
+                     $m += 1;
+                     $color += 1;
+                     if ($color == 2)
+                     {
+                            $pdf->SetFillColor(220, 220, 220);
+                            $color = '0';
+                     }
 
-        $pdf->setY($YPos);
-        $pdf->setX(140);
-        $pdf->SetFont('Arial', '', 9);
-        $pdf->Cell(60, 4, utf8_decode("A: selbständig arbeiten"), 0, '', 'L');
-        $pdf->Ln();
-        $pdf->setX(140);
-        $pdf->Cell(60, 4, utf8_decode("B: sorgfältig arbeiten"), 0, '', 'L');
-        $pdf->Ln();
-        $pdf->setX(140);
+                     $pdf->Cell(10, 7, $m, 1, '', 'R', 1);
+                     $pdf->Cell(50, 7, utf8_decode($objStudent->lastname), 1, '', 'L', 1);
+                     $pdf->SetX($pdf->GetX());
+                     $pdf->Cell(50, 7, utf8_decode($objStudent->firstname), 1, '', 'L', 1);
+                     $pdf->SetX($pdf->GetX() + 3);
 
-        $pdf->Cell(60, 4, utf8_decode("C: sich aktiv am Unterricht beteiligen"), 0, '', 'L');
-        $pdf->Ln();
-        $pdf->setX(140);
+                     for ($i = 1; $i < 9; $i++)
+                     {
+                            $skill = $objVoting->{'skill' . $i};
+                            if ($skill === 0 || $skill == 0)
+                            {
+                                   $skill = '';
+                            }
+                            $pdf->Cell(9, 7, $skill, 1, '', 'C', 1);
+                            if ($i == 4)
+                            {
+                                   $pdf->SetX($pdf->GetX() + 3);
+                            }
+                            else
+                            {
+                                   $pdf->SetX($pdf->GetX());
+                            }
+                     }
+                     //end for
+                     $pdf->Ln();
+                     $pdf->SetFillColor(255, 255, 255);
+              } //end while
+              $pdf->Ln();
+              $pdf->Cell(190, 8, date('j. M Y') . ',  Unterschrift: _________________________________________', 0, '', 'L');
+              $pdf->Output();
+       }
 
-        $pdf->Cell(60, 4, utf8_decode("D: eigene Fähigkeiten einschätzen"), 0, '', 'L');
-        $pdf->Ln();
+       /**
+        * print printAverageTable
+        */
+       public function printAverageTable()
+       {
+              $class = \TeacherModel::getOwnClass();
 
-        $pdf->setY($YPos);
+              $pdf = new \FPDF('P', 'mm', 'A4');
 
-        $pdf->setX(220);
-        $pdf->Cell(60, 4, utf8_decode("E: mit anderen zusammenarbeiten"), 0, '', 'L');
-        $pdf->Ln();
-        $pdf->setX(220);
+              //$pdf->AliasNbPages();
+              $pdf->AddPage();
+              $pdf->SetFont('Arial', '', 18);
+              $pdf->SetFillColor(255, 255, 255);
 
-        $pdf->Cell(60, 4, utf8_decode("F: konstruktiv mit Kritik umgehen"), 0, '', 'L');
-        $pdf->Ln();
-        $pdf->setX(220);
+              $pdf->Cell(1140, 8, 'Beurteilung des Sozial- & Arbeitsverhaltens', 'B', '', 'L');
+              $pdf->Ln();
+              $pdf->Ln();
+              $YPos = $pdf->getY();
 
-        $pdf->Cell(60, 4, utf8_decode("G: respektvoll mit anderen umgehen"), 0, '', 'L');
-        $pdf->Ln();
-        $pdf->setX(220);
+              $pdf->SetFont('Arial', 'B', 11);
+              $pdf->Cell(30, 6, 'Schule: ', 0, '', 'L');
+              $pdf->SetFont('Arial', '', 11);
+              $pdf->Cell(30, 6, utf8_decode($GLOBALS['TL_CONFIG']['buf_name_school']), 0, '', 'L');
+              $pdf->Ln();
 
-        $pdf->Cell(60, 4, utf8_decode("H: Regeln einhalten"), 0, '', 'L');
-        $pdf->Ln();
-        $pdf->Ln();
+              $pdf->SetFont('Arial', 'B', 11);
+              $pdf->Cell(30, 6, 'Mittelwerte: ', 0, '', 'L');
+              $pdf->SetFont('Arial', '', 11);
+              $pdf->Cell(30, 6, utf8_decode(\ClassModel::getName($class)), 0, '', 'L');
+
+              $pdf->setY($YPos);
+              $pdf->setX(140);
+              $pdf->SetFont('Arial', '', 9);
+              $pdf->Cell(10, 4, utf8_decode('A: selbständig arbeiten'), 0, '', 'L');
+              $pdf->Ln();
+              $pdf->setX(140);
+              $pdf->Cell(10, 4, utf8_decode('B: sorgfältig arbeiten'), 0, '', 'L');
+              $pdf->Ln();
+              $pdf->setX(140);
+
+              $pdf->Cell(10, 4, utf8_decode('C: sich aktiv am Unterricht beteiligen'), 0, '', 'L');
+              $pdf->Ln();
+              $pdf->setX(140);
+
+              $pdf->Cell(10, 4, utf8_decode('D: eigene Fähigkeiten einschätzen'), 0, '', 'L');
+              $pdf->Ln();
+              $pdf->setX(140);
+
+              $pdf->Cell(10, 4, utf8_decode('E: mit anderen zusammenarbeiten'), 0, '', 'L');
+              $pdf->Ln();
+              $pdf->setX(140);
+
+              $pdf->Cell(10, 4, utf8_decode('F: konstruktiv mit Kritik umgehen'), 0, '', 'L');
+              $pdf->Ln();
+              $pdf->setX(140);
+
+              $pdf->Cell(10, 4, utf8_decode('G: respektvoll mit anderen umgehen'), 0, '', 'L');
+              $pdf->Ln();
+              $pdf->setX(140);
+
+              $pdf->Cell(10, 4, utf8_decode('H: Regeln einhalten'), 0, '', 'L');
+              $pdf->Ln();
+              $pdf->Ln();
 
 
-        $pdf->SetFont('Arial', 'B', 16);
-        $pdf->SetX(73);
-        $Array = array("A", "B", "C", "D", "E", "F", "G", "H");
-        foreach ($Array as $Kriterium) {
-            $pdf->Cell(24, 9, $Kriterium, 0, '', 'C');
-            $pdf->SetX($pdf->GetX() + 3);
-        }
-        //end for
-        $pdf->Ln();
-        $pdf->SetFont('Arial', '', 9);
-        $objStudent = \Database::getInstance()->prepare('SELECT * FROM tl_student WHERE class = ? ORDER BY gender ASC,lastname,firstname')->execute($ID_Klasse);
-        $color = $m = 0;
-        while ($objStudent->next()) {
-            $m += 1;
-            $color += 1;
-            if ($color == 2) {
-                $pdf->SetFillColor(220, 220, 220);
-                $color = "0";
-            }
-            $pdf->Cell(6, $cellHeight, $m, 1, '', 'R', 1);
-            $pdf->Cell(27, $cellHeight, utf8_decode($objStudent->lastname), 1, '', 'L', 1);
-            $pdf->SetX($pdf->GetX());
-            $pdf->Cell(27, $cellHeight, utf8_decode($objStudent->firstname), 1, '', 'L', 1);
-            $Y = $pdf->getY();
-            $X = 26;
-            for ($i = 1; $i < 9; $i++) {
-                $pdf->SetX($pdf->getX() + 3);
-                for ($Niveau = 1; $Niveau < 5; $Niveau++) {
-                    $objVoting = \Database::getInstance()->prepare('SELECT * FROM tl_voting WHERE student = ? AND skill' . $i . ' = ?')->execute($objStudent->id, $Niveau);
-                    $Anz = 0;
-                    $str_Striche = "";
-                    while ($objVoting->next()) {
-                        if ($Anz == 5) {
-                            $Anz = 0;
-                            $str_Striche .= " \n";
-                        }
-                        $str_Striche .= "I";
-                        $Anz++;
-                    }
-                    $pdf->Cell(6, $cellHeight, $str_Striche, 1, 0, 'L', 1);
-                    $X += 6;
-                }
-            }
-            //end for
-            //$pdf->Ln();
-            $pdf->SetFillColor(255, 255, 255);
-            $pdf->Ln();
-        } //end while
-        $pdf->Ln();
-        $pdf->Cell(190, 8, date("j. M Y") . ",  Unterschrift: _________________________________________", 0, '', 'L');
-        $pdf->Output();
-    }
+              $pdf->SetFont('Arial', 'B', 16);
+              $pdf->Cell(10, 10, '', 0, '', 'C');
+              $pdf->Cell(50, 10, '', 0);
+              $pdf->SetX($pdf->GetX());
+              $pdf->Cell(50, 10, '', 0);
+              $pdf->SetX($pdf->GetX() + 3);
+              $Array = array('A', 'B', 'C', 'D', 'E', 'F', 'G', 'H');
+              $i = 0;
+              foreach ($Array as $skill)
+              {
+                     $i += 1;
+                     $pdf->Cell(9, 10, $skill, 0, '', 'C');
+                     if ($i == 4)
+                     {
+                            $pdf->SetX($pdf->GetX() + 3);
+                     }
+                     else
+                     {
+                            $pdf->SetX($pdf->GetX());
+                     }
+              }
+              //end for
+              $pdf->Ln();
+              $pdf->SetFont('Arial', '', 11);
 
+              // do not count zero to the average
+              $sql = 'SELECT
+		tl_student.lastname, tl_student.firstname,
+		AVG(CASE WHEN tl_voting.skill1 <> 0 THEN tl_voting.skill1 ELSE NULL END) AS skill1,
+		AVG(CASE WHEN tl_voting.skill2 <> 0 THEN tl_voting.skill2 ELSE NULL END) AS skill2,
+		AVG(CASE WHEN tl_voting.skill3 <> 0 THEN tl_voting.skill3 ELSE NULL END) AS skill3,
+		AVG(CASE WHEN tl_voting.skill4 <> 0 THEN tl_voting.skill4 ELSE NULL END) AS skill4,
+		AVG(CASE WHEN tl_voting.skill5 <> 0 THEN tl_voting.skill5 ELSE NULL END) AS skill5,
+		AVG(CASE WHEN tl_voting.skill6 <> 0 THEN tl_voting.skill6 ELSE NULL END) AS skill6,
+		AVG(CASE WHEN tl_voting.skill7 <> 0 THEN tl_voting.skill7 ELSE NULL END) AS skill7,
+		AVG(CASE WHEN tl_voting.skill8 <> 0 THEN tl_voting.skill8 ELSE NULL END) AS skill8
+		FROM tl_student
+		LEFT JOIN tl_voting ON tl_student.id = tl_voting.student
+		WHERE tl_student.class = ?
+		GROUP BY tl_student.id
+		ORDER BY tl_student.gender DESC, tl_student.lastname, tl_student.firstname';
+
+              $objDb = $this->Database->prepare($sql)->execute(\TeacherModel::getOwnClass());
+              $rows = $objDb->numRows ? $objDb->fetchAllAssoc() : array();
+              $color = $m = 0;
+              foreach ($rows as $row)
+              {
+
+                     $m += 1;
+                     $color += 1;
+                     if ($color == 2)
+                     {
+                            $pdf->SetFillColor(220, 220, 220);
+                            $color = '0';
+                     }
+
+                     $pdf->Cell(10, 7, $m, 1, '', 'R', 1);
+                     $pdf->Cell(50, 7, utf8_decode($row['lastname']), 1, '', 'L', 1);
+                     $pdf->SetX($pdf->GetX());
+                     $pdf->Cell(50, 7, utf8_decode($row['firstname']), 1, '', 'L', 1);
+                     $pdf->SetX($pdf->GetX() + 3);
+
+                     for ($i = 1; $i < 9; $i++)
+                     {
+                            $skill = $row['skill' . $i];
+                            if ($skill === 0 || $skill == 0)
+                            {
+                                   $skill = '';
+                            }
+                            $pdf->Cell(9, 7, round($skill, 1), 1, '', 'C', 1);
+                            if ($i == 4)
+                            {
+                                   $pdf->SetX($pdf->GetX() + 3);
+                            }
+                            else
+                            {
+                                   $pdf->SetX($pdf->GetX());
+                            }
+                     }
+                     //end for
+                     $pdf->Ln();
+                     $pdf->SetFillColor(255, 255, 255);
+              } //end while
+              $pdf->Output();
+       }
+
+       /**
+        * print tally sheet
+        */
+       public function printTallySheet()
+       {
+              $ID_Klasse = \TeacherModel::getOwnClass();
+              $ID_LP = $this->User->id;
+
+              //Wichtig um die Zeilenhöhe in der Strichliste zu ermitteln
+              $MaxAnzahlStriche = array();
+              $objStudent = \Database::getInstance()->prepare("SELECT * FROM tl_student WHERE class = ? ORDER BY gender ASC,lastname,firstname")->execute($ID_Klasse);
+              while ($objStudent->next())
+              {
+                     for ($i = 1; $i < 9; $i++)
+                     {
+                            for ($Niveau = 1; $Niveau < 5; $Niveau++)
+                            {
+                                   $objVoting = \Database::getInstance()->prepare('SELECT * FROM tl_voting WHERE student = ? AND skill' . $i . ' = ?')->execute($objStudent->id, $Niveau);
+                                   array_push($MaxAnzahlStriche, $objVoting->numRows);
+                            }
+                     }
+              }
+              rsort($MaxAnzahlStriche);
+              $AnzahlNoetigeZeilen = (int)($MaxAnzahlStriche[0] / 5 + 1);
+              $cellHeight = 3 * $AnzahlNoetigeZeilen + 2;
+              if ($cellHeight < 6)
+              {
+                     $cellHeight = 6;
+              }
+              //Ende Zeilenhöhe
+
+
+              //Instanzierung
+              $pdf = new \CellPDF('L', 'mm', 'A4');
+              $pdf->AddPage();
+              $pdf->SetFont('Arial', '', 18);
+              $pdf->SetFillColor(255, 255, 255);
+
+              $pdf->Cell(280, 8, "Beurteilung des Sozial- & Arbeitsverhaltens (Strichliste)", 'B', '', 'L');
+              $pdf->Ln();
+              $pdf->Ln();
+              $XPos = $pdf->getX();
+              $YPos = $pdf->getY();
+              $pdf->SetFont('Arial', 'B', 11);
+              $pdf->Cell(40, 6, "Schule: ", 0, '', 'L');
+              $pdf->SetFont('Arial', '', 11);
+              $pdf->Cell(30, 6, utf8_decode($GLOBALS['TL_CONFIG']['buf_name_school']), 0, '', 'L');
+              $pdf->Ln();
+              $pdf->SetFont('Arial', 'B', 11);
+              $pdf->Cell(40, 6, "Klasse: ", 0, '', 'L');
+              $pdf->SetFont('Arial', '', 11);
+              $pdf->Cell(30, 6, utf8_decode(\ClassModel::getName($ID_Klasse)), 0, '', 'L');
+              $pdf->Ln();
+              $pdf->SetFont('Arial', 'B', 11);
+              $pdf->Cell(40, 6, "Klassenlehrperson: ", 0, '', 'L');
+              $pdf->SetFont('Arial', '', 11);
+              $pdf->Cell(30, 6, utf8_decode(\TeacherModel::getFullName($ID_LP)), 0, '', 'L');
+
+              $pdf->Ln();
+              $pdf->SetFont('Arial', 'B', 11);
+              $pdf->Ln();
+
+              $pdf->setY($YPos);
+              $pdf->setX(140);
+              $pdf->SetFont('Arial', '', 9);
+              $pdf->Cell(60, 4, utf8_decode("A: selbständig arbeiten"), 0, '', 'L');
+              $pdf->Ln();
+              $pdf->setX(140);
+              $pdf->Cell(60, 4, utf8_decode("B: sorgfältig arbeiten"), 0, '', 'L');
+              $pdf->Ln();
+              $pdf->setX(140);
+
+              $pdf->Cell(60, 4, utf8_decode("C: sich aktiv am Unterricht beteiligen"), 0, '', 'L');
+              $pdf->Ln();
+              $pdf->setX(140);
+
+              $pdf->Cell(60, 4, utf8_decode("D: eigene Fähigkeiten einschätzen"), 0, '', 'L');
+              $pdf->Ln();
+
+              $pdf->setY($YPos);
+
+              $pdf->setX(220);
+              $pdf->Cell(60, 4, utf8_decode("E: mit anderen zusammenarbeiten"), 0, '', 'L');
+              $pdf->Ln();
+              $pdf->setX(220);
+
+              $pdf->Cell(60, 4, utf8_decode("F: konstruktiv mit Kritik umgehen"), 0, '', 'L');
+              $pdf->Ln();
+              $pdf->setX(220);
+
+              $pdf->Cell(60, 4, utf8_decode("G: respektvoll mit anderen umgehen"), 0, '', 'L');
+              $pdf->Ln();
+              $pdf->setX(220);
+
+              $pdf->Cell(60, 4, utf8_decode("H: Regeln einhalten"), 0, '', 'L');
+              $pdf->Ln();
+              $pdf->Ln();
+
+
+              $pdf->SetFont('Arial', 'B', 16);
+              $pdf->SetX(73);
+              $Array = array("A", "B", "C", "D", "E", "F", "G", "H");
+              foreach ($Array as $Kriterium)
+              {
+                     $pdf->Cell(24, 9, $Kriterium, 0, '', 'C');
+                     $pdf->SetX($pdf->GetX() + 3);
+              }
+              //end for
+              $pdf->Ln();
+              $pdf->SetFont('Arial', '', 9);
+              $objStudent = \Database::getInstance()->prepare('SELECT * FROM tl_student WHERE class = ? ORDER BY gender ASC,lastname,firstname')->execute($ID_Klasse);
+              $color = $m = 0;
+              while ($objStudent->next())
+              {
+                     $m += 1;
+                     $color += 1;
+                     if ($color == 2)
+                     {
+                            $pdf->SetFillColor(220, 220, 220);
+                            $color = "0";
+                     }
+                     $pdf->Cell(6, $cellHeight, $m, 1, '', 'R', 1);
+                     $pdf->Cell(27, $cellHeight, utf8_decode($objStudent->lastname), 1, '', 'L', 1);
+                     $pdf->SetX($pdf->GetX());
+                     $pdf->Cell(27, $cellHeight, utf8_decode($objStudent->firstname), 1, '', 'L', 1);
+                     $Y = $pdf->getY();
+                     $X = 26;
+                     for ($i = 1; $i < 9; $i++)
+                     {
+                            $pdf->SetX($pdf->getX() + 3);
+                            for ($Niveau = 1; $Niveau < 5; $Niveau++)
+                            {
+                                   $objVoting = \Database::getInstance()->prepare('SELECT * FROM tl_voting WHERE student = ? AND skill' . $i . ' = ?')->execute($objStudent->id, $Niveau);
+                                   $Anz = 0;
+                                   $str_Striche = "";
+                                   while ($objVoting->next())
+                                   {
+                                          if ($Anz == 5)
+                                          {
+                                                 $Anz = 0;
+                                                 $str_Striche .= " \n";
+                                          }
+                                          $str_Striche .= "I";
+                                          $Anz++;
+                                   }
+                                   $pdf->Cell(6, $cellHeight, $str_Striche, 1, 0, 'L', 1);
+                                   $X += 6;
+                            }
+                     }
+                     //end for
+                     //$pdf->Ln();
+                     $pdf->SetFillColor(255, 255, 255);
+                     $pdf->Ln();
+              } //end while
+              $pdf->Ln();
+              $pdf->Cell(190, 8, date("j. M Y") . ",  Unterschrift: _________________________________________", 0, '', 'L');
+              $pdf->Output();
+       }
 
 }

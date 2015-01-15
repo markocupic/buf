@@ -1,6 +1,7 @@
 <h2>Mittelwerte (&quot;Sammelblatt&quot;) Stammklasse <?php echo  \ClassModel::getName($this->classId); ?></h2>
 <div style="width:100%; position:relative;">
     {{buf::menu_link}}
+    <a class ="icon_print" style="float:right" href="<?php echo $this->printAverageTableLink; ?>" title="drucken">Tabelle drucken</a>
 </div>
 <div class="clearing"></div>
 

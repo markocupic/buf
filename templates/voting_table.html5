@@ -18,8 +18,11 @@
 
     <div id="BeurteilungstabelleColumnRight">
 
-<?php if ($this->User->id == $this->teacherId): ?>
-        <a class="icon_table_delete" title="Ganze Tabelle löschen" id="delete_table" href="<?php echo $this->hrefDeleteTable; ?>" onclick="if(!confirm('Warnung! Sollen alle Datensätze der Tabelle unwiderruflich gelöscht werden?')) return false;">Ganze Tabelle löschen</a>
+<?php if ($this->User->id == $this->teacherId ): ?>
+        <a class="icon_table_delete" title="Ganze Tabelle löschen" id="delete_table" href="<?php echo $this->hrefDeleteTable; ?>" onclick="if(!confirm('Warnung!!! \nSollen alle Datensätze der Tabelle unwiderruflich gelöscht werden?')) return false;">Ganze Tabelle löschen</a>
+<?php elseif (\TeacherModel::getOwnClass() == $this->classId): ?>
+        <a class="icon_table_delete" title="Ganze Tabelle löschen" id="delete_table" href="<?php echo $this->hrefDeleteTable; ?>" onclick="if(!confirm('Warnung!!! \nDas ist die Wertung einer Fachlehrperson. Sollen alle Datensätze dieser Tabelle unwiderruflich gelöscht werden?')) return false;">Ganze Tabelle löschen</a>
+<?php else: ?>
 <?php endif; ?>
 
 
@@ -150,7 +153,6 @@
         var isClassTeacher = <?php echo (\TeacherModel::isClassTeacher()) ? 'true' : 'false'; ?>;
         EvalTable = new EditTable(isOwner, isClassTeacher);
         EvalTable.request_token = '<?php echo REQUEST_TOKEN; ?>';
-        EvalTable.elementId = '<?php echo $this->elId; ?>';
         EvalTable.teacher = '<?php echo Input::get("teacher"); ?>';
         EvalTable.subject = '<?php echo Input::get("subject"); ?>';
         EvalTable.class = '<?php echo Input::get("class"); ?>';

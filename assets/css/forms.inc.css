@@ -92,16 +92,18 @@ select {
 }
 
 /** Login Form **/
+.mod_lostPassword input[type=text], .mod_lostPassword input[type=password],
 .mod_login input[type=text], .mod_login input[type=password],
 .mod_account_settings input[type=text], .mod_account_settings input[type=password], .mod_account_settings input[type=email] {
     width: 25%;
 }
-
+.mod_lostPassword label,
 .mod_login label,
 .mod_account_settings label {
     display: block;
     margin: 2em 0 1em 0;
 }
+
 
 #tl_login .formbody {
     height: 450px;

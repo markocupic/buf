@@ -26,35 +26,39 @@ namespace MCupic;
 class AverageTableController extends \Frontend
 {
 
-    /**
-     * @var $objMainController
-     */
-    protected $objMainController;
+       /**
+        * @var $objMainController
+        */
+       protected $objMainController;
 
-    public function __construct($objMainController)
-    {
-        $this->objMainController = $objMainController;
-        $this->import('FrontendUser', 'User');
-        return parent::__construct();
-    }
+       public function __construct($objMainController)
+       {
+              $this->objMainController = $objMainController;
+              $this->import('FrontendUser', 'User');
+              return parent::__construct();
+       }
 
-    /**
-     * Generate the module
-     */
-    public function setTemplate($objTemplate)
-    {
-        $objTemplate->classId = \TeacherModel::getOwnClass();
-        $objTemplate->rows = $this->getRows();
-        return $objTemplate;
-    }
+       /**
+        * Generate the module
+        */
+       public function setTemplate($objTemplate)
+       {
+              global $objPage;
+              $objTemplate->classId = \TeacherModel::getOwnClass();
+              $objTemplate->rows = $this->getRows();
+              //tally sheet link
+              $url = $this->generateFrontendUrl($objPage->row(), '/do/print_average_table');
+              $objTemplate->printAverageTableLink = $url;
+              return $objTemplate;
+       }
 
-    /**
-     * @return array
-     */
-    private function getRows()
-    {
-        // do not count zero to the average
-		$sql = 'SELECT
+       /**
+        * @return array
+        */
+       private function getRows()
+       {
+              // do not count zero to the average
+              $sql = 'SELECT
 		tl_student.lastname, tl_student.firstname,
 		AVG(CASE WHEN tl_voting.skill1 <> 0 THEN tl_voting.skill1 ELSE NULL END) AS skill1,
 		AVG(CASE WHEN tl_voting.skill2 <> 0 THEN tl_voting.skill2 ELSE NULL END) AS skill2,
@@ -70,10 +74,9 @@ class AverageTableController extends \Frontend
 		GROUP BY tl_student.id
 		ORDER BY tl_student.gender DESC, tl_student.lastname, tl_student.firstname';
 
-		$objDb = $this->Database->prepare($sql)->execute(\TeacherModel::getOwnClass());
-        return $objDb->numRows ? $objDb->fetchAllAssoc() : array();
+              $objDb = $this->Database->prepare($sql)->execute(\TeacherModel::getOwnClass());
+              return $objDb->numRows ? $objDb->fetchAllAssoc() : array();
 
-    }
-
+       }
 
 }

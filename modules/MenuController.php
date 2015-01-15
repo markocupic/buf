@@ -60,17 +60,19 @@ class MenuController extends \Frontend
         $objDb = \Database::getInstance()->prepare($sql)->execute($this->User->id);
         $objTemplate->myVotings = $objDb->fetchAllAssoc();
 
-
+        // get all votings of the current class
         if (\TeacherModel::getOwnClass()) {
             $classTeacher = \TeacherModel::getOwnClass();
             $sql = 'SELECT tl_voting.teacher AS teacherId, tl_voting.subject AS subjectId, (SELECT class FROM tl_student WHERE id=tl_voting.student) AS classId
                 FROM tl_voting, tl_class, tl_subject
                 WHERE (SELECT class FROM tl_student WHERE id=tl_voting.student) = ?
-                GROUP BY  (SELECT class FROM tl_student WHERE id=tl_voting.student), tl_voting.subject
+                GROUP BY  tl_voting.teacher, tl_voting.subject
                 ORDER BY (SELECT name FROM tl_subject WHERE id=tl_voting.subject) ASC';
             $objDb = \Database::getInstance()->prepare($sql)->execute($classTeacher);
             $objTemplate->votingsOnMyClass = $objDb->fetchAllAssoc();
         }
+
+
 
         //account settings link
         $url = $this->generateFrontendUrl($objPage->row(), '/do/account_settings');

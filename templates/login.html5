@@ -21,5 +21,7 @@
     <div class="submit_container">
         <input type="submit" class="submit" value="<?php echo $this->slabel; ?>">
     </div>
+    {{link::7}}
 </div>
+
 </form>

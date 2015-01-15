@@ -64,8 +64,7 @@ class EditClasslistController extends \Frontend
         }
 
         global $objPage;
-        // set element id (needed for ajax requests)
-        $objTemplate->elId = $this->objMainController->id;
+
         $objTemplate->action = $this->generateFrontendUrl($objPage->row(), '/do/edit_classlist');
 
         $objTemplate->User = $this->User;

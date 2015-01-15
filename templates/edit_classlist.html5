@@ -1,4 +1,4 @@
-<?php $GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/buf/assets/js/edit_classlist.js'; ?>
+<?php $GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/buf/assets/js/editClasslist.js'; ?>
 
 <h2>Die Klassenliste der Klasse <?php echo \ClassModel::findByPk($this->User->class)->name; ?></h2>
 
@@ -86,8 +86,7 @@
 <script>
     window.addEvent('domready', function (event) {
         EditClasslist = new EditClasslist({
-            request_token: '{{request_token}}',
-            element_id: '<?php echo $this->elId; ?>'
+            request_token: '{{request_token}}'
         });
     });
 </script>

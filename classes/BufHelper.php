@@ -42,12 +42,14 @@ class BufHelper extends \Controller
               if ($strTag == 'buf::logout_user')
               {
                      // Login and redirect
+                     $page = \PageModel::findByAlias('buf');
+
                      if (FE_USER_LOGGED_IN)
                      {
-                            $url = \Frontend::generateFrontendUrl($objPage->row(), '/do/login') . setQueryString(array('act' => 'logout'));
+                            $url = \Frontend::generateFrontendUrl($page->row(), '/do/login') . setQueryString(array('act' => 'logout'));
                             return '<a href="' . $url . '" title="abmelden" class="icon_logout">Abmelden</a>';
                      } else {
-                            $url = \Frontend::generateFrontendUrl($objPage->row(), '/do/login');
+                            $url = \Frontend::generateFrontendUrl($page->row(), '/do/login');
                             return '<a href="' . $url . '" title="anmelden" class="icon_login">Anmelden</a>';
                      }
               }

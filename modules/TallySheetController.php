@@ -48,7 +48,6 @@ class TallySheetController extends \Frontend
               $arrData = $this->getTableBody();
               $objTemplate->rows = $arrData['rows'];
               $objTemplate->js = $arrData['js'];
-              $objTemplate->elementId = $this->objMainController->id;
               //print tally sheet link
               $objTemplate->printTallySheetLink = $this->generateFrontendUrl($objPage->row(), '/do/print_tally_sheet');
 

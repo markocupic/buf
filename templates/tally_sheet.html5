@@ -20,13 +20,16 @@
 <p class="green">Anm.: Die Wertung der Klassenlehrperson ist in der Tabelle fett und unterstrichen dargestellt. Der aktuelle Durchschnitt ist rot hinterlegt.</p>
 
 <script>
-window.addEvent('domready', function() {
-    objTallySheet = new TallySheet({
-        request_token: '{{request_token}}',
-        element_id: '<?php echo $this->elementId; ?>'
-    });
+    (function($){
+        window.addEvent('domready', function() {
+            objTallySheet = new TallySheet({
+                request_token: '{{request_token}}'
+            });
+
+
 
 <?php echo $this->js; ?>
 
-});
+            });
+    })(document.id);
 </script>
