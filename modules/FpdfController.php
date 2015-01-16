@@ -33,6 +33,7 @@ class FpdfController extends \System
 
        public function __construct($objMainController)
        {
+
               $this->objMainController = $objMainController;
               $this->import('FrontendUser', 'User');
               $this->import('Database');
@@ -49,6 +50,7 @@ class FpdfController extends \System
         */
        public function printTable()
        {
+
               $teacher = \Input::get('teacher');
               $class = \Input::get('class');
               $subject = \Input::get('subject');
@@ -201,6 +203,7 @@ class FpdfController extends \System
         */
        public function printAverageTable()
        {
+
               $class = \TeacherModel::getOwnClass();
 
               $pdf = new \FPDF('P', 'mm', 'A4');
@@ -352,12 +355,21 @@ class FpdfController extends \System
         */
        public function printTallySheet()
        {
+
+
               $ID_Klasse = \TeacherModel::getOwnClass();
               $ID_LP = $this->User->id;
 
+              $bgcolor = array(
+                     'white' => array(255, 255, 255),
+                     'grey' => array(220, 220, 220),
+                     'red' => array(255, 150, 150)
+              );
+
+
               //Wichtig um die Zeilenhöhe in der Strichliste zu ermitteln
               $MaxAnzahlStriche = array();
-              $objStudent = \Database::getInstance()->prepare("SELECT * FROM tl_student WHERE class = ? ORDER BY gender ASC,lastname,firstname")->execute($ID_Klasse);
+              $objStudent = \Database::getInstance()->prepare("SELECT * FROM tl_student WHERE class = ? ORDER BY gender DESC,lastname,firstname")->execute($ID_Klasse);
               while ($objStudent->next())
               {
                      for ($i = 1; $i < 9; $i++)
@@ -383,7 +395,7 @@ class FpdfController extends \System
               $pdf = new \CellPDF('L', 'mm', 'A4');
               $pdf->AddPage();
               $pdf->SetFont('Arial', '', 18);
-              $pdf->SetFillColor(255, 255, 255);
+              $pdf->SetFillColor($bgcolor['white'][0], $bgcolor['white'][1], $bgcolor['white'][2]);
 
               $pdf->Cell(280, 8, "Beurteilung des Sozial- & Arbeitsverhaltens (Strichliste)", 'B', '', 'L');
               $pdf->Ln();
@@ -457,7 +469,7 @@ class FpdfController extends \System
               //end for
               $pdf->Ln();
               $pdf->SetFont('Arial', '', 9);
-              $objStudent = \Database::getInstance()->prepare('SELECT * FROM tl_student WHERE class = ? ORDER BY gender ASC,lastname,firstname')->execute($ID_Klasse);
+              $objStudent = \Database::getInstance()->prepare('SELECT * FROM tl_student WHERE class = ? ORDER BY gender DESC,lastname,firstname')->execute($ID_Klasse);
               $color = $m = 0;
               while ($objStudent->next())
               {
@@ -465,9 +477,11 @@ class FpdfController extends \System
                      $color += 1;
                      if ($color == 2)
                      {
-                            $pdf->SetFillColor(220, 220, 220);
-                            $color = "0";
+                            $pdf->SetFillColor($bgcolor['grey'][0], $bgcolor['grey'][0], $bgcolor['grey'][0]);
+                            $color = 0;
                      }
+
+
                      $pdf->Cell(6, $cellHeight, $m, 1, '', 'R', 1);
                      $pdf->Cell(27, $cellHeight, utf8_decode($objStudent->lastname), 1, '', 'L', 1);
                      $pdf->SetX($pdf->GetX());
@@ -492,6 +506,22 @@ class FpdfController extends \System
                                           $str_Striche .= "I";
                                           $Anz++;
                                    }
+                                   if (\VotingModel::getAverage($objStudent->id, $i, 0) == $Niveau)
+                                   {
+                                          $pdf->SetFillColor($bgcolor['red'][0], $bgcolor['red'][1], $bgcolor['red'][2]);
+                                   }
+                                   else
+                                   {
+                                          if ($color == 1)
+                                          {
+                                                 $pdf->SetFillColor($bgcolor['white'][0], $bgcolor['white'][1], $bgcolor['white'][2]);
+                                          }
+                                          else
+                                          {
+                                                 $pdf->SetFillColor($bgcolor['grey'][0], $bgcolor['grey'][1], $bgcolor['grey'][2]);
+                                          }
+                                   }
+
                                    $pdf->Cell(6, $cellHeight, $str_Striche, 1, 0, 'L', 1);
                                    $X += 6;
                             }

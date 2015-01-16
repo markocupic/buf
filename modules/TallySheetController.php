@@ -78,7 +78,7 @@ class TallySheetController extends \Frontend
                             // get the skill average
                             $objAverage = $this->Database->prepare("SELECT AVG(skill$i) AS 'average' FROM tl_voting WHERE student = ? AND skill$i > 0")->execute($objStudent->id);
                             $rowAverage = $objAverage->fetchAssoc();
-                            $skillAverage = abs(round($rowAverage["average"] - 0.0000001, 0));
+                            $skillAverage = \VotingModel::getAverage($objStudent->id, $i, 0);
 
                             $class = ($i % 2 != 0) ? 'tallycell textaligncenter odd' : 'tallycell textaligncenter even';
 
@@ -87,7 +87,7 @@ class TallySheetController extends \Frontend
                                    //Die Zelle mit dem Durchschnitt wird farblich hervorgehoben
                                    $tdClass = ($skillAverage == $m) ? $class . ' bg_red' : $class;
                                    $cellId++;
-                                   $output .= sprintf('<td id="Zelle_%s" title="&oslash; avg: %s" class="%s">', $cellId, abs(round($rowAverage["average"] - 0.0000001, 1)), $tdClass);
+                                   $output .= sprintf('<td id="Zelle_%s" title="&oslash; avg: %s" class="%s">', $cellId, \VotingModel::getAverage($objStudent->id, $i, 1), $tdClass);
                                    if ($rowAverage["average"])
                                    {
                                           $js .= sprintf("

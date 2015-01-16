@@ -4,6 +4,12 @@
     abgeben</a>
 
 <h3>Meine gemachten Beurteilungen</h3>
+
+<?php if ($lastChange = \VotingModel::getLastChange($this->User->id, 0, 0, 0, 'teacher')): ?>
+<!-- Last change -->
+<p>Deine letzte Bewertung stammt vom <span style="font-weight:bold"><?php echo \Date::parse('d.m.Y', $lastChange); ?></span>.</p>
+<?php endif; ?>
+
 <ul>
     <?php foreach ($this->myVotings as $voting): ?>
     <li>

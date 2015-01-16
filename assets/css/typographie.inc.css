@@ -11,7 +11,7 @@ html {
 }
 
 body {
-    font-family: Arial, raleway, trebuchet ms, verdana, sans-serif;
+    font-family: Helvetica, Arial, raleway, trebuchet ms, verdana, sans-serif;
     background-image: url(/../../system/modules/buf/assets/images/brick.jpg);
     background-repeat: repeat;
     font-size: 100%;
@@ -74,7 +74,7 @@ strong, b {
 
 a, a:visited {
     text-decoration: none;
-    color: #15c;
+    color: #069;
     font-weight: bold;
 }
 a:hover {

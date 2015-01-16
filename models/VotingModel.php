@@ -39,6 +39,7 @@ class VotingModel extends \Model
         */
        public static function getRows($Klasse, $Fach, $ID_LP)
        {
+
               $objUser = \System::importStatic('FrontendUser');
               $tolerance = $objUser->deviation;
 
@@ -83,7 +84,6 @@ class VotingModel extends \Model
                                    $color = "000000";
                                    $array_name = "unterarray" . $i;
                                    $$array_name = array("value" => $skill, "deviation" => $deviation, "color" => $color, "average" => 0, "date" => null, "tstamp" => null);
-                                   $dataRecordId = "";
                             }
                      }
                      //Falls ein Datensatz vorhanden ist
@@ -91,7 +91,6 @@ class VotingModel extends \Model
                      {
                             $dataRecord = $objVoting->fetchAssoc();
                             $tstamp = $dataRecord["tstamp"];
-                            $arrLastChange[] = $dataRecord["tstamp"];
                             for ($i = 1; $i < 9; $i++)
                             {
                                    $skill = $dataRecord["skill" . $i];
@@ -142,13 +141,13 @@ class VotingModel extends \Model
                             //end for
                      }
                      //end if
-                     $dataRecordId = $dataRecord["id"];
+
+                     $dataRecordId = isset($dataRecord) ? $dataRecord['id'] : null;
+                     unset($dataRecord);
                      $arr_datensaetze[$m] = array("student" => $objStudent->id, "lastname" => $objStudent->lastname, "firstname" => $objStudent->firstname, "dataRecordId" => $dataRecordId, "skill1" => $unterarray1, "skill2" => $unterarray2, "skill3" => $unterarray3, "skill4" => $unterarray4, "skill5" => $unterarray5, "skill6" => $unterarray6, "skill7" => $unterarray7, "skill8" => $unterarray8);
               }
               //end while
-              rsort($arrLastChange);
-              //die(print_r($arrLastChange, true));
-              return array('Datensaetze' => $arr_datensaetze, 'lastChange' => $arrLastChange[0]);
+              return array('Datensaetze' => $arr_datensaetze, 'lastChange' => self::getLastChange($ID_LP, $Fach, $Klasse));
        }
 
        /**
@@ -161,6 +160,7 @@ class VotingModel extends \Model
         */
        public static function deleteRowOrCol($mode, $colOrRow, $teacher, $subject, $class)
        {
+
               $objUser = \System::importStatic('FrontendUser');
 
               if ($objUser->id == $teacher)
@@ -239,6 +239,7 @@ class VotingModel extends \Model
 
        public static function getInfoBox($studentId, $skillId)
        {
+
               if (!\TeacherModel::getOwnClass())
               {
                      return false;
@@ -271,12 +272,59 @@ class VotingModel extends \Model
         */
        public static function isOwner()
        {
+
               $objUser = \System::importStatic('FrontendUser');
               if ($objUser->id == \Input::get('teacher'))
               {
                      return true;
               }
               return false;
+       }
+
+       /**
+        * @param $intStudent
+        * @param $intCol
+        * @param int $precision
+        * @return number
+        */
+       public static function getAverage($intStudent, $intCol, $precision = 0)
+       {
+
+              $objAverage = \Database::getInstance()->prepare("SELECT AVG(skill$intCol) AS 'average' FROM tl_voting WHERE student = ? AND skill$intCol > 0")->execute($intStudent);
+              $rowAverage = $objAverage->fetchAssoc();
+              // if the average is 1.5 or 2.5 or 3.5, then always round down in favor of the student
+              return abs(round($rowAverage["average"] - 0.0000001, $precision));
+       }
+
+       /**
+        * @param $intTeacher
+        * @param $intStudent
+        * @param $intSubject
+        * @return mixed|null
+        */
+       public static function getLastChange($intTeacher, $intSubject = null, $intClass = null, $intStudent = null, $mode = 'table')
+       {
+
+              if ($mode == 'table')
+              {
+                     $objVoting = \Database::getInstance()->prepare('SELECT * FROM tl_voting WHERE teacher = ? AND subject = ? AND student IN (SELECT id FROM tl_student WHERE class = ?) ORDER BY tstamp DESC LIMIT 0,1')->execute($intTeacher, $intSubject, $intClass);
+              }
+              elseif($mode == 'teacher')
+              {
+                     // $mode= 'teacher'
+                     $objVoting = \Database::getInstance()->prepare('SELECT * FROM tl_voting WHERE teacher = ? ORDER BY tstamp DESC LIMIT 0,1')->execute($intTeacher, $intStudent, $intSubject);
+              }
+              else
+              {
+                     // $mode= 'row'
+                     $objVoting = \Database::getInstance()->prepare('SELECT * FROM tl_voting WHERE teacher = ? AND student = ? AND subject = ? ORDER BY tstamp DESC')->execute($intTeacher, $intStudent, $intSubject);
+              }
+
+              if ($objVoting->numRows)
+              {
+                     return $objVoting->tstamp;
+              }
+              return null;
        }
 
 }
