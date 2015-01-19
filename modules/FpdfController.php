@@ -361,9 +361,7 @@ class FpdfController extends \System
               $ID_LP = $this->User->id;
 
               $bgcolor = array(
-                     'white' => array(255, 255, 255),
-                     'grey' => array(220, 220, 220),
-                     'red' => array(255, 150, 150)
+                     'white' => array(255, 255, 255), 'grey' => array(220, 220, 220), 'red' => array(255, 150, 150)
               );
 
 
@@ -494,17 +492,24 @@ class FpdfController extends \System
                             for ($Niveau = 1; $Niveau < 5; $Niveau++)
                             {
                                    $objVoting = \Database::getInstance()->prepare('SELECT * FROM tl_voting WHERE student = ? AND skill' . $i . ' = ?')->execute($objStudent->id, $Niveau);
-                                   $Anz = 0;
                                    $str_Striche = "";
+                                   $anz= 0;
                                    while ($objVoting->next())
                                    {
-                                          if ($Anz == 5)
+                                          $anz++;
+                                          if ($anz%5 == 0)
                                           {
-                                                 $Anz = 0;
                                                  $str_Striche .= " \n";
                                           }
-                                          $str_Striche .= "I";
-                                          $Anz++;
+
+                                          if ($ID_LP == $objVoting->teacher)
+                                          {
+                                                 $str_Striche .= 'I';
+                                          }
+                                          else
+                                          {
+                                                 $str_Striche .= 'i';
+                                          }
                                    }
                                    if (\VotingModel::getAverage($objStudent->id, $i, 0) == $Niveau)
                                    {
@@ -521,7 +526,7 @@ class FpdfController extends \System
                                                  $pdf->SetFillColor($bgcolor['grey'][0], $bgcolor['grey'][1], $bgcolor['grey'][2]);
                                           }
                                    }
-
+                                   $pdf->SetFont('Arial', '', 9);
                                    $pdf->Cell(6, $cellHeight, $str_Striche, 1, 0, 'L', 1);
                                    $X += 6;
                             }
@@ -531,8 +536,11 @@ class FpdfController extends \System
                      $pdf->SetFillColor(255, 255, 255);
                      $pdf->Ln();
               } //end while
+              $pdf->Cell(190, 8, "Wertungen der Klassenlehrperson sind mit einem grossen I, Wertungen von Fachlehrpersonen mit einem kleinen i gekennzeichnet.", 0, '', 'L');
               $pdf->Ln();
-              $pdf->Cell(190, 8, date("j. M Y") . ",  Unterschrift: _________________________________________", 0, '', 'L');
+              $pdf->Ln();
+              $pdf->SetFont('Arial', '', 11);
+              $pdf->Cell(190, 11, date("j. M Y") . ",  Unterschrift: _________________________________________", 0, '', 'L');
               $pdf->Output();
        }
 
