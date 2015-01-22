@@ -31,43 +31,26 @@ class VotingModel extends \Model
         */
        protected static $strTable = 'tl_voting';
 
+
        /**
-        * @param $Klasse
-        * @param $Fach
-        * @param $ID_LP
+        * @param $classId
+        * @param $subjectId
+        * @param $teacherId
         * @return array
         */
-       public static function getRows($Klasse, $Fach, $ID_LP)
+       public static function getRows($classId, $subjectId, $teacherId)
        {
 
               $objUser = \System::importStatic('FrontendUser');
               $tolerance = $objUser->deviation;
 
-              if (!self::isOwner() && \TeacherModel::getOwnClass() != $Klasse)
-              {
-                     //return;
-              }
-
-              //prueft, ob der aktuelle Benutzer auch Besitzer der Datensaeze ist
-              if (self::isOwner())
-              {
-                     $BearbeitenVerboten = false;
-              }
-              else
-              {
-                     $BearbeitenVerboten = true;
-              }
-
               $arr_datensaetze = array();
-              $arrLastChange = array();
 
-              $objStudent = \Database::getInstance()->prepare('SELECT id, lastname, firstname FROM tl_student WHERE class=? ORDER BY gender DESC,lastname, firstname')->execute($Klasse);
-              $m = 0;
+              $objStudent = \Database::getInstance()->prepare('SELECT id, lastname, firstname FROM tl_student WHERE class=? ORDER BY gender DESC,lastname, firstname')->execute($classId);
               while ($objStudent->next())
               {
-                     $tstamp = '';
                      $m = 'student_' . $objStudent->id;
-                     $objVoting = \Database::getInstance()->prepare('SELECT * FROM tl_voting WHERE teacher = ? AND student = ? AND subject = ?')->execute($ID_LP, $objStudent->id, $Fach);
+                     $objVoting = \Database::getInstance()->prepare('SELECT * FROM tl_voting WHERE teacher = ? AND student = ? AND subject = ?')->execute($teacherId, $objStudent->id, $subjectId);
                      //Falls die Abfrage nicht eindeutig war.
                      if ($objVoting->numRows > 1)
                      {
@@ -100,7 +83,7 @@ class VotingModel extends \Model
                                    }
                                    //average
                                    //Nur für den Klassenlehrer an seiner Stammklasse ersichtlich
-                                   if ($skill > 0 && \TeacherModel::getOwnClass() == $Klasse)
+                                   if ($skill > 0 && \TeacherModel::getOwnClass() == $classId)
                                    {
                                           $sql = sprintf('SELECT AVG(skill%s) AS average FROM tl_voting WHERE student = ? AND skill%s > 0 AND skill%s < 5 AND id != ?', $i, $i, $i);
                                           $stmt3 = \Database::getInstance()->prepare($sql)->execute($objStudent->id, $dataRecord['id']);
@@ -147,7 +130,7 @@ class VotingModel extends \Model
                      $arr_datensaetze[$m] = array("student" => $objStudent->id, "lastname" => $objStudent->lastname, "firstname" => $objStudent->firstname, "dataRecordId" => $dataRecordId, "skill1" => $unterarray1, "skill2" => $unterarray2, "skill3" => $unterarray3, "skill4" => $unterarray4, "skill5" => $unterarray5, "skill6" => $unterarray6, "skill7" => $unterarray7, "skill8" => $unterarray8);
               }
               //end while
-              return array('Datensaetze' => $arr_datensaetze, 'lastChange' => self::getLastChange($ID_LP, $Fach, $Klasse));
+              return array('Datensaetze' => $arr_datensaetze, 'lastChange' => self::getLastChange($teacherId, $subjectId, $classId));
        }
 
        /**
@@ -237,6 +220,11 @@ class VotingModel extends \Model
               return false;
        }
 
+       /**
+        * @param $studentId
+        * @param $skillId
+        * @return string
+        */
        public static function getInfoBox($studentId, $skillId)
        {
 
@@ -262,8 +250,6 @@ class VotingModel extends \Model
                      }
                      $output .= "</table>";
               }
-
-
               return $output;
        }
 
@@ -298,8 +284,10 @@ class VotingModel extends \Model
 
        /**
         * @param $intTeacher
-        * @param $intStudent
-        * @param $intSubject
+        * @param null $intSubject
+        * @param null $intClass
+        * @param null $intStudent
+        * @param string $mode
         * @return mixed|null
         */
        public static function getLastChange($intTeacher, $intSubject = null, $intClass = null, $intStudent = null, $mode = 'table')

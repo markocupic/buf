@@ -225,6 +225,7 @@ class MainController extends \Module
 
                      die(json_encode($arrJSON));
               }
+
               // appear the info Box in the tally sheet mode
               if (\Input::get('act') == 'tally_sheet')
               {
