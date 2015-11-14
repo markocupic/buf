@@ -1,0 +1,20 @@
+<h2>Kontoeinstellungen</h2>
+{{buf::dashboard_link}}
+
+<h3>Passwort/Email-Adresse ändern</h3>
+<?php if (!$this->submitted): ?>
+<form id="<?php echo $this->formId; ?>" class="mod_account_settings" action="<?php echo $this->action; ?>" method="<?php echo $this->method; ?>" enctype="<?php echo $this->enctype; ?>">
+    <div class="formbody">
+        <input type="hidden" name="REQUEST_TOKEN" value="{{request_token}}">
+        <input type="hidden" name="FORM_SUBMIT" value="tl_member_account_settings">
+        <?php echo $this->fields; ?>
+        {{br}}
+        {{br}}
+        <button type="submit" class="btn btn-primary"><?php echo $this->slabel; ?></button>
+    </div>
+</form>
+
+<?php else: ?>
+<p>Die Änderungen wurden erfolgreich übernommen.</p>
+<?php endif; ?>
+

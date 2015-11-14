@@ -1,0 +1,95 @@
+<?php $GLOBALS['TL_JAVASCRIPT'][] = 'files/buf/js/editClasslist.js'; ?>
+
+<h2>Die Klassenliste der Klasse <?php echo \ClassModel::findByPk($this->User->class)->name; ?></h2>
+
+
+{{buf::dashboard_link}}
+<div id="neue_Schueler">
+
+    <form id="AjaxForm" name="AjaxForm" method="post" action="<?php echo $this->action; ?>">
+        <input type="hidden" name="REQUEST_TOKEN" value="{{request_token}}">
+        <input type="hidden" name="TL_FORM" value="tl_student">
+ <div style="overflow-x:auto;">
+        <table id="editClasslist" class="table beurteilungstabelle klassenliste">
+            <tr>
+                <th class="width6 align_left col_0"></th>
+                <th class="width30 align_left col_1 col_lastname"><p><strong>Name</strong></p></th>
+                <th class="width30 align_left col_2 col_firstname"><p><strong>Vorname</strong></p></th>
+                <th class="width20 col_3 col_gender textaligncenter"><p><strong>Geschlecht</strong></p></th>
+                <th class="width7 col_4 textaligncenter">&nbsp;</th>
+                <th class="width7 col_5 textaligncenter">&nbsp;</th>
+            </tr>
+
+            <?php $i=1; ?>
+            <?php foreach($this->students as $student): ?>
+
+            <tr class="row_student">
+                <td class="align_left col_0"><?php echo $i; ?></td>
+                <!-- Der Name und das ausgeblendete Textfeld -->
+                <td class="align_left col_1 col_lastname">
+                    <input class="text-input form-control" name="lastname" type="text" value="">
+                    <span class="content"><?php echo $student['lastname']; ?></span>
+                </td>
+                <!-- Der Vorname und das ausgeblendete Textfeld -->
+                <td class="align_left col_2 col_firstname">
+                    <input class="text-input form-control" name="firstname" type="text" value="">
+                    <span class="content"><?php echo $student['firstname']; ?></span>
+                </td>
+                <!-- Das Geschlecht und die Radiobuttons für das Geschlecht -->
+                <td class="col_3 col_gender textaligncenter">
+                    <span class="content"><?php echo $student['gender']; ?></span>
+                    <select name="gender" class="gender form-control">
+                        <option value="male">männlich</option>
+                        <option value="female">weiblich</option>
+                    </select>
+                </td>
+                <!-- Das Symbol um Schüler zu löschen -->
+                <td class="col_4 textaligncenter">
+                    <span class="fa fa-close" title="Schüler löschen" alt="delete_row" onclick="EditClasslist.deleteRow(this,<?php echo $student['id']; ?>)"></span>
+                </td>
+                <!-- Das Symbol um Schüler zu bearbeiten -->
+                <td class="col_5 textaligncenter">
+                    <span class="fa fa-pencil edit_row" title="Namen bearbeiten" alt="edit_row" onclick="EditClasslist.editRow(this)"></span>
+                    <button type="button" onclick="EditClasslist.send(this,<?php echo $student['id']; ?>)" style="padding:1px; width:25px; height:25px;" class="submit_row btn btn-primary">
+                        <i class="fa fa-save"></i>
+                    </button>
+                </td>
+            </tr>
+            <?php $i++; ?>
+            <?php endforeach; ?>
+
+
+            <?php for($i;$i<=30;$i++): ?>
+            <tr>
+                <td class="align_left col_0"><?php echo $i; ?></td>
+                <td class="align_left">
+                    <input type="text" name="insert_lastname[]" class="form-control">
+                </td>
+                <td class="align_left col_1">
+                    <input type="text" name="insert_firstname[]" class="form-control">
+                </td>
+                <td class="col_2 textaligncenter">
+                    <select name="insert_gender[]" class="form-control">
+                        <option value="male">männlich</option>
+                        <option value="female">weiblich</option>
+                    </select>
+                </td>
+                <td class="col_3">&nbsp;</td>
+                <td class="col_4">&nbsp;</td>
+            </tr>
+            <?php endfor; ?>
+
+        </table>
+        <input name="submit" type="submit" class="btn btn-primary" value="speichern">
+        </div>
+    </form>
+</div>
+
+
+<script>
+    window.addEvent('domready', function (event) {
+        EditClasslist = new EditClasslist({
+            request_token: '{{request_token}}'
+        });
+    });
+</script>

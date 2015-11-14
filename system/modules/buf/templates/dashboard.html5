@@ -1,0 +1,82 @@
+<div class="dashboard">
+<h2>Dashboard</h2>
+<h3>Beurteilen</h3>
+<div class="list-group">
+<a class="list-group-item" title="neue Beurteilung abgeben" href="<?php echo $this->hrefNewVoting; ?>">
+<span class="fa fa-plus"></span>Neue Beurteilung abgeben
+</a>
+</div>
+
+<h3>Meine Beurteilungen</h3>
+
+<?php if ($lastChange = \VotingModel::getLastChange($this->User->id, 0, 0, 0, 'teacher')): ?>
+<!-- Last change -->
+<p>Deine letzte Bewertung stammt vom <span style="font-weight:bold"><?php echo \Date::parse('d.m.Y', $lastChange); ?></span>.</p>
+<?php endif; ?>
+
+<div class="list-group">
+    <?php foreach ($this->myVotings as $voting): ?>
+       <a class="list-group-item" title="bearbeiten" href="<?php echo $this->hrefVotingTable . setQueryString(array('teacher' => $voting['teacherId'], 'subject' => $voting['subjectId'], 'class' => $voting['classId'])); ?>">
+        <span class="fa fa-pencil"></span><?php echo $voting["classname"] . " " . $voting["subjectname"]; ?>
+        bearbeiten
+        </a>
+    <?php endforeach; ?>
+    <?php if(!count($this->myVotings)): ?>
+    <p class="list-group-item">Du hast noch keine Beurteilungen abgegeben.</p>
+    <?php endif; ?>
+</div>
+
+
+<?php if(\TeacherModel::getOwnClass()): ?>
+<h3>Beurteilungen von Fachlehrpersonen an meiner Stammklasse</h3>
+<?php if($this->votingsOnMyClass): ?>
+<div class="list-group">
+    <?php foreach  ($this->votingsOnMyClass as $voting): ?>
+    <?php if ($voting["teacherId"] == $this->User->id): ?>
+        <a class="list-group-item" title="bearbeiten" href="<?php echo $this->hrefVotingTable . setQueryString(array('teacher' => $voting['teacherId'], 'subject' => $voting['subjectId'], 'class' => $voting['classId'])); ?>">
+        <span class="fa fa-pencil"></span>
+        <?php echo \ClassModel::getName($voting["classId"]) ." ". \SubjectModel::getName($voting["subjectId"]);?>
+         - Beurteilung durch: <?php echo \TeacherModel::getFullName($voting["teacherId"]); ?>
+        bearbeiten
+        </a>
+    <?php else: ?>
+        <a class="list-group-item" title="ansehen" href="<?php echo $this->hrefVotingTable . setQueryString(array('teacher' => $voting['teacherId'], 'subject' => $voting['subjectId'], 'class' => $voting['classId'])); ?>">
+        <span class="fa fa-eye"></span>
+        <?php echo \ClassModel::getName($voting["classId"]) ." ". \SubjectModel::getName($voting["subjectId"]);?>
+         - Beurteilung durch: <?php echo \TeacherModel::getFullName($voting["teacherId"]); ?>
+        ansehen
+        </a>
+    <?php endif; ?>
+    <?php endforeach; ?>
+</div>
+<?php endif; ?>
+
+
+<?php if(!$this->votingsOnMyClass): ?>
+<div class="list-group">
+    <p class="list-group-item">An deiner Stammklasse wurden noch keine Beurteilungen abgegeben.</p>
+</div>
+<?php endif; ?>
+
+
+<h3>Administrative Aufgaben für den Klassenlehrer</h3>
+<div class="list-group">
+    <a class="list-group-item" title="Klassenliste bearbeiten" href="<?php echo $this->editClasslistLink; ?>">
+    <span class="fa fa-pencil"></span>
+    Die Klassenliste
+    bearbeiten
+    </a>
+    <a class="list-group-item" title="Mittelwerte der Stammklasse" href="<?php echo $this->averageTableLink; ?>">
+    <span class="fa fa-eye"></span>
+    Mittelwerte (&quot;Sammelblatt&quot;) meiner Stammklasse
+    ansehen
+    </a>
+    <a class="list-group-item" title="Strichliste" href="<?php echo $this->tallySheetLink; ?>">
+    <span class="fa fa-pencil"></span>
+    Strichliste (&quot;Sammelblatt&quot;) meiner Stammklasse
+    ansehen
+    </a>
+</div>
+
+<?php endif; ?>
+</div>

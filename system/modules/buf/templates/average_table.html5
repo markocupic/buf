@@ -1,0 +1,29 @@
+<h2>Mittelwerte (&quot;Sammelblatt&quot;) Stammklasse <?php echo  \ClassModel::getName($this->classId); ?></h2>
+<div class="row">
+    <div class="col-xs-6">
+        {{buf::dashboard_link}}
+    </div>
+    <div class="col-xs-6 align_right">
+        <a style="float:right" href="<?php echo $this->printAverageTableLink; ?>" title="drucken"><span class="fa fa-print"></span> Tabelle drucken</a>
+    </div>
+</div>
+<div style="overflow-x:auto;">
+<table id="Mittelwerttabelle" class="beurteilungstabelle">
+    <tr>
+        <td style="width:18%">&nbsp;</td>
+        <td style="width:18%">&nbsp;</td>
+        <?php for($i=1;$i<9;$i++): ?>
+        <td style="background-image: url('files/buf/images/gd/images.php?bgcolor=<?php echo $i%2 == 0 ? "bright" : "dark"; ?>&amp;kriterium=<?php echo $i; ?>'); ?>"  class="Vertikalschrift Beurteilungsraster description <?php echo $i%2 == 0 ?  "even" : "odd"; ?> ">Kriterium<?php echo $i; ?></td>
+        <?php endfor;?>
+    </tr>
+<?php foreach($this->rows as $averageValues): ?>
+    <tr>
+        <td class="align_left"><?php echo $averageValues["lastname"]; ?></td>
+        <td class="align_left"><?php echo $averageValues["firstname"]; ?></td>
+<?php for($i=1;$i<9;$i++): ?>
+        <td class="<?php echo ($i%2 != 0 ? "odd" : "even"); ?>"><?php echo (round($averageValues["skill".$i],2)==0 ? "k.A." : round($averageValues["skill".$i],2)); ?></td>
+<?php endfor; ?>
+    </tr>
+<?php endforeach; ?>
+</table>
+</div>
