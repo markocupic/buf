@@ -43,11 +43,11 @@
         destroyInfoBox: function () {
 
             this.request_id = null;
-            if (document.id('InfoBox')) {
-                document.id('InfoBox').fade('out');
+            if (document.id('tallySheetModal')) {
+                document.id('tallySheetModal').fade('out');
                 var destroy = (function () {
-                    if (document.id('InfoBox')) {
-                        document.id('InfoBox').destroy();
+                    if (document.id('tallySheetModal')) {
+                        document.id('tallySheetModal').destroy();
                     }
                 }.delay(500));
             }
@@ -112,14 +112,9 @@
 
         appearInfoBox: function (json, requestId) {
             var self = this;
-            var AjaxDiv = new Element('div');
-            AjaxDiv.setProperty('id', 'InfoBox');
-            AjaxDiv.setStyle('opacity', 0);
-            var wrapper = document.id('wrapper');
-            AjaxDiv.inject(wrapper, 'top');
-            AjaxDiv.innerHTML = json.html;
+            jQuery('#top').prepend(json.html);
             if (requestId === self.request_id) {
-                document.id('InfoBox').fade(0.8);
+                document.id('tallySheetModal').fade(0.95);
             }
             this.destroyRequestStatusInfo(requestId);
         },

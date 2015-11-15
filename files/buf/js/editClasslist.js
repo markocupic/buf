@@ -44,10 +44,10 @@
             var elSpanGender = elRow.getElements('td.col_gender span.content')[0];
             var elInputGenderM = elCellGender.getElements('option')[0];
             var elInputGenderF = elCellGender.getElements('option')[1];
-            if (elSpanGender.innerHTML == 'male') {
-                elInputGenderM.selected = true;
-            } else {
+            if (elSpanGender.innerHTML == 'weiblich') {
                 elInputGenderF.selected = true;
+            } else {
+                elInputGenderM.selected = true;
             }
         },
 
@@ -142,7 +142,8 @@
                         if (json.status == 'success') {
                             elRow.getElements('.col_lastname span')[0].set('text', lastname);
                             elRow.getElements('.col_firstname span')[0].set('text', firstname);
-                            elRow.getElements('.col_gender span')[0].set('text', gender);
+                            var strGender = gender == 'female' ? 'weiblich' : 'männlich';
+                            elRow.getElements('.col_gender span')[0].set('text', strGender);
                             self.resetTable();
                         }
                         if (json.status == 'error') {

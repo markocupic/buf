@@ -8,7 +8,7 @@
     </div>
 </div>
 <div style="overflow-x:auto;">
-<table id="Strichliste" class="beurteilungstabelle">
+<table id="Strichliste" class="buf-table">
 
     <tr>
         <td id="requestStatus" style="width:10%" class="Vertikalschrift Beurteilungsraster description textalignbottom">&nbsp;</td>

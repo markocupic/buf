@@ -10,7 +10,7 @@
         <input type="hidden" name="REQUEST_TOKEN" value="{{request_token}}">
         <input type="hidden" name="TL_FORM" value="tl_student">
  <div style="overflow-x:auto;">
-        <table id="editClasslist" class="table beurteilungstabelle klassenliste">
+        <table id="editClasslist" class="table buf-table klassenliste">
             <tr>
                 <th class="width6 align_left col_0"></th>
                 <th class="width30 align_left col_1 col_lastname"><p><strong>Name</strong></p></th>
@@ -37,7 +37,7 @@
                 </td>
                 <!-- Das Geschlecht und die Radiobuttons für das Geschlecht -->
                 <td class="col_3 col_gender textaligncenter">
-                    <span class="content"><?php echo $student['gender']; ?></span>
+                    <span class="content"><?php echo $student['gender'] == 'female' ? 'weiblich' : 'männlich' ; ?></span>
                     <select name="gender" class="gender form-control">
                         <option value="male">männlich</option>
                         <option value="female">weiblich</option>

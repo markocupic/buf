@@ -8,8 +8,8 @@
     </div>
 </div>
 <div style="overflow-x:auto;">
-<table id="Mittelwerttabelle" class="beurteilungstabelle">
-    <tr>
+<table id="Mittelwerttabelle" class="buf-table mittelwerttabelle">
+    <tr class="row_1">
         <td style="width:18%">&nbsp;</td>
         <td style="width:18%">&nbsp;</td>
         <?php for($i=1;$i<9;$i++): ?>

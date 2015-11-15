@@ -1,25 +1,26 @@
 @green: #58BA47;
-/*layout.inc.css*/
+
 body {
   background-color: #e5e5e5;
 }
 
 .container-fluid {
   max-width: 1200px;
-  padding:0;
+  padding: 0;
 }
 
-
 #header {
+  background-color: #fff;
   h1 {
     padding-top: 0;
     margin-top: 0;
-
     font-size: 28px;
+    font-size: 1.75rem;
     color: #BA4E3B;
   }
   h2 {
     font-size: 16px;
+    font-size: 1rem;
     color: #555;
     margin-bottom: 0;
   }
@@ -33,6 +34,7 @@ body {
     }
   }
   .first-row {
+    margin-bottom: 10px;
     .right-section {
       * {
         text-align: right;
@@ -45,33 +47,22 @@ body {
       }
     }
   }
-
-  background-color: #fff;
-  position: relative;
   > .inside {
-    padding: 20px 20px 0 20px;
+    padding: 20px 15px 0 15px;
   }
 }
 
 #subheader {
-  margin-top: 10px;
-  margin-left: -20px;
-  margin-right: -20px;
+  margin-left: -15px;
+  margin-right: -15px;
   height: 52px;
   overflow: hidden;
   background-color: #f5f5f5;
-  border-color: #ddd;
   .left-section {
-    a, li {
-      color: #333;
-    }
-    top: 4px;
-    font-size: 12px;
-    .fa {
-      color: #333;
+    a, li, .fa {
       font-size: 12px;
-      padding-top: 4px;
-      padding-bottom: 4px;
+      line-height: 26px;
+      margin: 0;
     }
   }
 
@@ -96,7 +87,6 @@ body {
     }
     .fa:hover {
       background-color: #444;
-
     }
     .fa-sign-out, .fa-sign-in {
       background-color: #F4654D;
@@ -111,16 +101,22 @@ body {
   }
 }
 
+#container {
+  min-height: 400px;
+  background-color: #fff;
+  overflow: hidden;
+}
+
 #main {
-  .list-group{
-    max-width:700px;
+  .list-group {
+    max-width: 700px;
   }
 
   .fa {
     font-size: 0.875rem;
   }
   > .inside {
-    padding: 20px;
+    padding: 15px;
   }
   .dashboard .fa {
     padding-right: 5px;
@@ -128,6 +124,10 @@ body {
 
   }
   table {
+    border-collapse: collapse;
+    td, th {
+      border: 1px solid #ddd;
+    }
     .fa {
       font-size: 1rem;
     }
@@ -137,201 +137,72 @@ body {
     .fa-close {
       color: red;
     }
-
   }
-}
-
-#container {
-  min-height: 400px;
-  background-color: #fff;
-  overflow: hidden;
 }
 
 #footer {
   border-bottom: 4px solid #BA4E3B;
-  background-color: #fff;
   background-color: #302d2d;
 
   > .inside {
-    padding: 20px;
+    padding: 15px;
   }
   * {
-    color: #fff !important;
+    color: #fff;
   }
-}
-
-hr {
-  border: solid #999 1px;
-  height: 1px;
-}
-
-table {
-  border-collapse: collapse;
-  td, th {
-    padding: 5px;
-    border: 1px solid #ddd;
-    vertical-align: middle;
-  }
-}
-
-.invisible {
-  display: none;
-}
-
-.float_left {
-  float: left;
-}
-
-.float_right {
-  float: right;
-}
-
-.clearing {
-  clear: both;
-}
-
-.textalignbottom {
-  vertical-align: bottom !important;
-}
-
-.textaligncenter {
-  text-align: center;
-}
-
-.align_right {
-  text-align: right !important;
 }
 
 .align_left {
   text-align: left !important;
 }
 
-.width5 {
-  width: 5% !important;
+.align_right {
+  text-align: right !important;
 }
 
-.width6 {
-  width: 6% !important;
+.invisible {
+  display: none;
 }
 
-.width7 {
-  width: 7% !important;
-}
-
-.width5 {
-  width: 5% !important;
-}
-
-.width6 {
-  width: 6% !important;
-}
-
-.width7 {
-  width: 7% !important;
-}
-
-.width8 {
-  width: 8% !important;
-}
-
-.width9 {
-  width: 9% !important;
-}
-
-.width10 {
-  width: 9% !important;
-}
-
-.width20 {
-  width: 20% !important;
-}
-
-.width25 {
-  width: 25% !important;
-}
-
-.width30 {
-  width: 30% !important;
-}
-
-.width40 {
-  width: 40% !important;
-}
-
-.width50 {
-  width: 50% !important;
-}
-
-.width60 {
-  width: 60% !important;
-}
-
-.width70 {
-  width: 70% !important;
-}
-
-.width80 {
-  width: 80% !important;
-}
-
-.width90 {
-  width: 90% !important;
-}
-
-.width100 {
-  width: 100% !important;
+/** General settings for all tables **/
+.buf-table {
+  width: 100%;
+  min-width: 680px;
+  th {
+    height: 3.25rem !important;
+    vertical-align: middle !important;
+    padding: 0 0.3125rem;
+  }
+  td {
+    height: 3.25rem !important;
+    vertical-align: middle !important;
+    text-align: center;
+    padding: 0 0.3125rem;
+  }
+  td.odd {
+    background-color: #f5f5f5;
+  }
+  .fa-close, .fa-pencil {
+    cursor: pointer;
+  }
+  .description {
+    height: 13rem !important;
+    background-repeat: no-repeat;
+    background-position: bottom center;
+    text-indent: -9999px;
+    padding: 0.3125rem;
+  }
 }
 
 /**************** Beurteilungstabelle ***************************/
 .beurteilungstabelle {
 
-  width: 100%;
-  min-width: 680px;
-  table-layout: fixed;
-  border-collapse: collapse;
-  border-collapse: collapse;
-
-  .description {
-    height: 17em !important;
-    background-repeat: no-repeat;
-    background-position: bottom center;
-    text-indent: -9999px;
-    padding: 0.5em;
-  }
-  td {
-    height: 4em;
-    text-align: center;
-    vertical-align: middle !important;
-    text-align: center;
-    overflow: hidden;
-  }
-  td.odd {
-    background-color: #f5f5f5;
-  }
-
-
-  .edit_icon, .delete_icon {
-    cursor: pointer;
-  }
-
   .name_col {
-    width: 16%;
     text-align: left;
-    padding: 0 5px;
+    padding: 0 0.3125rem;
   }
 
-  .skillCell {
-    width: 7%;
-  }
-
-  .edit_col, .delete_col {
-    padding: 0 !important;
-    width: 6% !important;
-  }
-
-
- .error
-  {
+  .error {
     background-color: orange;
   }
 
@@ -361,11 +232,11 @@ table {
   }
 }
 
-.kompetenzen-accordion{
-  ul{
+.kompetenzen-accordion {
+  ul {
     padding-left: 15px;
   }
-  li{
+  li {
     list-style: disc;
   }
 }
@@ -392,11 +263,6 @@ table {
 /**
   /*Beurteilung editieren*/
 
-/*Mittelwerttabelle*/
-table#Mittelwerttabelle td {
-  padding: 1em;
-}
-
 /* Strichliste*/
 #Strichliste {
   min-width: 1000px;
@@ -415,91 +281,186 @@ table#Mittelwerttabelle td {
 /* End Strichliste*/
 
 /* Ajax Strichliste*/
-#InfoBox {
-  width: 18em;
-  font-size: 1em;
-  padding: 0.84em;
+
+#tallySheetModal {
+  visibility: hidden;
   position: fixed;
-  top: 40%;
-  overflow: hidden;
-  background-color: #000000;
-  font-family: Verdana, Arial, Helvetica, sans-serif;
-  color: #FFFFFF;
-  z-index: 90;
-}
+  width:100%;
+  height:0;
+  z-index: 1000;
+  opacity:0;
 
-#InfoBox th, #InfoBox td {
-  border: 0;
-}
+  .content-box {
+    opacity: 90;
+    max-width:95%;
+    position:relative;
+    top: 20px;
+    z-index:1200;
+    width: 18rem;
+    min-height: 200px;
+    margin-left: auto;
+    margin-right: auto;
+    background-color: #333;
+    color: #FFFFFF;
+    z-index: 1100;
+    border-radius: 4px;
 
-#InfoBox td {
-  padding-top: 5px;
-  line-height: 1.5em;
-}
+    th, td {
+      border: 0;
+      padding: 10px;
+    }
 
-#InfoBox th {
-  border-bottom: 1px solid #fff;
-  padding-bottom: 1em;
-}
+    td {
+      padding-top: 5px;
+      line-height: 1.5em;
+    }
 
-#InfoBox table {
-  width: 100%;
-  margin: 0;
-}
+    th {
+      border-bottom: 1px solid #fff;
+      padding-bottom: 1em;
+    }
 
-#InfoBox .blue {
-  color: #3399FF;
-  line-height: 2em;
-  font-size: 14px;
-}
+    table {
+      width: 100%;
+      margin: 0;
+    }
 
-#InfoBox {
-  .red {
-    color: #FF9900;
-  }
+    .blue {
+      color: #3399FF;
+      line-height: 2em;
+      font-size: 14px;
+    }
 
-  .green {
-    color: #00CC00;
+    .red {
+      color: #FF9900;
+    }
+
+    .green {
+      color: #00CC00;
+    }
   }
 }
 
 /* End Ajax Strichliste*/
 
 /*Ajax Schueler Bearbeien*/
+#editClasslist {
+  td.active .content {
+    display: none;
+  }
 
-#editClasslist .submit_row {
-  padding: 2px 4px;
-  margin: 0;
+  td .gender,
+  td .text-input,
+  td .submit_row,
+  td.active .edit_row {
+    display: none;
+  }
+
+  td.active {
+    .gender, .text-input, .submit_row {
+      display: inline;
+    }
+  }
+  .edit_row {
+    padding: 0 5px;
+  }
+  .col_4, .col_5 {
+    * {
+      padding: 0;
+    }
+  }
 }
 
-#editClasslist td.active .content {
-  display: none;
+.width1 {
+  width: 1%;
 }
 
-#editClasslist td .gender,
-#editClasslist td .text-input,
-#editClasslist td .submit_row,
-#editClasslist td.active .edit_row {
-  display: none;
+.width2 {
+  width: 2%;
 }
 
-#editClasslist td.active .gender,
-#editClasslist td.active .text-input,
-#editClasslist td.active .submit_row {
-  display: inline;
+.width3 {
+  width: 3%;
 }
 
-.display-none {
-  display: none;
+.width4 {
+  width: 4%;
 }
 
-.display_inline {
-  display: inline;
+.width5 {
+  width: 5%;
 }
 
-td > p {
-  line-height: 1em !important;
-  margin: 0 !important;
+.width6 {
+  width: 6%;
+}
+
+.width7 {
+  width: 7%;
+}
+
+.width8 {
+  width: 8%;
+}
+
+.width9 {
+  width: 9%;
+}
+
+.width10 {
+  width: 10%;
+}
+
+.width11 {
+  width: 11%;
+}
+
+.width12 {
+  width: 12%;
+}
+
+.width13 {
+  width: 13%;
+}
+
+.width14 {
+  width: 14%;
+}
+
+.width15 {
+  width: 15%;
+}
+
+.width16 {
+  width: 16%;
+}
+
+.width17 {
+  width: 17%;
+}
+
+.width18 {
+  width: 18%;
+}
+
+.width19 {
+  width: 19%;
+}
+
+.width20 {
+  width: 15%;
+}
+
+.width30 {
+  width: 15%;
+}
+
+.width40 {
+  width: 15%;
+}
+
+.width50 {
+  width: 15%;
 }
 
 /*End Ajax Schueler Bearbeien*/

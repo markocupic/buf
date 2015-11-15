@@ -1,13 +1,13 @@
-<table class="beurteilungstabelle table">
+<table class="beurteilungstabelle table buf-table">
     <!-- row 1 -->
     <tr>
-        <td id="requestStatusBox" class="name_col"><p><span class="fa fa-exchange"></span> Saving data...</p></td>
-        <td class="name_col">&nbsp;</td>
+        <td id="requestStatusBox" class="name_col width16"><p><span class="fa fa-exchange"></span> Saving data...</p></td>
+        <td class="name_col width16">&nbsp;</td>
         <?php for ($i = 1; $i < 9; $i++): ?>
-            <td id="skillHead_<?php echo $i; ?>" style="background-image: url('files/buf/images/gd/images.php?bgcolor=bright&amp;kriterium=<?php echo $i; ?>'); ?>" class="description col_<?php echo $i; ?>">&nbsp;</td>
+            <td id="skillHead_<?php echo $i; ?>" style="background-image: url('files/buf/images/gd/images.php?bgcolor=bright&amp;kriterium=<?php echo $i; ?>'); ?>" class="width7 description col_<?php echo $i; ?>">&nbsp;</td>
         <?php endfor; ?>
-        <td class="edit_col">&nbsp;</td>
-        <td class="delete_col">&nbsp;</td>
+        <td class="edit_col width7">&nbsp;</td>
+        <td class="delete_col width7">&nbsp;</td>
     </tr>
     <!-- row 2 -->
     <tr>

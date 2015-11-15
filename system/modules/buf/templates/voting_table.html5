@@ -226,7 +226,6 @@
         </p>
         <?php endif; ?>
     </div>
-    <div class="clearing"></div>
 </div>
 
 <script>

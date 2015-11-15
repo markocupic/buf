@@ -236,7 +236,7 @@ class VotingModel extends \Model
               $objVoting = \Database::getInstance()->prepare('SELECT * FROM tl_voting WHERE student = ? AND skill' . $skillId . ' > ? ORDER BY id')->execute($studentId, '0');
               if ($objVoting->numRows)
               {
-                     $output = "<table>";
+                     $output = '<div id="tallySheetModal"><div class="content-box"><table>';
                      $i = 0;
                      while ($objVoting->next())
                      {
@@ -248,7 +248,7 @@ class VotingModel extends \Model
                             }
                             $output .= "<tr><td><strong><span class=\"red strong\">" . $objVoting->$skill . "&nbsp;</span></strong></td><td class=\"green strong\">&nbsp;" . \SubjectModel::findByPk($objVoting->subject)->acronym . "&nbsp;</td><td class=\"strong\">&nbsp;" . substr(\TeacherModel::findByPk($objVoting->teacher)->firstname, 0, 1) . ". " . \TeacherModel::findByPk($objVoting->teacher)->lastname . "</td></tr>";
                      }
-                     $output .= "</table>";
+                     $output .= "</table></div></div>";
               }
               return $output;
        }
