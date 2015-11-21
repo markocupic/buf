@@ -3,23 +3,27 @@
 <h3>Beurteilen</h3>
 <div class="list-group">
 <a class="list-group-item" title="neue Beurteilung abgeben" href="<?php echo $this->hrefNewVoting; ?>">
-<span class="fa fa-plus"></span>Neue Beurteilung abgeben
+    <dic class="float-left"><span class="fa fa-plus"></span>Neue Beurteilung abgeben</dic>
+    <div class="float-right"><span class="label label-success">new</span></div>
+    <div class="clearing"></div>
 </a>
 </div>
 
 <h3>Meine Beurteilungen</h3>
-
-<?php if ($lastChange = \VotingModel::getLastChange($this->User->id, 0, 0, 0, 'teacher')): ?>
-<!-- Last change -->
-<p>Deine letzte Bewertung stammt vom <span style="font-weight:bold"><?php echo \Date::parse('d.m.Y', $lastChange); ?></span>.</p>
-<?php endif; ?>
-
 <div class="list-group">
     <?php foreach ($this->myVotings as $voting): ?>
+    <?php $lastChange = \VotingModel::getLastChange($voting['teacherId'], $voting['subjectId'], $voting['classId']); ?>
+    <?php $lastChange = round((time() - $lastChange)/86400,0) ?>
+    <?php $lastChange = $lastChange == 0 ? 'heute' : sprintf('vor %s d', $lastChange); ?>
        <a class="list-group-item" title="bearbeiten" href="<?php echo $this->hrefVotingTable . setQueryString(array('teacher' => $voting['teacherId'], 'subject' => $voting['subjectId'], 'class' => $voting['classId'])); ?>">
-        <span class="fa fa-pencil"></span><?php echo $voting["classname"] . " " . $voting["subjectname"]; ?>
-        bearbeiten
-        </a>
+           <div class="float-left"><span class="fa fa-pencil"></span></div>
+           <div class="float-left">
+               <?php echo $voting["classname"] . "{{br}}" . $voting["subjectname"]; ?>
+           </div>
+           <div class="float-right"><span class="label label-info"><?= $lastChange ?></span></div>
+           <div class="clearing"></div>
+
+       </a>
     <?php endforeach; ?>
     <?php if(!count($this->myVotings)): ?>
     <p class="list-group-item">Du hast noch keine Beurteilungen abgegeben.</p>
@@ -32,20 +36,29 @@
 <?php if($this->votingsOnMyClass): ?>
 <div class="list-group">
     <?php foreach  ($this->votingsOnMyClass as $voting): ?>
+    <?php $lastChange = \VotingModel::getLastChange($voting['teacherId'], $voting['subjectId'], $voting['classId']); ?>
+    <?php $lastChange = round((time() - $lastChange)/86400,0) ?>
+    <?php $lastChange = $lastChange == 0 ? 'heute' : sprintf('vor %s d', $lastChange); ?>
     <?php if ($voting["teacherId"] == $this->User->id): ?>
-        <a class="list-group-item" title="bearbeiten" href="<?php echo $this->hrefVotingTable . setQueryString(array('teacher' => $voting['teacherId'], 'subject' => $voting['subjectId'], 'class' => $voting['classId'])); ?>">
-        <span class="fa fa-pencil"></span>
-        <?php echo \ClassModel::getName($voting["classId"]) ." ". \SubjectModel::getName($voting["subjectId"]);?>
-         - Beurteilung durch: <?php echo \TeacherModel::getFullName($voting["teacherId"]); ?>
-        bearbeiten
-        </a>
+    <a class="list-group-item" title="bearbeiten" href="<?php echo $this->hrefVotingTable . setQueryString(array('teacher' => $voting['teacherId'], 'subject' => $voting['subjectId'], 'class' => $voting['classId'])); ?>">
+        <div class="float-left"><span class="fa fa-pencil"></span></div>
+        <div class="float-left">
+            <?= \ClassModel::getName($voting["classId"]) ."{{br}}". \SubjectModel::getName($voting["subjectId"]) ?>{{br}}
+            LP: <?php echo \TeacherModel::getFullName($voting["teacherId"]); ?>
+        </div>
+        <div class="float-right"><span class="label label-info"><?= $lastChange ?></span></div>
+        <div class="clearing"></div>
+    </a>
     <?php else: ?>
-        <a class="list-group-item" title="ansehen" href="<?php echo $this->hrefVotingTable . setQueryString(array('teacher' => $voting['teacherId'], 'subject' => $voting['subjectId'], 'class' => $voting['classId'])); ?>">
-        <span class="fa fa-eye"></span>
-        <?php echo \ClassModel::getName($voting["classId"]) ." ". \SubjectModel::getName($voting["subjectId"]);?>
-         - Beurteilung durch: <?php echo \TeacherModel::getFullName($voting["teacherId"]); ?>
-        ansehen
-        </a>
+    <a class="list-group-item" title="ansehen" href="<?php echo $this->hrefVotingTable . setQueryString(array('teacher' => $voting['teacherId'], 'subject' => $voting['subjectId'], 'class' => $voting['classId'])); ?>">
+        <div class="float-left"><span class="fa fa-eye"></span></div>
+        <div class="float-left">
+            <?php echo \ClassModel::getName($voting["classId"]) ."{{br}}". \SubjectModel::getName($voting["subjectId"]);?>{{br}}
+            LP: <?= \TeacherModel::getFullName($voting["teacherId"]) ?>
+        </div>
+        <div class="float-right"><span class="label label-default"><?= $lastChange ?></span></div>
+        <div class="clearing"></div>
+    </a>
     <?php endif; ?>
     <?php endforeach; ?>
 </div>
@@ -59,22 +72,28 @@
 <?php endif; ?>
 
 
-<h3>Administrative Aufgaben für den Klassenlehrer</h3>
+<h3>Für den Klassenlehrer</h3>
 <div class="list-group">
     <a class="list-group-item" title="Klassenliste bearbeiten" href="<?php echo $this->editClasslistLink; ?>">
-    <span class="fa fa-pencil"></span>
-    Die Klassenliste
-    bearbeiten
+        <div class="float-left"><span class="fa fa-pencil"></span></div>
+        <div class="float-left">
+            Die Klassenliste bearbeiten
+        </div>
+        <div class="clearing"></div>
     </a>
     <a class="list-group-item" title="Mittelwerte der Stammklasse" href="<?php echo $this->averageTableLink; ?>">
-    <span class="fa fa-eye"></span>
-    Mittelwerte (&quot;Sammelblatt&quot;) meiner Stammklasse
-    ansehen
+        <div class="float-left"><span class="fa fa-eye"></span></div>
+        <div class="float-left">
+            Mittelwert-Tabelle{{br}}meiner Stammklasse ansehen
+        </div>
+        <div class="clearing"></div>
     </a>
     <a class="list-group-item" title="Strichliste" href="<?php echo $this->tallySheetLink; ?>">
-    <span class="fa fa-pencil"></span>
-    Strichliste (&quot;Sammelblatt&quot;) meiner Stammklasse
-    ansehen
+        <div class="float-left"><span class="fa fa-eye"></span></div>
+        <div class="float-left">
+            Strichliste &quot;Sammelblatt&quot;{{br}}meiner Stammklasse ansehen
+        </div>
+        <div class="clearing"></div>
     </a>
 </div>
 

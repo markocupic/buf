@@ -40,7 +40,7 @@
                 event.stopPropagation();
                 self.editRow(this);
             });
-            
+
             // Add events
             $('tr.row_student td.col_5 .submit_row').on('click', function (event) {
                 event.stopPropagation();
@@ -56,7 +56,7 @@
          * @param elIcon
          */
         this.editRow = function (elIcon) {
-            resetTable();
+            _resetTable();
 
             var elRow = $(elIcon).closest('tr');
             $(elRow).find('td').each(function () {
@@ -69,7 +69,7 @@
                         name: 'lastname',
                         type: 'text',
                         value: strFieldValue
-                    }).appendTo($(this));
+                    }).hide().appendTo($(this)).fadeIn();
                 }
 
                 if ($(this).hasClass('col_firstname')) {
@@ -78,14 +78,14 @@
                         name: 'firstname',
                         type: 'text',
                         value: strFieldValue
-                    }).appendTo($(this));
+                    }).hide().appendTo($(this)).fadeIn();
                 }
 
                 if ($(this).hasClass('col_gender')) {
                     var elInputGender = $('<select>', {
                         'class': 'gender form-control',
                         name: 'gender'
-                    }).appendTo($(this));
+                    });
                     var objGender = {
                         'female': 'weiblich',
                         'male': 'männlich'
@@ -98,7 +98,9 @@
                     } else {
                         elInputGender.find('option')[1].selected = true;
                     }
-                }
+                    $(elInputGender).hide().appendTo($(this)).fadeIn();
+
+            }
             });
         };
 
