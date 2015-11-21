@@ -91,8 +91,7 @@ class TallySheetController extends \Frontend
                                    if ($rowAverage["average"])
                                    {
                                           $js .= sprintf("
-document.id('Zelle_%s').addEvent('mouseenter', function(event) {
-       event.stop();
+$('#Zelle_%s').on('click', function(event) {
        event.stopPropagation();
        objTallySheet.showInfoBox(this,%s,%s);
 });

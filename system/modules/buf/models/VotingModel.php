@@ -232,11 +232,12 @@ class VotingModel extends \Model
               {
                      return false;
               }
+              $objModal = new \FrontendTemplate('tallysheet_modal');
+              $rows = '';
 
               $objVoting = \Database::getInstance()->prepare('SELECT * FROM tl_voting WHERE student = ? AND skill' . $skillId . ' > ? ORDER BY id')->execute($studentId, '0');
               if ($objVoting->numRows)
               {
-                     $output = '<div id="tallySheetModal"><div class="content-box"><table>';
                      $i = 0;
                      while ($objVoting->next())
                      {
@@ -244,14 +245,21 @@ class VotingModel extends \Model
                             $i++;
                             if ($i == 1)
                             {
-                                   $output .= "<tr><th colspan=\"3\"><span class=\"blue strong\">KRITERIUM " . $skillId . "</span><br /><span class=\"green strong\">Schueler: " . substr(\StudentModel::findByPk($studentId)->firstname, 0, 1) . ". " . \StudentModel::findByPk($studentId)->lastname . "</span></th></tr>";
+                                   $objModal->skill = $GLOBALS['TL_LANG']['tl_voting']['skill' . $skillId][0];
+                                   $objModal->student = \StudentModel::findByPk($studentId)->firstname . ' ' . \StudentModel::findByPk($studentId)->lastname;
                             }
-                            $output .= "<tr><td><strong><span class=\"red strong\">" . $objVoting->$skill . "&nbsp;</span></strong></td><td class=\"green strong\">&nbsp;" . \SubjectModel::findByPk($objVoting->subject)->acronym . "&nbsp;</td><td class=\"strong\">&nbsp;" . substr(\TeacherModel::findByPk($objVoting->teacher)->firstname, 0, 1) . ". " . \TeacherModel::findByPk($objVoting->teacher)->lastname . "</td></tr>";
+                            $rows .= '<tr><td><strong><span class="red strong">' . $objVoting->$skill . '&nbsp;</span></strong></td><td class="green strong">&nbsp;' . \SubjectModel::findByPk($objVoting->subject)->acronym . '&nbsp;</td><td class="strong">&nbsp;' . substr(\TeacherModel::findByPk($objVoting->teacher)->firstname, 0, 1) . '. ' . \TeacherModel::findByPk($objVoting->teacher)->lastname . '</td></tr>';
+
                      }
-                     $output .= "</table></div></div>";
+                     $objModal->rows = $rows;
+                     $html = $objModal->parse();
+                     return $html;
               }
-              return $output;
+
        }
+
+
+
 
        /**
         * @return bool

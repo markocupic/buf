@@ -229,7 +229,8 @@
 </div>
 
 <script>
-    window.addEvent('domready', function(event){
+(function ($) {
+    $().ready(function(event) {
         var isOwner = <?php echo ($this->User->id == \Input::get('teacher')) ? 'true' : 'false'; ?>;
         var isClassTeacher = <?php echo (\TeacherModel::isClassTeacher()) ? 'true' : 'false'; ?>;
         EvalTable = new EditTable(isOwner, isClassTeacher);
@@ -238,11 +239,14 @@
         EvalTable.subject = '<?php echo Input::get("subject"); ?>';
         EvalTable.class = '<?php echo Input::get("class"); ?>';
     });
+})(jQuery);
 </script>
 
-<script type="text/javascript">
-    window.addEvent('domready', function() {
-        $$('.skillDetailsLayer .navlist li a').addEvent('click', function (event) {
+<script>
+(function ($) {
+
+    $().ready(function() {
+        $('.skillDetailsLayer .navlist li a').on('click', function (event) {
             var index = this.innerHTML;
             $$('.skillDetailsLayer .navlist li.active').removeClass('active');
             $$('.skillDetailsLayer .navlist li')[index-1].addClass('active');
@@ -258,16 +262,17 @@
 
     function displaySkillDetails(index) {
 
-        $$('div.skillDetails').each(function (el) {
-            el.setStyles({
+        $('div.skillDetails').each(function (el) {
+            el.css({
                 'display': 'none'
             });
         });
         el = $('skillDetails_' + index);
-        el.setStyle('opacity','0');
-        el.setStyle('display','block');
-        el.fade('in');
+        el.css('opacity', '0');
+        el.css('display', 'block');
+        el.fadeIn();
    }
 
+})(jQuery);
 
 </script>

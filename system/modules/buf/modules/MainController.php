@@ -57,6 +57,14 @@ class MainController extends \Module
 
               if (TL_MODE == 'FE')
               {
+                     // Load languages
+                     \System::loadLanguageFile('tl_class');
+                     \System::loadLanguageFile('tl_member');
+                     \System::loadLanguageFile('tl_settings');
+                     \System::loadLanguageFile('tl_student');
+                     \System::loadLanguageFile('tl_subject');
+                     \System::loadLanguageFile('tl_voting');
+
 
                      if (FE_USER_LOGGED_IN && \Input::get('isAjax') == 'true')
                      {
@@ -286,7 +294,6 @@ class MainController extends \Module
                             break;
 
                      case 'voting_table':
-                            $GLOBALS['TL_JAVASCRIPT'][] = '/files/buf/js/votingTable.js';
                             $blnError = false;
                             if (!is_numeric(\Input::get('teacher')) || !is_numeric(\Input::get('class')) || !is_numeric(\Input::get('subject')))
                             {
@@ -377,7 +384,6 @@ class MainController extends \Module
                                    $url = $this->generateFrontendUrl($objPage->row(), '/do/dashboard');
                                    $this->redirect($url);
                             }
-                            $GLOBALS['TL_JAVASCRIPT'][] = '/files/buf/js/tallySheet.js';
                             $objController = new \TallySheetController($this);
                             $this->Template = $objController->setTemplate($this->Template);
                             break;

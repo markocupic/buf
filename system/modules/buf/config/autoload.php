@@ -64,4 +64,6 @@ TemplateLoader::addFiles(array
 	'login'                => 'system/modules/buf/templates',
 	'start_new_voting'     => 'system/modules/buf/templates',
 	'account_settings'     => 'system/modules/buf/templates',
+	'tallysheet_modal'     => 'system/modules/buf/templates',
+
 ));

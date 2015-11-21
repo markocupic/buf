@@ -22,7 +22,6 @@
             <?php echo $this->subjects; ?>
             </select>
             </div>
-            {{br}}
             <div class="submit_container">
             <input name="weiter" type="submit" value="weiter" class="btn btn-primary"/>
             </div>
