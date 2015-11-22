@@ -151,16 +151,20 @@ body {
     color: #fff;
   }
 }
-.clearing{
-  clear:both;
-  height:0;
+
+.clearing {
+  clear: both;
+  height: 0;
 }
-.float-left{
-  float:left;
+
+.float-left {
+  float: left;
 }
-.float-right{
-  float:right;
+
+.float-right {
+  float: right;
 }
+
 .align_left {
   text-align: left !important;
 }
@@ -286,8 +290,8 @@ body {
     background-color: #ffcccc;
   }
 }
-/* End Strichliste*/
 
+/* End Strichliste*/
 
 /*Ajax Schueler Bearbeien*/
 #editClasslist {
@@ -317,99 +321,52 @@ body {
   }
 }
 
-.width1 {
-  width: 1%;
+/** Mixin loop for:  .width100{width:100%;} etc. **/
+.width-loop(@counter) when (@counter > 0) {
+  .width-loop((@counter - 1)); // next iteration
+  .width@{counter} {
+    width: ~"@{counter}%;"
+  }
+; // code for each iteration
+}
+.width-loop(100);
+// launch the loop
+
+
+
+
+#bewertungsStatistik{
+  border: 1px solid #ddd;
+  border-radius:4px;
+  width:100%;
+  max-width: 700px;
+}
+.morris-hover {
+  position: absolute;
+  z-index: 1000
 }
 
-.width2 {
-  width: 2%;
+.morris-hover.morris-default-style {
+  border-radius: 10px;
+  padding: 6px;
+  color: #666;
+  background: rgba(255, 255, 255, 0.8);
+  border: solid 2px rgba(230, 230, 230, 0.8);
+  font-family: sans-serif;
+  font-size: 12px;
+  text-align: center
 }
 
-.width3 {
-  width: 3%;
+.morris-hover.morris-default-style .morris-hover-row-label {
+  font-weight: bold;
+  margin: 0.25em 0
 }
 
-.width4 {
-  width: 4%;
+.morris-hover.morris-default-style .morris-hover-point {
+  white-space: nowrap;
+  margin: 0.1em 0
 }
 
-.width5 {
-  width: 5%;
-}
-
-.width6 {
-  width: 6%;
-}
-
-.width7 {
-  width: 7%;
-}
-
-.width8 {
-  width: 8%;
-}
-
-.width9 {
-  width: 9%;
-}
-
-.width10 {
-  width: 10%;
-}
-
-.width11 {
-  width: 11%;
-}
-
-.width12 {
-  width: 12%;
-}
-
-.width13 {
-  width: 13%;
-}
-
-.width14 {
-  width: 14%;
-}
-
-.width15 {
-  width: 15%;
-}
-
-.width16 {
-  width: 16%;
-}
-
-.width17 {
-  width: 17%;
-}
-
-.width18 {
-  width: 18%;
-}
-
-.width19 {
-  width: 19%;
-}
-
-.width20 {
-  width: 15%;
-}
-
-.width30 {
-  width: 15%;
-}
-
-.width40 {
-  width: 15%;
-}
-
-.width50 {
-  width: 15%;
-}
-
-/*End Ajax Schueler Bearbeien*/
 
 
 
