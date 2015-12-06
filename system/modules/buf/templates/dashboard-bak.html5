@@ -18,9 +18,7 @@
        <a class="list-group-item" title="bearbeiten" href="<?= $this->hrefVotingTable . setQueryString(array('teacher' => $voting['teacherId'], 'subject' => $voting['subjectId'], 'class' => $voting['classId'])) ?>">
            <div class="float-left"><span class="fa fa-pencil"></span></div>
            <div class="float-left">
-               <?= $voting["classname"] . "{{br}}" . $voting["subjectname"] ?>{{br}}
-               Kommentare: <?= \CommentModel::countCommentsFromVotingTable($voting["classId"],$voting["teacherId"],$voting["subjectId"]) ?>
-
+               <?= $voting["classname"] . "{{br}}" . $voting["subjectname"] ?>
            </div>
            <div class="float-right"><span class="label label-info"><?= $lastChange ?></span></div>
            <div class="clearing"></div>
@@ -46,8 +44,7 @@
         <div class="float-left"><span class="fa fa-pencil"></span></div>
         <div class="float-left">
             <?= \ClassModel::getName($voting["classId"]) ."{{br}}". \SubjectModel::getName($voting["subjectId"]) ?>{{br}}
-            LP: <?= \TeacherModel::getFullName($voting["teacherId"]) ?>{{br}}
-            Kommentare: <?= \CommentModel::countCommentsFromVotingTable($voting["classId"],$voting["teacherId"],$voting["subjectId"]) ?>
+            LP: <?= \TeacherModel::getFullName($voting["teacherId"]) ?>
         </div>
         <div class="float-right"><span class="label label-info"><?= $lastChange ?></span></div>
         <div class="clearing"></div>
@@ -57,9 +54,7 @@
         <div class="float-left"><span class="fa fa-eye"></span></div>
         <div class="float-left">
             <?= \ClassModel::getName($voting["classId"]) ."{{br}}". \SubjectModel::getName($voting["subjectId"]) ?>{{br}}
-            LP: <?= \TeacherModel::getFullName($voting["teacherId"]) ?>{{br}}
-            Kommentare: <?= \CommentModel::countCommentsFromVotingTable($voting["classId"],$voting["teacherId"],$voting["subjectId"]) ?>
-
+            LP: <?= \TeacherModel::getFullName($voting["teacherId"]) ?>
         </div>
         <div class="float-right"><span class="label label-default"><?= $lastChange ?></span></div>
         <div class="clearing"></div>
@@ -108,136 +103,22 @@
 <?php if(\TeacherModel::getOwnClass()): ?>
 <h3>Bewertungs-Statistik für die Klasse <?= \ClassModel::findByPk(\TeacherModel::getOwnClass())->name ?></h3>
 <p>Bewertungen in den letzten 180 d: </p>
-<div id="bewertungsStatistik" style="min-width: 310px; height: 400px; margin: 0"></div>
-<script src="https://code.highcharts.com/highcharts.js"></script>
-<script src="https://code.highcharts.com/modules/exporting.js"></script>
+<div id="bewertungsStatistik" style="height: 300px;"></div>
 
-<?php
-        $strKeys = '';
-        $strValues = '';
-        $arrDat = \VotingModel::getVotingsAsJSON($this->User->id);
-        foreach($arrDat as $v)
-        {
-            $strKeys .= '"'. $v['x'] . '",';
-            $strValues .= $v['y'] . ',';
-        }
-?>
 <script>
-//http://www.highcharts.com/demo/column-basic/grid-light
-//API: http://api.highcharts.com/highcharts#xAxis
-$(function () {
-    $('#bewertungsStatistik').highcharts({
-        chart: {
-            type: 'column'
-        },
-        title: {
-            text: 'Bewertungsstatistik'
-        },
-        subtitle: {
-            //text: 'Erstellte Bewertungen im letzten halben Jahr'
-        },
-        xAxis: {
-            categories: [<?= $strKeys ?>],
-            crosshair: true
-        },
-        yAxis: {
-            min: 0,
-            title: {
-                text: 'Anzahl'
-            }
-        },
-        tooltip: {
-            formatter: function () {
-                return 'Am <b>' + this.x + '</b> wurden <b>' + this.y + '</b> Bewertungen gemacht.';
-            }
-        },
-        plotOptions: {
-            column: {
-                pointPadding: 0.2,
-                borderWidth: 0
-            }
-        },
-        series: [{
-            name: 'Bewertungen pro Tag',
-            data: [<?= $strValues ?>]
-        }]
+//Morris charts snippet - js
+// http://jsbin.com/uzosiq/258/embed?html,css,js,output
+$.getScript('http://cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js',function(){
+    $.getScript('http://cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.0/morris.min.js',function(){
+
+        Morris.Bar({
+            element: 'bewertungsStatistik',
+            data: <?= \VotingModel::getVotingsAsJSON($this->User->id) ?>,
+            xkey: 'y',
+            ykeys: ['a'],
+            labels: ['Bewertungen']
+        });
     });
 });
-
-
-
-/**
- * Grid-light theme for Highcharts JS
- * @author Torstein Honsi
- */
-
-// Load the fonts
-Highcharts.createElement('link', {
-    href: '//fonts.googleapis.com/css?family=Dosis:400,600',
-    rel: 'stylesheet',
-    type: 'text/css'
-}, null, document.getElementsByTagName('head')[0]);
-
-Highcharts.theme = {
-    colors: ["#7cb5ec", "#f7a35c", "#90ee7e", "#7798BF", "#aaeeee", "#ff0066", "#eeaaee",
-        "#55BF3B", "#DF5353", "#7798BF", "#aaeeee"],
-    chart: {
-        backgroundColor: null,
-        style: {
-            fontFamily: "Open Sans, sans-serif"
-        }
-    },
-    title: {
-        style: {
-            fontSize: '16px',
-            fontWeight: 'bold',
-            textTransform: 'uppercase'
-        }
-    },
-    tooltip: {
-        borderWidth: 0,
-        backgroundColor: 'rgba(219,219,216,0.8)',
-        shadow: false
-    },
-    legend: {
-        itemStyle: {
-            fontWeight: 'bold',
-            fontSize: '13px'
-        }
-    },
-    xAxis: {
-        gridLineWidth: 1,
-        labels: {
-            style: {
-                fontSize: '12px'
-            }
-        }
-    },
-    yAxis: {
-        minorTickInterval: 'auto',
-        title: {
-            style: {
-                textTransform: 'uppercase'
-            }
-        },
-        labels: {
-            style: {
-                fontSize: '12px'
-            }
-        }
-    },
-    plotOptions: {
-        candlestick: {
-            lineColor: '#404048'
-        }
-    },
-
-
-    // General
-    background2: '#F0F0EA'
-
-};
-
-// Apply the theme
-Highcharts.setOptions(Highcharts.theme);</script>
+</script>
 <?php endif; ?>

@@ -283,8 +283,17 @@ class BufHelper extends \Controller
         */
        public static function bufReviseTableHook($table = '', $new_records = '', $parent_table = '', $child_tables = '')
        {
-              // at minimum one skill must be > 0
+
               $db = \Database::getInstance();
+
+              // delete empty comments
+              $objStmt = $db->prepare('DELETE FROM tl_comment WHERE comment=?')->execute('');
+              if ($objStmt->affectedRows > 0)
+              {
+                     return true;
+              }
+
+              // at minimum one skill must be > 0
               $objStmt = $db->execute('DELETE FROM tl_voting WHERE (skill1 + skill2 + skill3 + skill4 + skill5 + skill6 + skill7 + skill8) < 1');
               if ($objStmt->affectedRows > 0)
               {
@@ -293,7 +302,6 @@ class BufHelper extends \Controller
 
               // set tl_member.isClassTeacher to '' if the assigned class doesn't exist
               $set = array('class' => NULL, 'isClassTeacher' => '');
-              $db = \Database::getInstance();
               $objStmt = $db->prepare('UPDATE tl_member %s WHERE tl_member.class NOT IN (SELECT id FROM tl_class)')->set($set)->execute();
               if ($objStmt->affectedRows > 0)
               {

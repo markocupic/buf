@@ -194,7 +194,31 @@ class FpdfController extends \System
                      $pdf->SetFillColor(255, 255, 255);
               } //end while
               $pdf->Ln();
-              $pdf->Cell(190, 8, date('j. M Y') . ',  Unterschrift: _________________________________________', 0, '', 'L');
+
+              // Display comments
+              $pdf->SetFont('Arial', 'B', 18);
+              $pdf->Cell(190, 8, 'Kommentare', 0, '', 'L');
+              $pdf->Ln();
+
+              $objStudent = \Database::getInstance()->prepare('SELECT * FROM tl_student WHERE class=? ORDER BY gender, lastname, firstname')->execute($class);
+              while($objStudent->next())
+              {
+                     $objComment = \Database::getInstance()->prepare('SELECT * FROM tl_comment WHERE subject=? AND student=? AND teacher=? LIMIT 0,1')->execute($subject, $objStudent->id, $class);
+                     if($objComment->numRows){
+                            $pdf->SetFont('Arial', 'B', 12);
+                            $pdf->Cell(190, 8, utf8_decode($objStudent->lastname . ' ' . $objStudent->firstname), 0, '', 'L');
+                            $pdf->Ln();
+                            $pdf->SetFont('Arial', '', 11);
+                            $pdf->Write(6, htmlspecialchars_decode(utf8_decode($objComment->comment)));
+                            $pdf->Ln();
+                     }
+              }
+
+              $pdf->SetFont('Arial', '', 11);
+              $pdf->Ln();
+              $pdf->Ln();
+
+              $pdf->Cell(190, 8, \Date::parse('j. M Y') . ',  Unterschrift: _________________________________________', 0, '', 'L');
               $pdf->Output();
        }
 

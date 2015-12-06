@@ -19,3 +19,5 @@ $GLOBALS['TL_LANG']['MOD']['student']['0'] = 'Schüler';
 $GLOBALS['TL_LANG']['MOD']['student']['1'] = 'Schüler bearbeiten';
 $GLOBALS['TL_LANG']['MOD']['voting']['0'] = 'Beurteilungen';
 $GLOBALS['TL_LANG']['MOD']['voting']['1'] = 'Beurteilungen bearbeiten';
+$GLOBALS['TL_LANG']['MOD']['comment']['0'] = 'Kommentare';
+$GLOBALS['TL_LANG']['MOD']['comment']['1'] = 'Kommentare bearbeiten';

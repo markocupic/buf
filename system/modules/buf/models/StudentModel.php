@@ -45,5 +45,23 @@ class StudentModel extends \Model
         return null;
     }
 
+    /**
+     * @param $id
+     * @return mixed|null
+     */
+    public static function getClassnameFromStudentId($id)
+    {
+        $objStudent = static::findByPk($id);
+        if ($objStudent !== null)
+        {
+            $objClass = ClassModel::findByPk($objStudent->class);
+            if ($objClass !== null)
+            {
+                return $objClass->name;
+            }
+        }
+        return null;
+    }
+
 
 }

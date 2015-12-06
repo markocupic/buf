@@ -353,11 +353,12 @@ class VotingModel extends \Model
         return $array;
     }
 
+
     /**
      * @param $teacherId
      * @param int $startTstamp
      * @param int $endTstamp
-     * @return string
+     * @return array
      */
     public static function getVotingsAsJSON($teacherId, $startTstamp=0, $endTstamp=0)
     {
@@ -376,7 +377,7 @@ class VotingModel extends \Model
 
         $arrDat = array();
         foreach ($arrDates as $v) {
-            $arrDat[$v] = array('y' => $v, 'a' => '0');
+            $arrDat[$v] = array('x' => $v, 'y' => '0');
         }
         $objDb = \Database::getInstance()->prepare("
             SELECT
@@ -388,9 +389,9 @@ class VotingModel extends \Model
         ")->execute($startTstamp, \TeacherModel::getOwnClass($teacherId));
 
         while ($objDb->next()) {
-            $arrDat[$objDb->order_date] = (object)array("y" => $objDb->order_date, "a" => $objDb->order_count);
+            $arrDat[$objDb->order_date] = array("x" => $objDb->order_date, "y" => $objDb->order_count);
         }
-        return json_encode(array_values($arrDat));
+        return array_values($arrDat);
     }
 
 }

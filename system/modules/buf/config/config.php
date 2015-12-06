@@ -17,14 +17,25 @@
 $GLOBALS['BE_MOD']['buf'] = array(
     // Beurteilen Und Foerdern  modules
     'class' => array(
-    'tables' => array('tl_class'),
-    'icon' => 'files/buf/images/backend/mgroup.gif'),
-    'student' => array('tables' => array('tl_student'),
-    'icon' => 'files/buf/images/backend/member.gif'),
-    'voting' => array('tables' => array('tl_voting'),
-    'icon' => 'files/buf/images/backend/preview.gif'),
-    'subject' => array('tables' => array('tl_subject'),
-    'icon' => 'files/buf/images/backend/featured.gif')
+        'tables' => array('tl_class'),
+        'icon' => 'files/buf/images/backend/group.png'
+    ),
+    'student' => array(
+        'tables' => array('tl_student'),
+        'icon' => 'files/buf/images/backend/user.png'
+    ),
+    'voting' => array(
+        'tables' => array('tl_voting'),
+        'icon' => 'files/buf/images/backend/star.png'
+    ),
+    'comment' => array(
+        'tables' => array('tl_comment'),
+        'icon' => 'files/buf/images/backend/comments.png'
+    ),
+    'subject' => array(
+        'tables' => array('tl_subject'),
+        'icon' => 'files/buf/images/backend/report.png'
+    )
 );
 
 if(TL_MODE == 'FE')

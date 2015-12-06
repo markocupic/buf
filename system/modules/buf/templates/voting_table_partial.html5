@@ -1,13 +1,15 @@
 <table class="beurteilungstabelle table buf-table">
     <!-- row 1 -->
     <tr>
-        <td class="name_col width16">&nbsp;</td>
-        <td class="name_col width16">&nbsp;</td>
+        <td class="name_col width14">&nbsp;</td>
+        <td class="name_col width15">&nbsp;</td>
         <?php for ($i = 1; $i < 9; $i++): ?>
             <td id="skillHead_<?php echo $i; ?>" style="background-image: url('files/buf/images/gd/images.php?bgcolor=bright&amp;kriterium=<?php echo $i; ?>'); ?>" class="width7 description col_<?php echo $i; ?>">&nbsp;</td>
         <?php endfor; ?>
-        <td class="edit_col width6">&nbsp;</td>
-        <td class="delete_col width6">&nbsp;</td>
+        <td class="edit_col width5">&nbsp;</td>
+        <td class="delete_col width5">&nbsp;</td>
+        <td class="comment_col width5">&nbsp;</td>
+
     </tr>
     <!-- row 2 -->
     <tr>
@@ -18,6 +20,8 @@
         <?php endfor; ?>
         <td>&nbsp;</td>
         <td>&nbsp;</td>
+        <td>&nbsp;</td>
+
     </tr>
     <!-- row 3 -->
     <tr>
@@ -33,6 +37,8 @@
         <?php endfor; ?>
         <td>&nbsp;</td>
         <td>&nbsp;</td>
+        <td>&nbsp;</td>
+
     </tr>
 
     <!-- skills -->
@@ -68,10 +74,16 @@
                     <i class="fa fa-save"></i>
                 </button>
             </td>
-
             <!-- delete col -->
             <td class="delete_col row_<?php echo $Datensatz['student']; ?>"><a href="<?php echo $this->hrefDeleteRowOrCol; ?>" onclick="EvalTable.deleteEntries(this,<?php echo $Datensatz['student']; ?>,'delete_row'); return false;" title="Zeile löschen"><span class="fa fa-close"></span></a></td>
-        </tr>
+
+            <!-- comment col -->
+            <?php
+                $commentClass = (null !== \CommentModel::findComment($Datensatz['student'], $this->teacherId, $this->subjectId)) ? 'fa-comment' : 'fa-comment-o';
+            ?>
+            <td class="comment_col row_<?php echo $Datensatz['student']; ?>"><a href="<?php //echo $this->hrefDeleteRowOrCol; ?>" onclick="EvalTable.getCommentModal(this,<?php echo $Datensatz['student']; ?>,'comment_row'); return false;" title="Kommentar hinterlassen"><span class="fa <?= $commentClass ?>"></span></a></td>
+
+</tr>
     <?php endforeach; ?>
 </table>
 

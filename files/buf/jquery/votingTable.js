@@ -219,6 +219,87 @@
             });
         };
 
+
+        /**
+         *
+         * @param json
+         */
+        this.appearCommentModal = function (json) {
+            $("#commentModal").remove();
+            $('#top').prepend(json.strModal);
+            $("#commentModal").modal('show');
+        };
+
+
+        /**
+         *
+         * @param elementClick
+         * @param studentId
+         */
+        this.getCommentModal = function (elementClick, studentId) {
+            var request = $.ajax({
+                url: '?isAjax=true&act=get_comment_modal',
+                method: 'post',
+                data: {
+                    REQUEST_TOKEN: self.request_token,
+                    student: studentId.toString(),
+                    teacher: self.teacher.toString(),
+                    subject: self.subject.toString()
+                },
+                dataType: 'json',
+
+                beforeSend: function (event, xhr) {
+                    //
+                }
+            });
+            request.done(function (json) {
+                if (json) {
+                    if (json.status == 'success') {
+                        self.appearCommentModal(json);
+                    }
+                }
+            });
+            request.fail(function (jqXHR, textStatus, errorThrown) {
+                alert('Request fehlgeschlagen. Internet-Verbindung überprüfen!');
+            });
+        };
+
+        /**
+         *
+         * @param elementClick
+         * @param studentId
+         */
+        this.saveComment = function (elementClick, studentId) {
+
+            var comment = $('#commentModalCommentValue').val();
+            var request = $.ajax({
+                url: '?isAjax=true&act=save_comment',
+                method: 'post',
+                data: {
+                    REQUEST_TOKEN: self.request_token,
+                    student: studentId.toString(),
+                    teacher: self.teacher.toString(),
+                    subject: self.subject.toString(),
+                    comment: comment
+                },
+                dataType: 'json',
+
+                beforeSend: function (event, xhr) {
+                    //
+                }
+            });
+            request.done(function (json) {
+                if (json) {
+                    if (json.status == 'success') {
+                        //self.appearCommentModal(json);
+                    }
+                }
+            });
+            request.fail(function (jqXHR, textStatus, errorThrown) {
+                alert('Request fehlgeschlagen. Internet-Verbindung überprüfen!');
+            });
+        };
+
         /**
          *
          * @param elRange

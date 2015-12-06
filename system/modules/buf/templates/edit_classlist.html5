@@ -42,7 +42,7 @@
                 <!-- Das Symbol um Schüler zu bearbeiten -->
                 <td class="col_5 textaligncenter">
                     <span class="fa fa-pencil edit_row" title="Namen bearbeiten" alt="edit_row" data-id="<?= $student['id'] ?>"></span>
-                    <button type="button" data-id="<?= $student['id'] ?>" style="padding:1px; width:25px; height:25px;" class="submit_row btn btn-primary">
+                    <button type="button" data-id="<?= $student['id'] ?>" class="submit_row btn btn-primary">
                         <i class="fa fa-save"></i>
                     </button>
                 </td>

@@ -198,6 +198,24 @@ class MainController extends \Module
                      die(json_encode($arrJSON));
               }
 
+
+              // update voting table
+              if (\Input::get('act') == 'get_comment_modal')
+              {
+                     $strModal = \CommentModel::getCommentModal(\Input::post('student'), \Input::post('teacher'), \Input::post('subject'));
+                     $arrJSON = array('status' => 'success', 'strModal' => $strModal);
+                     die(json_encode($arrJSON));
+              }
+
+
+              // save comment
+              if (\Input::get('act') == 'save_comment')
+              {
+                     \CommentModel::saveComment(\Input::post('student'), \Input::post('teacher'), \Input::post('subject'), \Input::post('comment'));
+                     $arrJSON = array('status' => 'success');
+                     die(json_encode($arrJSON));
+              }
+
               // update teacher's deviation tolerance
               if (\Input::get('act') == 'updateTeachersDeviationTolerance')
               {
