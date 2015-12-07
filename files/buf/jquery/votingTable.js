@@ -271,7 +271,7 @@
          */
         this.saveComment = function (elementClick, studentId) {
 
-            var comment = $('#commentModalCommentValue').val();
+            var comment = $.trim($('#commentModalCommentValue').val());
             var request = $.ajax({
                 url: '?isAjax=true&act=save_comment',
                 method: 'post',
@@ -291,7 +291,19 @@
             request.done(function (json) {
                 if (json) {
                     if (json.status == 'success') {
-                        //self.appearCommentModal(json);
+                        var button = $('.row_' + studentId + '.comment_col').find('.fa');
+                        var href = $('.row_' + studentId + '.comment_col').find('a');
+
+                        // Button anpassen
+                        if (comment == '') {
+                            button.removeClass('fa-comment');
+                            button.addClass('fa-comment-o');
+                            href.attr('title', 'Kommentar schreiben');
+                        } else {
+                            button.removeClass('fa-comment-o');
+                            button.addClass('fa-comment');
+                            href.attr('title', 'Kommentar bearbeiten');
+                        }
                     }
                 }
             });

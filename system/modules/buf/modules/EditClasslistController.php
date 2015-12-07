@@ -44,7 +44,7 @@ class EditClasslistController extends \Frontend
      */
     public function setTemplate($objTemplate)
     {
-
+        global $objPage;
         // insert new students
         if (\Input::post('TL_FORM') && $_POST['insert_lastname']) {
             foreach ($_POST['insert_lastname'] as $k => $v) {
@@ -63,7 +63,6 @@ class EditClasslistController extends \Frontend
             $this->reload();
         }
 
-        global $objPage;
 
         $objTemplate->action = $this->generateFrontendUrl($objPage->row(), '/do/edit_classlist');
 
@@ -74,7 +73,6 @@ class EditClasslistController extends \Frontend
 
             $objTemplate->students = $objStudent->fetchAllAssoc();
         }
-
         return $objTemplate;
 
     }

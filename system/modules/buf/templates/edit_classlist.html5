@@ -11,9 +11,9 @@
         <table id="editClasslist" class="table buf-table klassenliste">
             <tr class="top-row">
                 <th class="width6 align_left col_0"></th>
-                <th class="width30 align_left col_1 col_lastname"><p><strong>Name</strong></p></th>
-                <th class="width30 align_left col_2 col_firstname"><p><strong>Vorname</strong></p></th>
-                <th class="width20 col_3 col_gender textaligncenter"><p><strong>Geschlecht</strong></p></th>
+                <th class="width27 align_left col_1 col_lastname"><p><strong>Name</strong></p></th>
+                <th class="width27 align_left col_2 col_firstname"><p><strong>Vorname</strong></p></th>
+                <th class="width19 col_3 col_gender textaligncenter"><p><strong>Geschlecht</strong></p></th>
                 <th class="width7 col_4 textaligncenter">&nbsp;</th>
                 <th class="width7 col_5 textaligncenter">&nbsp;</th>
             </tr>
@@ -54,20 +54,20 @@
             <?php for($i;$i<=30;$i++): ?>
             <tr>
                 <td class="align_left col_0"><?php echo $i; ?></td>
-                <td class="align_left">
+                <td class="align_left col_1">
                     <input type="text" name="insert_lastname[]" class="form-control">
                 </td>
-                <td class="align_left col_1">
+                <td class="align_left col_2">
                     <input type="text" name="insert_firstname[]" class="form-control">
                 </td>
-                <td class="col_2 textaligncenter">
+                <td class="col_3 textaligncenter">
                     <select name="insert_gender[]" class="form-control">
                         <option value="male">männlich</option>
                         <option value="female">weiblich</option>
                     </select>
                 </td>
-                <td class="col_3">&nbsp;</td>
                 <td class="col_4">&nbsp;</td>
+                <td class="col_5">&nbsp;</td>
             </tr>
             <?php endfor; ?>
 

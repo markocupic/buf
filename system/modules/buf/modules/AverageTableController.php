@@ -49,6 +49,8 @@ class AverageTableController extends \Frontend
               //tally sheet link
               $url = $this->generateFrontendUrl($objPage->row(), '/do/print_average_table');
               $objTemplate->printAverageTableLink = $url;
+              $objTemplate->printDataSheet = $this->generateFrontendUrl($objPage->row(), '/do/print_data_sheet');
+
               return $objTemplate;
        }
 
@@ -59,7 +61,7 @@ class AverageTableController extends \Frontend
        {
               // do not count zero to the average
               $sql = 'SELECT
-		tl_student.lastname, tl_student.firstname,
+		tl_student.id, tl_student.lastname, tl_student.firstname,
 		AVG(CASE WHEN tl_voting.skill1 <> 0 THEN tl_voting.skill1 ELSE NULL END) AS skill1,
 		AVG(CASE WHEN tl_voting.skill2 <> 0 THEN tl_voting.skill2 ELSE NULL END) AS skill2,
 		AVG(CASE WHEN tl_voting.skill3 <> 0 THEN tl_voting.skill3 ELSE NULL END) AS skill3,

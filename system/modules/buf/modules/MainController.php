@@ -89,7 +89,7 @@ class MainController extends \Module
                      }
                      elseif (FE_USER_LOGGED_IN && \Input::get('do') != '')
                      {
-                            if (\Input::get('do') == 'print_table' || \Input::get('do') == 'print_average_table' || \Input::get('do') == 'print_tally_sheet')
+                            if (\Input::get('do') == 'print_table' || \Input::get('do') == 'print_average_table' || \Input::get('do') == 'print_tally_sheet' || \Input::get('do') == 'print_data_sheet')
                             {
                                    $this->strTemplate = null;
                             }
@@ -359,6 +359,16 @@ class MainController extends \Module
                             }
                             $objController = new \FpdfController($this);
                             $objController->printTallySheet();
+                            break;
+
+                     case 'print_data_sheet':
+                            if (!\TeacherModel::getOwnClass())
+                            {
+                                   $url = $this->generateFrontendUrl($objPage->row(), '/do/dashboard');
+                                   $this->redirect($url);
+                            }
+                            $objController = new \FpdfController($this);
+                            $objController->printDataSheet();
                             break;
 
                      case 'delete_table':

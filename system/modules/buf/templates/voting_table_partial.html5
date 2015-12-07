@@ -80,8 +80,9 @@
             <!-- comment col -->
             <?php
                 $commentClass = (null !== \CommentModel::findComment($Datensatz['student'], $this->teacherId, $this->subjectId)) ? 'fa-comment' : 'fa-comment-o';
+                $attrTitle = (null !== \CommentModel::findComment($Datensatz['student'], $this->teacherId, $this->subjectId)) ? 'Kommentar bearbeiten' : 'Kommentar schreiben';
             ?>
-            <td class="comment_col row_<?php echo $Datensatz['student']; ?>"><a href="<?php //echo $this->hrefDeleteRowOrCol; ?>" onclick="EvalTable.getCommentModal(this,<?php echo $Datensatz['student']; ?>,'comment_row'); return false;" title="Kommentar hinterlassen"><span class="fa <?= $commentClass ?>"></span></a></td>
+            <td class="comment_col row_<?php echo $Datensatz['student']; ?>"><a href="<?php //echo $this->hrefDeleteRowOrCol; ?>" onclick="EvalTable.getCommentModal(this,<?php echo $Datensatz['student']; ?>,'comment_row'); return false;" title="<?= $attrTitle ?>"><span class="fa <?= $commentClass ?>"></span></a></td>
 
 </tr>
     <?php endforeach; ?>
