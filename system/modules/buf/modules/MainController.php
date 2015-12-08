@@ -375,7 +375,11 @@ class MainController extends \Module
                             if (\Input::get('teacher') == $this->User->id || \TeacherModel::getOwnClass() == \Input::get('class'))
                             {
                                    $this->import('Database');
+                                   // Delete votings
                                    $this->Database->prepare('DELETE FROM tl_voting WHERE teacher=? AND subject=? AND student IN (SELECT id FROM tl_student WHERE class=?)')->execute((int)\Input::get('teacher'), (int)\Input::get('subject'), (int)\Input::get('class'));
+                                   // Delete comments
+                                   $this->Database->prepare('DELETE FROM tl_comment WHERE teacher=? AND subject=? AND student IN (SELECT id FROM tl_student WHERE class=?)')->execute((int)\Input::get('teacher'), (int)\Input::get('subject'), (int)\Input::get('class'));
+
                             }
                             $url = $this->generateFrontendUrl($objPage->row(), '/do/dashboard');
                             $this->redirect($url);

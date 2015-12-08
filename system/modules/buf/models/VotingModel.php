@@ -164,6 +164,8 @@ class VotingModel extends \Model
             if ($mode == 'delete_row') {
                 \Database::getInstance()->prepare('DELETE FROM tl_voting WHERE teacher=? AND student=? AND subject=?')->execute($teacher,
                     $colOrRow, $subject);
+                \Database::getInstance()->prepare('DELETE FROM tl_comment WHERE teacher=? AND student=? AND subject=?')->execute($teacher,
+                    $colOrRow, $subject);
                 return true;
             }
 
