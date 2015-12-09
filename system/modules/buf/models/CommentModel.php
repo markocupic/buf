@@ -108,11 +108,33 @@ class CommentModel extends \Model
      * @param $subject
      * @return int
      */
-    public static function countCommentsFromVotingTable($class,$teacher,$subject)
+    public static function countCommentsFromVotingTable($class, $teacher, $subject)
     {
         $objDb = \Database::getInstance()->prepare('SELECT * FROM tl_comment, tl_student WHERE tl_comment.teacher=? AND  tl_comment.subject=? AND tl_student.id=tl_comment.student AND tl_student.class=?')
-        ->execute($teacher, $subject, $class);
+            ->execute($teacher, $subject, $class);
         return $objDb->numRows;
+    }
+
+    /**
+     * @param $intTeacher
+     * @param null $intSubject
+     * @param null $intClass
+     * @param null $intStudent
+     * @param string $mode
+     * @return mixed|null
+     */
+    public static function getLastChange($intTeacher, $intSubject, $intClass)
+    {
+
+        $objVoting = \Database::getInstance()->prepare('SELECT * FROM tl_comment WHERE teacher = ? AND subject = ? AND student IN (SELECT id FROM tl_student WHERE class = ?) ORDER BY tstamp DESC LIMIT 0,1')
+            ->execute($intTeacher, $intSubject, $intClass);
+
+
+        if ($objVoting->numRows) {
+            return $objVoting->tstamp;
+        }
+
+        return null;
     }
 
 }

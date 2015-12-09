@@ -307,13 +307,7 @@ class VotingModel extends \Model
      * @param string $mode
      * @return mixed|null
      */
-    public static function getLastChange(
-        $intTeacher,
-        $intSubject = null,
-        $intClass = null,
-        $intStudent = null,
-        $mode = 'table'
-    ) {
+    public static function getLastChange($intTeacher, $intSubject = null, $intClass = null, $intStudent=null, $mode = 'table') {
 
         if ($mode == 'table') {
             $objVoting = \Database::getInstance()->prepare('SELECT * FROM tl_voting WHERE teacher = ? AND subject = ? AND student IN (SELECT id FROM tl_student WHERE class = ?) ORDER BY tstamp DESC LIMIT 0,1')->execute($intTeacher,
@@ -395,5 +389,7 @@ class VotingModel extends \Model
         }
         return array_values($arrDat);
     }
+
+    
 
 }

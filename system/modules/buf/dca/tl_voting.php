@@ -48,6 +48,7 @@ $GLOBALS['TL_DCA']['tl_voting'] = array
         (
             'fields' => array('id', 'student', 'teacher', 'tstamp'),
             'showColumns' => true,
+            'label_callback' => array('tl_voting', 'labelCallback')
         ),
         'global_operations' => array
         (
@@ -106,6 +107,7 @@ $GLOBALS['TL_DCA']['tl_voting'] = array
         'tstamp' => array
         (
             'label' => &$GLOBALS['TL_LANG']['tl_voting']['tstamp'],
+            'flag' => 6,
             'search' => true,
             'sorting' => true,
             'sql' => "int(10) unsigned NOT NULL default '0'"
@@ -256,4 +258,31 @@ $GLOBALS['TL_DCA']['tl_voting'] = array
     )
 );
 
+
+/**
+ * Provide miscellaneous methods that are used by the data configuration array.
+ *
+ * @author Leo Feyer <https://github.com/leofeyer>
+ */
+class tl_voting extends Backend
+{
+
+    /**
+     * Add an image to each record
+     * @param array $row
+     * @param string $label
+     * @param DataContainer $dc
+     * @param array $args
+     *
+     * @return array
+     */
+    public function labelCallback($row, $label, DataContainer $dc, $args)
+    {
+        $args[1] = '(' . \StudentModel::getClassnameFromStudentId($args[1]) . ') ' . \StudentModel::getFullName($args[1]);
+        $args[2] = \TeacherModel::getFullName($args[2]);
+
+        return $args;
+    }
+
+}
 

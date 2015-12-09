@@ -12,17 +12,13 @@
 <h3>Meine Beurteilungen</h3>
 <div class="list-group">
     <?php foreach ($this->myVotings as $voting): ?>
-    <?php $lastChange = \VotingModel::getLastChange($voting['teacherId'], $voting['subjectId'], $voting['classId']); ?>
-    <?php $lastChange = round((time() - $lastChange)/86400,0) ?>
-    <?php $lastChange = $lastChange == 0 ? 'heute' : sprintf('vor %s d', $lastChange); ?>
        <a class="list-group-item" title="bearbeiten" href="<?= $this->hrefVotingTable . setQueryString(array('teacher' => $voting['teacherId'], 'subject' => $voting['subjectId'], 'class' => $voting['classId'])) ?>">
            <div class="float-left"><span class="fa fa-pencil"></span></div>
            <div class="float-left">
-               <?= $voting["classname"] . "{{br}}" . $voting["subjectname"] ?>{{br}}
-               Kommentare: <?= \CommentModel::countCommentsFromVotingTable($voting["classId"],$voting["teacherId"],$voting["subjectId"]) ?>
-
+               <?= $voting["className"] . "{{br}}" . $voting["subjectName"] ?>{{br}}
+               Kommentare: <?=  $voting["intComments"] ?>
            </div>
-           <div class="float-right"><span class="label label-info"><?= $lastChange ?></span></div>
+           <div class="float-right"><span class="label label-info"><?= $voting['age'] ?></span></div>
            <div class="clearing"></div>
 
        </a>
@@ -38,30 +34,26 @@
 <?php if($this->votingsOnMyClass): ?>
 <div class="list-group">
     <?php foreach  ($this->votingsOnMyClass as $voting): ?>
-    <?php $lastChange = \VotingModel::getLastChange($voting['teacherId'], $voting['subjectId'], $voting['classId']); ?>
-    <?php $lastChange = round((time() - $lastChange)/86400,0) ?>
-    <?php $lastChange = $lastChange == 0 ? 'heute' : sprintf('vor %s d', $lastChange); ?>
     <?php if ($voting["teacherId"] == $this->User->id): ?>
     <a class="list-group-item" title="bearbeiten" href="<?= $this->hrefVotingTable . setQueryString(array('teacher' => $voting['teacherId'], 'subject' => $voting['subjectId'], 'class' => $voting['classId'])) ?>">
         <div class="float-left"><span class="fa fa-pencil"></span></div>
         <div class="float-left">
-            <?= \ClassModel::getName($voting["classId"]) ."{{br}}". \SubjectModel::getName($voting["subjectId"]) ?>{{br}}
-            LP: <?= \TeacherModel::getFullName($voting["teacherId"]) ?>{{br}}
-            Kommentare: <?= \CommentModel::countCommentsFromVotingTable($voting["classId"],$voting["teacherId"],$voting["subjectId"]) ?>
+            <?= $voting["className"] ."{{br}}". $voting["subjectName"] ?>{{br}}
+            LP: <?= $voting['teacherFullName'] ?>{{br}}
+            Kommentare: <?= $voting['intComments'] ?>
         </div>
-        <div class="float-right"><span class="label label-info"><?= $lastChange ?></span></div>
+        <div class="float-right"><span class="label label-info"><?= $voting['age'] ?></span></div>
         <div class="clearing"></div>
     </a>
     <?php else: ?>
     <a class="list-group-item" title="ansehen" href="<?= $this->hrefVotingTable . setQueryString(array('teacher' => $voting['teacherId'], 'subject' => $voting['subjectId'], 'class' => $voting['classId'])) ?>">
         <div class="float-left"><span class="fa fa-eye"></span></div>
         <div class="float-left">
-            <?= \ClassModel::getName($voting["classId"]) ."{{br}}". \SubjectModel::getName($voting["subjectId"]) ?>{{br}}
-            LP: <?= \TeacherModel::getFullName($voting["teacherId"]) ?>{{br}}
-            Kommentare: <?= \CommentModel::countCommentsFromVotingTable($voting["classId"],$voting["teacherId"],$voting["subjectId"]) ?>
-
+            <?= $voting["className"] ."{{br}}". $voting["subjectName"] ?>{{br}}
+            LP: <?= $voting['teacherFullName'] ?>{{br}}
+            Kommentare: <?= $voting['intComments'] ?>
         </div>
-        <div class="float-right"><span class="label label-default"><?= $lastChange ?></span></div>
+        <div class="float-right"><span class="label label-default"><?= $voting['age'] ?></span></div>
         <div class="clearing"></div>
     </a>
     <?php endif; ?>
