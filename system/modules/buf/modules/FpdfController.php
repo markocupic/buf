@@ -57,6 +57,10 @@ class FpdfController extends \System
 
 
               $pdf = new \FPDF('P', 'mm', 'A4');
+              $pdf->setSubject('Beurteilungstabelle', true);
+              $pdf->setTitle('Beurteilungstabelle');
+
+              $pdf->setAuthor(\TeacherModel::getFullname($teacher));
 
               //$pdf->AliasNbPages();
               $pdf->AddPage();
@@ -203,8 +207,8 @@ class FpdfController extends \System
               $objStudent = \Database::getInstance()->prepare('SELECT * FROM tl_student WHERE class=? ORDER BY gender, lastname, firstname')->execute($class);
               while($objStudent->next())
               {
-                     $objComment = \Database::getInstance()->prepare('SELECT * FROM tl_comment WHERE subject=? AND student=? AND teacher=? LIMIT 0,1')->execute($subject, $objStudent->id, $class);
-                     if($objComment->numRows){
+                     $objComment = \Database::getInstance()->prepare('SELECT * FROM tl_comment WHERE subject=? AND student=? AND teacher=?')->execute($subject, $objStudent->id, $teacher);
+                     while($objComment->next()){
                             $pdf->SetFont('Arial', 'B', 12);
                             $pdf->Cell(190, 8, utf8_decode($objStudent->lastname . ' ' . $objStudent->firstname) . ', (' . \Date::parse('d.m.Y', $objComment->tstamp) . ')', 'B', '', 'L');
                             $pdf->Ln();
