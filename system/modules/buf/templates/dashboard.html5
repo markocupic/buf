@@ -81,7 +81,7 @@
     <a class="list-group-item" title="Mittelwerte und Kommentare meiner Stammklasse" href="<?= $this->averageTableLink ?>">
         <div class="float-left"><span class="fa fa-eye"></span></div>
         <div class="float-left">
-            Mittelwert-Tabelle{{br}}meiner Stammklasse ansehen
+            Mittelwert-Tabelle{{br}}und Lehrerkommentare meiner Stammklasse ansehen
         </div>
         <div class="clearing"></div>
     </a>

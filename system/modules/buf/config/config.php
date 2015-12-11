@@ -40,6 +40,11 @@ $GLOBALS['BE_MOD']['buf'] = array(
 
 if(TL_MODE == 'FE')
 {
+    /**
+     * Include the helpers
+     */
+    require TL_ROOT . '/system/modules/buf/helper/functions.php';
+
     $GLOBALS['TL_JAVASCRIPT'][] = 'files/buf/jquery/main.js';
     $GLOBALS['TL_JAVASCRIPT'][] = 'files/buf/jquery/editClasslist.js';
     $GLOBALS['TL_JAVASCRIPT'][] = 'files/buf/jquery/votingTable.js';

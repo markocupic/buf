@@ -15,10 +15,7 @@
  */
 namespace MCupic;
 
-/**
- * Include the helpers
- */
-require TL_ROOT . '/system/modules/buf/helper/functions.php';
+
 
 /**
  * Class ModuleLogin
