@@ -62,6 +62,8 @@ class CommentModel extends \Model
             $objModal->student = $objStudent->lastname . ' ' . $objStudent->firstname;
             $objModal->studentId = $student;
             $objModal->classname = \StudentModel::getClassnameFromStudentId($student);
+            $objModal->subject = $subject;
+            $objModal->subjectname = \SubjectModel::getName($subject);
         }
         $objComment = \CommentModel::findComment($student, $teacher, $subject);
         $objModal->comment = '';

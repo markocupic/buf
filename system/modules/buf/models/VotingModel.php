@@ -201,27 +201,29 @@ class VotingModel extends \Model
             $value = trim($value);
             $value = $value == '' ? 0 : $value;
             if (preg_match('/^[0-4]{0,1}$/', $value)) {
-                $objVoting = \Database::getInstance()->prepare('SELECT * FROM tl_voting WHERE teacher=? AND student=? AND subject=?')->execute($teacher,
-                    $student, $subject);
-                if ($objVoting->numRows) {
+                $objVoting = \VotingModel::find(
+                    array(
+                        'column' => array('tl_voting.teacher=?', 'tl_voting.student=?','tl_voting.subject=?'),
+                        'value' => array($teacher, $student, $subject),
+                        'limit' => 1,
+                    )
+                );
 
-                    $set = array('tstamp' => time(),);
-                    $set['skill' . $skill] = $value;
-                    \Database::getInstance()->prepare('UPDATE tl_voting %s WHERE id=?')->set($set)->execute($objVoting->id);
+                if ($objVoting !== null) {
+                    $objVoting->{'skill' . $skill} = $value;
+                    $objVoting->tstamp = time();
+                    $objVoting->save();
                     // delete all empty rows
                     \Database::getInstance()->prepare('DELETE FROM tl_voting WHERE id=? AND (skill1 + skill2 + skill3 + skill4 + skill5 + skill6 + skill7 + skill8) < 1')->execute($objVoting->id);
                 } else {
                     if ($value > 0) {
-                        $set = array(
-                            'student' => $student,
-                            'teacher' => $teacher,
-                            'subject' => $subject,
-                            'tstamp'  => time(),
-                        );
-
-                        $set['skill' . $skill] = $value;
-
-                        \Database::getInstance()->prepare('INSERT INTO tl_voting %s')->set($set)->execute();
+                        $objVoting = new \VotingModel();
+                        $objVoting->student = $student;
+                        $objVoting->teacher = $teacher;
+                        $objVoting->subject = $subject;
+                        $objVoting->{'skill' . $skill} = $value;
+                        $objVoting->tstamp = time();
+                        $objVoting->save();
                     }
                 }
                 if ($value == 0) {

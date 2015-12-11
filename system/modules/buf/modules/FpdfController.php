@@ -746,7 +746,7 @@ class FpdfController extends \System
               $objComment = \Database::getInstance()->prepare('SELECT * FROM tl_comment WHERE student=? ORDER BY subject')->execute(\Input::get('student'));
               while($objComment->next()){
                      $pdf->SetFont('Arial', 'B', 12);
-                     $pdf->Cell(190, 8, 'Kommentar von: ' . utf8_decode(\TeacherModel::findByPk($objComment->teacher)->firstname) . ' ' . utf8_decode(\TeacherModel::findByPk($objComment->teacher)->lastname) . ', ' . utf8_decode(\SubjectModel::findByPk($objComment->subject)->name). ', (' . \Date::parse('d.m.Y', $objComment->tstamp) . ')', 'B', '', 'L');
+                     $pdf->Cell(190, 8, 'Kommentar von: ' . html_entity_decode(utf8_decode(\TeacherModel::findByPk($objComment->teacher)->firstname)) . ' ' . html_entity_decode(utf8_decode(\TeacherModel::findByPk($objComment->teacher)->lastname)) . ', ' . html_entity_decode(utf8_decode(\SubjectModel::findByPk($objComment->subject)->name)) . ', (' . \Date::parse('d.m.Y', $objComment->tstamp) . ')', 'B', '', 'L');
                      $pdf->Ln();
                      $pdf->SetFont('Arial', '', 11);
                      $pdf->Write(6, html_entity_decode(utf8_decode($objComment->comment)));
@@ -758,7 +758,7 @@ class FpdfController extends \System
               $pdf->Ln();
               $pdf->Ln();
 
-              $pdf->Cell(190, 8, \Date::parse('j. M Y') . ',  Unterschrift: _________________________________________', 0, '', 'L');
+              //$pdf->Cell(190, 8, \Date::parse('j. M Y') . ',  Unterschrift: _________________________________________', 0, '', 'L');
               $pdf->Output();
        }
 
