@@ -64,36 +64,25 @@ $GLOBALS['TL_DCA']['tl_comment'] = array
         (
             'edit' => array
             (
-                'label' => &$GLOBALS['TL_LANG']['tl_member']['edit'],
+                'label' => &$GLOBALS['TL_LANG']['tl_comment']['edit'],
                 'href' => 'act=edit',
                 'icon' => 'edit.gif'
             ),
-            'copy' => array
-            (
-                'label' => &$GLOBALS['TL_LANG']['tl_member']['copy'],
-                'href' => 'act=copy',
-                'icon' => 'copy.gif'
-            ),
+
             'delete' => array
             (
-                'label' => &$GLOBALS['TL_LANG']['tl_member']['delete'],
+                'label' => &$GLOBALS['TL_LANG']['tl_comment']['delete'],
                 'href' => 'act=delete',
                 'icon' => 'delete.gif',
                 'attributes' => 'onclick="if(!confirm(\'' . $GLOBALS['TL_LANG']['MSC']['deleteConfirm'] . '\'))return false;Backend.getScrollOffset()"'
             ),
-            'show' => array
-            (
-                'label' => &$GLOBALS['TL_LANG']['tl_member']['show'],
-                'href' => 'act=show',
-                'icon' => 'show.gif'
-            )
         )
     ),
 
     // Palettes
     'palettes' => array
     (
-        'default' => 'student,subject,teacher,tstamp,comment',
+        'default' => 'student,subject,teacher,tstamp,comment,adviced',
     ),
 
     // Fields
@@ -186,6 +175,16 @@ $GLOBALS['TL_DCA']['tl_comment'] = array
             'inputType' => 'textarea',
             'eval' => array('mandatory' => false),
             'sql' => "mediumtext NULL"
+        ),
+       'adviced' => array
+        (
+            'label' => &$GLOBALS['TL_LANG']['tl_comment']['adviced'],
+            'exclude' => true,
+            'search' => true,
+            'filter' => true,
+            'inputType' => 'checkbox',
+            'eval' => array('submitOnChange' => false, 'class' => 'clr'),
+            'sql' => "char(1) NOT NULL default ''"
         )
     )
 );

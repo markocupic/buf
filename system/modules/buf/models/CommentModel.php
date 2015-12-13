@@ -97,7 +97,9 @@ class CommentModel extends \Model
         }
         $objComment->comment = trim($comment);
         $objComment->tstamp = time();
+        $objComment->adviced = false;
         $objComment->save();
+
         if ($objComment->comment == '') {
             $objComment->delete();
         }
