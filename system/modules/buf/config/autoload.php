@@ -58,7 +58,7 @@ TemplateLoader::addFiles(array
 	'voting_table_partial' => 'system/modules/buf/templates',
 	'tally_sheet'          => 'system/modules/buf/templates',
 	'voting_comment_modal' => 'system/modules/buf/templates',
-	'dashboard-bak'        => 'system/modules/buf/templates',
+	'mail_advice_klp'      => 'system/modules/buf/templates',
 	'login'                => 'system/modules/buf/templates',
 	'voting_table'         => 'system/modules/buf/templates',
 	'tallysheet_modal'     => 'system/modules/buf/templates',

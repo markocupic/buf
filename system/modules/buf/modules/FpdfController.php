@@ -758,7 +758,7 @@ class FpdfController extends \System
               $pdf->Ln();
               $pdf->Ln();
 
-              //$pdf->Cell(190, 8, \Date::parse('j. M Y') . ',  Unterschrift: _________________________________________', 0, '', 'L');
+              $pdf->Cell(190, 8, 'Schule Ettiswil, ' . \Date::parse('j. M Y'), 0, '', 'L');
               $pdf->Output();
        }
 

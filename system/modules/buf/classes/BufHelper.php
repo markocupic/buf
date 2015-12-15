@@ -28,21 +28,30 @@ class BufHelper extends \Controller
             return;
         }
 
-        //$newComments = array();
         $objTeacher = \TeacherModel::findAll();
         if ($objTeacher !== null) {
             while ($objTeacher->next()) {
                 if ($objTeacher->adviceOnNewComments && $objTeacher->isClassTeacher && $objTeacher->class > 0) {
-                    $strMsg = '';
+                    $arrMsg = array();
                     $objCom = \Database::getInstance()->prepare('SELECT * FROM tl_comment WHERE tl_comment.student IN (SELECT id FROM tl_student WHERE tl_student.class=?) AND tl_comment.adviced=? ORDER BY tl_comment.student')->execute($objTeacher->class, false);
                     while ($objCom->next()) {
-                        $strMsg .= 'Neuer Kommentar von ' . \TeacherModel::getFullName($objCom->teacher) . ' zu ' . \StudentModel::getFullName($objCom->student) . ' im Fach ' . \SubjectModel::getName($objCom->subject) . "\n";
-                        $strMsg .= $objCom->comment . "\n";
-                        $strMsg .= '**************ENDE**************' . "\n" . "\n" . "\n";
+                        $arrMsg[] = array(
+                            'title' => 'Neuer Kommentar von ' . \TeacherModel::getFullName($objCom->teacher) . ' zu ' . \StudentModel::getFullName($objCom->student) . ' im Fach ' . \SubjectModel::getName($objCom->subject),
+                            'body'  => $objCom->comment
+                        );
                     }
-                    // Send mail
-                    mail($objTeacher->email, 'Neue oder veraenderte Kommentare im Bewertungstool', html_entity_decode(utf8_decode($strMsg)));
-                    \System::log(\TeacherModel::getFullName($objTeacher->id) . ' wurde per email ueber neue oder veränderte Kommentare benachrichtigt.', __METHOD__, TL_GENERAL);
+
+                    // Send Email
+                    if (count($arrMsg) > 0) {
+                        $objEmail = new \Email();
+                        $objEmailTemplate = new \FrontendTemplate('mail_advice_klp');
+                        $objEmailTemplate->rows = $arrMsg;
+                        $objEmail->html = $objEmailTemplate->parse();
+                        $objEmail->subject = 'Neue oder aktualisierte Kommentare im Bewertungstool vorhanden';
+                        $objEmail->from = 'admin@' . \Environment::get('host');
+                        $objEmail->sendTo($objTeacher->email);
+                        \System::log(\TeacherModel::getFullName($objTeacher->id) . ' wurde per email ueber neue oder veränderte Kommentare benachrichtigt.', __METHOD__, TL_GENERAL);
+                    }
                 }
             }
         }
