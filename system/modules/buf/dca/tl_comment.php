@@ -46,7 +46,7 @@ $GLOBALS['TL_DCA']['tl_comment'] = array
         ),
         'label' => array
         (
-            'fields' => array('id', 'student', 'teacher', 'tstamp'),
+            'fields' => array('id', 'student', 'teacher', 'subject', 'tstamp'),
             'showColumns' => true,
             'label_callback' => array('tl_comment', 'labelCallback')
         ),
@@ -209,7 +209,9 @@ class tl_comment extends Backend
     public function labelCallback($row, $label, DataContainer $dc, $args)
     {
         $args[1] = '(' . \StudentModel::getClassnameFromStudentId($args[1]) . ') ' . \StudentModel::getFullName($args[1]);
-        $args[2] = \TeacherModel::getFullName($args[2]);
+        $args[2] = \StringUtil::substr(\TeacherModel::findByPk($args[2])->firstname, 1, '') . '. ' . \TeacherModel::findByPk($args[2])->lastname;
+        $args[3] = \SubjectModel::findByPk($args[3])->acronym;
+
 
         return $args;
     }
