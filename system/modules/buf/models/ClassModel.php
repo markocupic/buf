@@ -44,6 +44,4 @@ class ClassModel extends \Model
         }
         return null;
     }
-
-
 }

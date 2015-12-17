@@ -43,8 +43,16 @@ class AccountSettingsController extends \Frontend
     public function setTemplate($objTemplate)
     {
         global $objPage;
+        $submitted = false;
+        $hasErrors = false;
         $this->import('FrontendUser', 'User');
         $objTeacher = \TeacherModel::findByPk($this->User->id);
+
+        if($_SESSION['submitted'])
+        {
+            unset($_SESSION['submitted']);
+            $objTemplate->submitted = true;
+        }
 
         /** EmailField **/
         $widget = new \TextField();
@@ -55,14 +63,15 @@ class AccountSettingsController extends \Frontend
         $widget->placeholder = 'vorname.nachname@ettiswil.educanet2.ch';
         $widget->mandatory = true;
         $widget->rgxp = 'email';
-        if ($_POST) {
+        if ($_POST && \Input::post('FORM_SUBMIT') == 'tl_member_account_settings') {
             $widget->validate();
             if (!$widget->hasErrors()) {
                 $objTeacher->email = $widget->value;
                 $objTeacher->save();
-                $objTemplate->submitted = true;
+                $submitted = true;
+                $_SESSION['submitted']  = 'account';
             }else{
-                $objTemplate->submitted = false;
+                $hasErrors = true;
             }
         }
         $objTemplate->emailLabel = $widget->generateLabel();
@@ -75,14 +84,15 @@ class AccountSettingsController extends \Frontend
         $widget->name = 'password';
         $widget->label = 'Passwort';
         $widget->placeholder = '********';
-        if ($_POST) {
+        if ($_POST && \Input::post('FORM_SUBMIT') == 'tl_member_password_settings') {
             $widget->validate();
             if (!$widget->hasErrors()) {
                 $objTeacher->password = $widget->value;
                 $objTeacher->save();
-                $objTemplate->submitted = true;
+                $submitted = true;
+                $_SESSION['submitted']  = 'password';
             }else{
-                $objTemplate->submitted = false;
+                $hasErrors = true;
             }
         }
         $objTemplate->passwordLabel = $widget->generateLabel();
@@ -90,30 +100,27 @@ class AccountSettingsController extends \Frontend
         $objTemplate->confirmationLabel = $widget->generateLabel();
         $objTemplate->confirmation = $widget->generateConfirmation();
 
-        /** PasswordField **/
-        $widget = new \CheckBox();
-        $widget->id = 'adviceOnNewComments';
-        $widget->name = 'adviceOnNewComments';
-        $arrOptions = array(
-            array(
-                'checked' => '1',
-                'value'=> '1',
-                //'default' => true,
-                'label'=>'benachrichtigen'
-            ));
-        $widget->options = $arrOptions;
-
-        $widget->label = 'Bei neuen Kommentaren benachrichtigen (gilt nur für Klassenlehrer)';
-        if ($_POST) {
-            $widget->validate();
-            if (!$widget->hasErrors()) {
-                $objTeacher->adviceOnNewComments = $widget->value;
-                $objTeacher->save();
-                $objTemplate->submitted = true;
-            }else{
-                $objTemplate->submitted = false;
-            }
+        /** adviceOnNewComments **/
+        if($objTeacher->adviceOnNewComments)
+        {
+            $objTemplate->adviceOnNewCommentsChecked = ' checked';
         }
+
+        if ($_POST && \Input::post('FORM_SUBMIT') == 'tl_member_account_settings') {
+                $objTeacher->adviceOnNewComments = \Input::post('adviceOnNewComments');
+                $objTeacher->save();
+                $submitted = true;
+            $_SESSION['submitted']  = 'account';
+
+        }
+
+
+        // Reload page
+        if($submitted && !$hasErrors)
+        {
+            $this->reload();
+        }
+
         $widget->value = $objTeacher->adviceOnNewComments;
 
         $objTemplate->adviceOnNewCommentsLabel = $widget->generateLabel();
@@ -121,10 +128,19 @@ class AccountSettingsController extends \Frontend
 
 
         // other properties
+        $objTemplate->username = $objTeacher->username;
+        $objTemplate->gender = $objTeacher->gender;
+
+        $objTemplate->UserFullname = \TeacherModel::getFullName($objTeacher->id);
+        $objTemplate->function = \TeacherModel::isClassTeacher() ? 'Klassenlehrer von ' . \ClassModel::getName(\TeacherModel::isClassTeacher()) : 'FachlehrerIn';
+
         $objTemplate->backLink = $this->generateFrontendUrl($objPage->row(), '/do/dashboard');
         $objTemplate->method = 'post';
-        $objTemplate->formId = 'tl_member_account_settings';
-        $objTemplate->slabel = specialchars($GLOBALS['TL_LANG']['MSC']['saveData']);
+        $objTemplate->formId1 = 'tl_member_account_settings';
+        $objTemplate->formId2 = 'tl_member_password_settings';
+        $objTemplate->slabel1 = specialchars($GLOBALS['TL_LANG']['MSC']['saveData']);
+        $objTemplate->slabel2 = 'Passwort speichern';
+
         $objTemplate->action = $this->generateFrontendUrl($objPage->row(), '/do/account_settings') . setQueryString(array('act' => 'set_password'));
         $objTemplate->enctype = 'application/x-www-form-urlencoded';
 

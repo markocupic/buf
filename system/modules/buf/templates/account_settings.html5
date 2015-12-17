@@ -1,37 +1,75 @@
-<h2>Kontoeinstellungen</h2>
         {{buf::dashboard_link}}
-
-<h3>Passwort/Email-Adresse ändern</h3>
-        <?php if (!$this->submitted): ?>
-<form id="<?php echo $this->formId; ?>" class="mod_account_settings" action="<?php echo $this->action; ?>" method="<?php echo $this->method; ?>" enctype="<?php echo $this->enctype; ?>">
-<div class="formbody">
-    <input type="hidden" name="REQUEST_TOKEN" value="{{request_token}}">
-    <input type="hidden" name="FORM_SUBMIT" value="tl_member_account_settings">
-    <div class="form-group">
-    <?php echo $this->emailLabel; ?>
-    <?php echo $this->email; ?>
-    </div>
-
-    <div class="form-group">
-        <?php echo $this->passwordLabel; ?>
-        <?php echo $this->password; ?>
-        <?php echo $this->confirmation; ?>
-    </div>
-
-    <div class="form-group">
-        <?php echo $this->adviceOnNewCommentsLabel; ?>
-        <?php echo $this->adviceOnNewComments; ?>
-    </div>
-
-
-
-    <button type="submit" class="btn btn-primary"><?php echo $this->slabel; ?></button>
+<?php if($this->submitted): ?>
+<div class="alert alert-info">
+Einstellungen wurden gespeichert.
 </div>
-</form>
+<?php endif; ?>
+<div class="row">
+    <div class="col-md-6">
+        <h2>Kontoeinstellungen</h2>
+        <form id="<?php echo $this->formId1; ?>" class="mod_account_settings" action="<?php echo $this->action; ?>" method="<?php echo $this->method; ?>" enctype="<?php echo $this->enctype; ?>">
+            <div class="">
+                <input type="hidden" name="REQUEST_TOKEN" value="{{request_token}}">
+                <input type="hidden" name="FORM_SUBMIT" value="tl_member_account_settings">
+                <div class="row">
+                    <div class="col-sm-4">
+                        <div class="image_container">
+                            <img style="width:100%;max-width:200px" src="files/buf/images/avatars/profile_<?=$this->gender ?>.png"></img>
+                            {{br}}
+                            {{br}}
+                        </div>
+                    </div>
+                    <div class="col-sm-8">
+                        <h3 style="margin-top:0;"><?= $this->UserFullname ?></h3>
 
-        <?php else: ?>
-<p>Die Änderungen wurden erfolgreich übernommen.</p>
-        <?php endif; ?>
+                        <label>Benutzername:</label>
+                        <?= $this->username ?>
+                        {{br}}
+                        <label>Funktion:</label>
+                        <?= $this->function ?>
+                        {{br}}
+                    </div>
+                </div>
+
+                {{br}}
+                {{br}}
+
+                <div class="form-group">
+                    <?php echo $this->emailLabel; ?>
+                    <?php echo $this->email; ?>
+                </div>
+
+                <div class="checkbox">
+                    <label>
+                        <input type="checkbox" name="adviceOnNewComments" value="1"<?= $this->adviceOnNewCommentsChecked ?>> Bei neuen Kommentaren benachrichtigen (gilt nur für Klassenlehrer)
+                    </label>
+                </div>
+                <button type="submit" class="btn btn-primary"><?php echo $this->slabel1; ?></button>
+            </div>
+        </form>
+        {{br}}
+
+    </div>
+    <div class="col-md-6">
+        <h2>Passwort ändern</h2>
+        <form id="<?php echo $this->formId2; ?>" class="mod_account_settings" action="<?php echo $this->action; ?>" method="<?php echo $this->method; ?>" enctype="<?php echo $this->enctype; ?>">
+            <div class="">
+                <input type="hidden" name="REQUEST_TOKEN" value="{{request_token}}">
+                <input type="hidden" name="FORM_SUBMIT" value="tl_member_password_settings">
+                <div class="form-group">
+                    <?php echo $this->passwordLabel; ?>
+                    <?php echo $this->password; ?>
+                    {{br}}
+                    <?php echo $this->confirmation; ?>
+                </div>
+                <button type="submit" class="btn btn-primary"><?php echo $this->slabel2; ?></button>
+            </div>
+        </form>
+    </div>
+
+
+
+</div>
 
 <script>
 /** Add bootstrap classes to template **/

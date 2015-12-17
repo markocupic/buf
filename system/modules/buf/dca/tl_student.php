@@ -166,10 +166,10 @@ $GLOBALS['TL_DCA']['tl_student'] = array
                 }
                 return $options;
             },
-            'foreignKey' => 'tl_class.id',
+            'foreignKey' => 'tl_class.name',
             'eval' => array('mandatory' => true, 'maxlength' => 255),
             'sql' => "int(10) unsigned NOT NULL default '0'",
-            'relation' => array('type' => 'belongsTo', 'load' => 'lazy')
+            'relation' => array('type' => 'belongsTo', 'load' => 'eager')
         )
     )
 

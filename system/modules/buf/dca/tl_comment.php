@@ -108,26 +108,30 @@ $GLOBALS['TL_DCA']['tl_comment'] = array
             'exclude' => true,
             'search' => true,
             'sorting' => true,
+            'filter' => true,
             'flag' => 1,
             'inputType' => 'select',
             'options_callback' => function () {
                 $options = array();
                 $objStudent = \StudentModel::findAll(array('order' => 'class,gender,lastname,firstname'));
                 while ($objStudent->next()) {
-                    $options[$objStudent->id] = $objStudent->firstname . ' ' . $objStudent->lastname;
+                    $options[$objStudent->id] = MCupic\ClassModel::getName($objStudent->class) . '-' . $objStudent->name . $objStudent->firstname . ' ' . $objStudent->lastname;
                 }
+                asort($options);
                 return $options;
+
             },
-            'foreignKey' => 'tl_student.id',
+            'foreignKey' => 'tl_student.CONCAT(firstname, " " , lastname)',
             'eval' => array('mandatory' => true, 'maxlength' => 255),
             'sql' => "int(10) unsigned NOT NULL default '0'",
-            'relation' => array('type' => 'belongsTo', 'load' => 'lazy')
+            'relation' => array('type' => 'belongsTo', 'load' => 'eager')
         ),
         'teacher' => array
         (
             'label' => &$GLOBALS['TL_LANG']['tl_comment']['teacher'],
             'exclude' => true,
             'search' => true,
+            'filter' => true,
             'sorting' => true,
             'flag' => 1,
             'inputType' => 'select',
@@ -137,12 +141,13 @@ $GLOBALS['TL_DCA']['tl_comment'] = array
                 while ($objTeacher->next()) {
                     $options[$objTeacher->id] = $objTeacher->firstname . ' ' . $objTeacher->lastname;
                 }
+                asort($options);
                 return $options;
             },
             'foreignKey' => 'tl_member.id',
             'eval' => array('mandatory' => true, 'maxlength' => 255),
             'sql' => "int(10) unsigned NOT NULL default '0'",
-            'relation' => array('type' => 'belongsTo', 'load' => 'lazy')
+            'relation' => array('type' => 'belongsTo', 'load' => 'eager')
         ),
         'subject' => array
         (
@@ -150,6 +155,7 @@ $GLOBALS['TL_DCA']['tl_comment'] = array
             'exclude' => true,
             'search' => true,
             'sorting' => true,
+            'filter' => true,
             'flag' => 1,
             'inputType' => 'select',
             'options_callback' => function () {
@@ -158,12 +164,13 @@ $GLOBALS['TL_DCA']['tl_comment'] = array
                 while ($objSubject->next()) {
                     $options[$objSubject->id] = $objSubject->name . ' (' . $objSubject->acronym . ')';
                 }
+                asort($options);
                 return $options;
             },
             'foreignKey' => 'tl_subject.id',
             'eval' => array('mandatory' => true, 'maxlength' => 255),
             'sql' => "int(10) unsigned NOT NULL default '0'",
-            'relation' => array('type' => 'belongsTo', 'load' => 'lazy')
+            'relation' => array('type' => 'belongsTo', 'load' => 'eager')
         ),
         'comment' => array
         (
