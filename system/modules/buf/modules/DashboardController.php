@@ -74,14 +74,16 @@ class DashboardController extends \Frontend
                 'intComments' => \CommentModel::countCommentsFromVotingTable($objDb->classId, $objDb->teacherId, $objDb->subjectId)
             );
         }
+
+        //die(print_r($arrVotings,true));
         $objClass = \Database::getInstance()->query('SELECT * FROM tl_class');
         while ($objClass->next()) {
             // Get all Comments Grouped by subjectId-teacherId
-            $objComments = \Database::getInstance()->prepare("SELECT DISTINCT CONCAT(tl_comment.subject,'-',tl_comment.teacher) AS teststring FROM tl_comment WHERE tl_comment.student IN (SELECT id FROM tl_student WHERE class=? AND teacher=?)")->execute($objClass->id, $this->User->id);
+            $objComments = \Database::getInstance()->prepare("SELECT DISTINCT CONCAT(tl_comment.subject,'-',tl_comment.teacher) AS teststring FROM tl_comment WHERE tl_comment.student IN (SELECT id FROM tl_student WHERE class=?) AND tl_comment.teacher=?")->execute($objClass->id, $this->User->id);
             while ($objComments->next()) {
                 $arrTestString = explode('-', $objComments->teststring);
-                $teacherId = $arrTestString[1];
                 $subjectId = $arrTestString[0];
+                $teacherId = $arrTestString[1];
                 $classId = $objClass->id;
 
                 if (!$arrVotings[$teacherId . '-' . $subjectId . '-' . $classId]) {
@@ -92,7 +94,7 @@ class DashboardController extends \Frontend
                         'teacherId' => $teacherId,
                         'subjectId' => $subjectId,
                         'subjectName' => \SubjectModel::getName($subjectId),
-                        'classId' => $objDb->classId,
+                        'classId' => $classId,
                         'className' => \ClassModel::getName($classId),
                         'lastChange' => $lastChange,
                         'age' => $age == 0 ? 'heute' : sprintf('vor %s d', $age),
@@ -101,6 +103,7 @@ class DashboardController extends \Frontend
                 }
             }
         }
+
 
         usort($arrVotings, function ($a, $b) {
             return strcmp($a['className'],$b['className']);
@@ -150,7 +153,7 @@ class DashboardController extends \Frontend
                         'teacherId' => $teacherId,
                         'subjectId' => $subjectId,
                         'subjectName' => \SubjectModel::getName($subjectId),
-                        'classId' => $objDb->classId,
+                        'classId' => $classId,
                         'className' => \ClassModel::getName($classId),
                         'lastChange' => $lastChange,
                         'age' => $age == 0 ? 'heute' : sprintf('vor %s d', $age),

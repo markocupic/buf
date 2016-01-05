@@ -15,6 +15,9 @@
  */
 $GLOBALS['TL_DCA']['tl_member']['config']['sql']['keys']['class'] = 'unique';
 $GLOBALS['TL_DCA']['tl_member']['config']['buf_ctable'][] = 'tl_voting';
+$GLOBALS['TL_DCA']['tl_member']['config']['buf_ctable'][] = 'tl_comment';
+$GLOBALS['TL_DCA']['tl_member']['config']['buf_ptable'][] = 'tl_class';
+
 $GLOBALS['TL_DCA']['tl_member']['config']['onload_callback'][] = array('BufHelper', 'onloadCallbackTlMember');
 
 
@@ -59,6 +62,7 @@ $GLOBALS['TL_DCA']['tl_member']['fields']['class'] = array
     'sorting' => true,
     'flag' => 1,
     'inputType' => 'select',
+    'buf_linksTo' => 'tl_class.id',
     'foreignKey' => 'tl_class.name',
     'eval' => array('unique' => true, 'mandatory' => false, 'maxlength' => 255, 'includeBlankOption' => true, 'class' => 'clr'),
     'sql' => "int(10) unsigned NULL",

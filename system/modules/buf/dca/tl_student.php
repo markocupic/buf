@@ -22,7 +22,8 @@ $GLOBALS['TL_DCA']['tl_student'] = array
         'dataContainer' => 'Table',
         'enableVersioning' => true,
         'buf_ptable' => array('tl_class'),
-        'buf_ctable' => array('tl_voting'),
+        'buf_ctable' => array('tl_voting','tl_comment'),
+
         'sql' => array
         (
             'keys' => array
@@ -166,6 +167,7 @@ $GLOBALS['TL_DCA']['tl_student'] = array
                 }
                 return $options;
             },
+            'buf_linksTo' => 'tl_class.id',
             'foreignKey' => 'tl_class.name',
             'eval' => array('mandatory' => true, 'maxlength' => 255),
             'sql' => "int(10) unsigned NOT NULL default '0'",

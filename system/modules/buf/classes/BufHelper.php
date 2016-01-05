@@ -37,7 +37,7 @@ class BufHelper extends \Controller
                     while ($objCom->next()) {
                         $arrMsg[] = array(
                             'title' => 'Neuer Kommentar von ' . \TeacherModel::getFullName($objCom->teacher) . ' zu ' . \StudentModel::getFullName($objCom->student) . ' im Fach ' . \SubjectModel::getName($objCom->subject),
-                            'body'  => $objCom->comment
+                            'body'  => $objCom->comment,
                         );
                     }
 
@@ -142,6 +142,8 @@ class BufHelper extends \Controller
      */
     public static function checkForReferentialIntegrity($table = '', $new_records = '', $parent_table = '', $child_tables = '')
     {
+        //return false;
+
         if ($table == '') {
             return false;
         }
@@ -158,13 +160,13 @@ class BufHelper extends \Controller
 
         // traverse each field, to see if it references to a parent table
         foreach ($GLOBALS['TL_DCA'][$table]['fields'] as $field => $arrField) {
-            if ($arrField['foreignKey'] != '') {
+            if ($arrField['buf_linksTo'] != '') {
                 // 'foreignKey' => 'tl_parent.id'
-                if (!preg_match('/^(.+)\.(.+)$/', $arrField['foreignKey'])) {
+                if (!preg_match('/^(.+)\.(.+)$/', $arrField['buf_linksTo'])) {
                     // skip to next field, if foreign key isn't valid
                     continue;
                 }
-                list($ptable, $pfield) = explode('.', $arrField['foreignKey']);
+                list($ptable, $pfield) = explode('.', $arrField['buf_linksTo']);
 
                 // field must be part of a table which is declared as parent table
                 if (!in_array($ptable, $arrPtable)) {
@@ -194,9 +196,19 @@ class BufHelper extends \Controller
                 }
 
                 //  delete records of the current table that are not related to the parent table
-                $query = "DELETE FROM " . $table . " WHERE NOT EXISTS (SELECT * FROM " . $ptable . " WHERE " . $table . "." . $field . " = " . $ptable . "." . $pfield . ")";
+                $query = "SELECT * FROM " . $table . " WHERE NOT EXISTS (SELECT * FROM " . $ptable . " WHERE " . $ptable . "." . $pfield . " = " . $table . "." . $field . ")";
                 $objStmt = $db->execute($query);
-                if ($objStmt->affectedRows > 0) {
+                $deletedItems = 0;
+                while ($objStmt->next())
+                {
+                    if (intval($objStmt->{$field}) > 0) {
+                        $db->prepare('DELETE FROM ' . $table . ' WHERE id=?')->execute($objStmt->id);
+                        $deletedItems++;
+                        \System::log('Beim Überprüfen der referentiellen Integrität ist ein Fehler aufgetreten!. Der Fremdschlüssel zeigt auf einen nicht vorhandenen Parentdatensatz in ' . $ptable . '. Der Kinddatensatz ' . $table . '.' . $objStmt->id . ' wurde gelöscht.', __METHOD__ . ' on line ' . __LINE__, TL_GENERAL);
+                    }
+                }
+
+                if ($deletedItems > 0) {
                     $method = __FUNCTION__;
                     while (self::$method($table) === true) {
                         self::$method($table);
@@ -224,13 +236,13 @@ class BufHelper extends \Controller
 
                 // traverse each field, to see if it references to a parent table
                 foreach ($GLOBALS['TL_DCA'][$ctable]['fields'] as $cfield => $arrField) {
-                    if ($arrField['foreignKey'] != '') {
+                    if ($arrField['buf_linksTo'] != '') {
                         // 'foreignKey' => 'tl_parent.id'
-                        if (!preg_match('/^(.+)\.(.+)$/', $arrField['foreignKey'])) {
+                        if (!preg_match('/^(.+)\.(.+)$/', $arrField['buf_linksTo'])) {
                             // skip to next field, if foreign key isn't valid
                             continue;
                         }
-                        list($ptable, $pfield) = explode('.', $arrField['foreignKey']);
+                        list($ptable, $pfield) = explode('.', $arrField['buf_linksTo']);
 
                         $db = \Database::getInstance();
 
@@ -254,9 +266,17 @@ class BufHelper extends \Controller
                         }
 
                         //  delete records of the child table that are not related to the current table
-                        $query = "DELETE FROM " . $ctable . " WHERE NOT EXISTS (SELECT * FROM " . $ptable . " WHERE " . $ctable . "." . $cfield . " = " . $ptable . "." . $pfield . ")";
+                        $query = "SELECT * FROM " . $ctable . " WHERE NOT EXISTS (SELECT * FROM " . $ptable . " WHERE " . $ptable . "." . $pfield . "=" . $ctable . "." . $cfield . ")";
                         $objStmt = $db->execute($query);
-                        if ($objStmt->affectedRows > 0) {
+                        $deletedItems = 0;
+                        while ($objStmt->next()) {
+                            if (intval($objStmt->{$cfield}) > 0) {
+                                $db->prepare('DELETE FROM ' . $ctable . ' WHERE id=?')->execute($objStmt->id);
+                                $deletedItems++;
+                                \System::log('Beim Überprüfen der referentiellen Integrität ist ein Fehler aufgetreten!. Der Fremdschlüssel zeigt auf einen nicht vorhandenen Parentdatensatz in ' . $ctable . '. Der Kinddatensatz ' . $ctable . '.' . $objStmt->id . ' wurde gelöscht.', __METHOD__ . ' on line ' . __LINE__, TL_GENERAL);
+                            }
+                        }
+                        if ($deletedItems > 0) {
                             $method = __FUNCTION__;
                             while (self::$method($ctable) === true) {
                                 self::$method($ctable);
@@ -269,7 +289,7 @@ class BufHelper extends \Controller
         }
 
         // return true for a relaod
-        if ($reload) {
+        if ($reload === true) {
             return true;
         } else {
             return false;
@@ -304,7 +324,7 @@ class BufHelper extends \Controller
 
         // set tl_member.isClassTeacher to '' if the assigned class doesn't exist
         $set = array('class' => null, 'isClassTeacher' => '');
-        $objStmt = $db->prepare('UPDATE tl_member %s WHERE tl_member.class NOT IN (SELECT id FROM tl_class)')->set($set)->execute();
+        $objStmt = $db->prepare('UPDATE tl_member %s WHERE tl_member.class > 0 AND tl_member.class NOT IN (SELECT id FROM tl_class)')->set($set)->execute();
         if ($objStmt->affectedRows > 0) {
             return true;
         }

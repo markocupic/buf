@@ -21,7 +21,7 @@ $GLOBALS['TL_DCA']['tl_subject'] = array
     (
         'dataContainer' => 'Table',
         'enableVersioning' => true,
-        'buf_ctable' => array('tl_voting'),
+        'buf_ctable' => array('tl_voting', 'tl_comment'),
         'sql' => array
         (
             'keys' => array

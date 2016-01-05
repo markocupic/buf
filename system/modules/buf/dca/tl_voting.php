@@ -102,6 +102,8 @@ $GLOBALS['TL_DCA']['tl_voting'] = array
         'id' => array
         (
             'label' => &$GLOBALS['TL_LANG']['tl_voting']['id'],
+            'search' => true,
+            'sorting' => true,
             'sql' => "int(10) unsigned NOT NULL auto_increment"
         ),
         'tstamp' => array
@@ -128,7 +130,8 @@ $GLOBALS['TL_DCA']['tl_voting'] = array
                    }
                    return $options;
             },
-            'foreignKey' => 'tl_student.id',
+            'buf_linksTo' => 'tl_student.id',
+            'foreignKey' => 'tl_student.CONCAT(firstname, " " , lastname)',
             'eval' => array('mandatory' => true, 'maxlength' => 255),
             'sql' => "int(10) unsigned NOT NULL default '0'",
             'relation' => array('type' => 'belongsTo', 'load' => 'lazy')
@@ -149,7 +152,8 @@ $GLOBALS['TL_DCA']['tl_voting'] = array
                 }
                 return $options;
             },
-            'foreignKey' => 'tl_member.id',
+            'buf_linksTo' => 'tl_member.id',
+            'foreignKey' => 'tl_member.CONCAT(firstname, " " , lastname)',
             'eval' => array('mandatory' => true, 'maxlength' => 255),
             'sql' => "int(10) unsigned NOT NULL default '0'",
             'relation' => array('type' => 'belongsTo', 'load' => 'lazy')
@@ -170,7 +174,8 @@ $GLOBALS['TL_DCA']['tl_voting'] = array
                }
                return $options;
             },
-            'foreignKey' => 'tl_subject.id',
+            'buf_linksTo' => 'tl_subject.id',
+            'foreignKey' => 'tl_subject.name',
             'eval' => array('mandatory' => true, 'maxlength' => 255),
             'sql' => "int(10) unsigned NOT NULL default '0'",
             'relation' => array('type' => 'belongsTo', 'load' => 'lazy')

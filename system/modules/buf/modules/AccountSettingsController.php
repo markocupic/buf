@@ -45,14 +45,17 @@ class AccountSettingsController extends \Frontend
         global $objPage;
         $submitted = false;
         $hasErrors = false;
+        $set = array();
         $this->import('FrontendUser', 'User');
         $objTeacher = \TeacherModel::findByPk($this->User->id);
 
-        if($_SESSION['submitted'])
-        {
+        if ($_SESSION['submitted']) {
             unset($_SESSION['submitted']);
             $objTemplate->submitted = true;
         }
+
+
+
 
         /** EmailField **/
         $widget = new \TextField();
@@ -66,11 +69,9 @@ class AccountSettingsController extends \Frontend
         if ($_POST && \Input::post('FORM_SUBMIT') == 'tl_member_account_settings') {
             $widget->validate();
             if (!$widget->hasErrors()) {
-                $objTeacher->email = $widget->value;
-                $objTeacher->save();
+                $set['email'] = $widget->value;
                 $submitted = true;
-                $_SESSION['submitted']  = 'account';
-            }else{
+            } else {
                 $hasErrors = true;
             }
         }
@@ -87,11 +88,9 @@ class AccountSettingsController extends \Frontend
         if ($_POST && \Input::post('FORM_SUBMIT') == 'tl_member_password_settings') {
             $widget->validate();
             if (!$widget->hasErrors()) {
-                $objTeacher->password = $widget->value;
-                $objTeacher->save();
+                $set['password'] = $widget->value;
                 $submitted = true;
-                $_SESSION['submitted']  = 'password';
-            }else{
+            } else {
                 $hasErrors = true;
             }
         }
@@ -101,25 +100,31 @@ class AccountSettingsController extends \Frontend
         $objTemplate->confirmation = $widget->generateConfirmation();
 
         /** adviceOnNewComments **/
-        if($objTeacher->adviceOnNewComments)
-        {
+        if ($objTeacher->adviceOnNewComments) {
             $objTemplate->adviceOnNewCommentsChecked = ' checked';
         }
 
         if ($_POST && \Input::post('FORM_SUBMIT') == 'tl_member_account_settings') {
-                $objTeacher->adviceOnNewComments = \Input::post('adviceOnNewComments');
-                $objTeacher->save();
-                $submitted = true;
-            $_SESSION['submitted']  = 'account';
-
+            $set['adviceOnNewComments'] = \Input::post('adviceOnNewComments');
+            $submitted = true;
         }
 
+
+        if($_POST)
+        {
+            $_SESSION['FORM_SUBMIT'] = \Input::post('FORM_SUBMIT');
+        }
 
         // Reload page
-        if($submitted && !$hasErrors)
-        {
+        if ($submitted && !$hasErrors && count($set)) {
+            \Database::getInstance()->prepare('UPDATE tl_member %s WHERE id=?')->set($set)->execute($objTeacher->id);
+            $_SESSION['submitted'] = true;
             $this->reload();
         }
+
+        $objTemplate->tl_form_submit = $_SESSION['FORM_SUBMIT'] ? $_SESSION['FORM_SUBMIT'] : 'tl_account_settings';
+        unset($_SESSION['FORM_SUBMIT']);
+
 
         $widget->value = $objTeacher->adviceOnNewComments;
 
