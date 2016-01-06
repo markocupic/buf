@@ -194,7 +194,7 @@ class BufHelper extends \Controller
                     if (intval($objStmt->{$field}) > 0) {
                         $db->prepare('DELETE FROM ' . $table . ' WHERE id=?')->execute($objStmt->id);
                         $deletedItems++;
-                        \System::log('Bei der Überprüfung der referentiellen Integrität ist ein Fehler aufgetreten! Der Fremdschlüssel zeigt auf einen nicht vorhandenen Elterndatensatz in ' . $ptable . '. Der Kinddatensatz ' . $table . '.' . $objStmt->id . ' wurde aus diesem Grund gelöscht.', __METHOD__ . ' on line ' . __LINE__, TL_GENERAL);
+                        \System::log('Bei der Überprüfung der referentiellen Integrität ist ein Fehler aufgetreten! Der Fremdschlüssel in "' . $table . "." . $field . '" zeigt auf einen nicht vorhandenen Elterndatensatz in "' . $ptable . '". Der Kinddatensatz "' . $table . '.id=' . $objStmt->id . '" wurde aus diesem Grund gelöscht.', __METHOD__ . ' on line ' . __LINE__, TL_GENERAL);
                     }
                 }
 
@@ -254,7 +254,7 @@ class BufHelper extends \Controller
                             if (intval($objStmt->{$cfield}) > 0) {
                                 $db->prepare('DELETE FROM ' . $ctable . ' WHERE id=?')->execute($objStmt->id);
                                 $deletedItems++;
-                                \System::log('Bei der Überprüfen der referentiellen Integrität ist ein Fehler aufgetreten! Der Fremdschlüssel zeigt auf einen nicht vorhandenen Elterndatensatz in ' . $ctable . '. Der Kinddatensatz ' . $ctable . '.' . $objStmt->id . ' wurde aus diesem Grund gelöscht.', __METHOD__ . ' on line ' . __LINE__, TL_GENERAL);
+                                \System::log('Bei der Überprüfung der referentiellen Integrität ist ein Fehler aufgetreten! Der Fremdschlüssel in "' . $ctable . "." . $cfield . '" zeigt auf einen nicht vorhandenen Elterndatensatz in "' . $ptable . '". Der Kinddatensatz "' . $ctable . '.id=' . $objStmt->id . '" wurde aus diesem Grund gelöscht.', __METHOD__ . ' on line ' . __LINE__, TL_GENERAL);
                             }
                         }
                         if ($deletedItems > 0) {
