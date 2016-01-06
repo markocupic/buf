@@ -31,7 +31,8 @@ $GLOBALS['TL_DCA']['tl_voting'] = array
                 'student' => 'index',
                 'subject' => 'index',
             )
-        )
+        ),
+        'onsubmit_callback' => array(array('tl_voting', 'onSubmitCallback'))
     ),
 
     // List
@@ -288,6 +289,27 @@ class tl_voting extends Backend
 
         return $args;
     }
+
+    /**
+     * @param \Contao\DC_Table $dc
+     */
+    public function onSubmitCallback(Contao\DC_Table $dc)
+    {
+        $newRecord = MCupic\VotingModel::findByPk($dc->id);
+        if($newRecord !== null)
+        {
+            $objDb = $this->Database->prepare("SELECT * FROM tl_voting WHERE teacher=? AND student=? AND subject=?")
+                ->execute($newRecord->teacher, $newRecord->student,$newRecord->subject);
+            if($objDb->numRows > 1)
+            {
+                $this->log('Datensatz "tl_voting.id=' . $dc->id . '" konnte nicht erstellt werden, da bereits ein Datensatz mit derselben Lehrperson, demselben Schüler und demselben Fach existiert!', __METHOD__, TL_ERROR);
+                \Message::addError('Datensatz konnte nicht erstellt werden, da bereits ein Datensatz mit derselben Lehrperson, demselben Schüler und demselben Fach existiert!');
+                $newRecord->delete();
+                $this->redirect('contao/main.php?act=error');
+            }
+        }
+    }
+
 
 }
 

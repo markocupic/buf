@@ -37,7 +37,7 @@ class BufHelper extends \Controller
                     while ($objCom->next()) {
                         $arrMsg[] = array(
                             'title' => 'Neuer Kommentar von ' . \TeacherModel::getFullName($objCom->teacher) . ' zu ' . \StudentModel::getFullName($objCom->student) . ' im Fach ' . \SubjectModel::getName($objCom->subject),
-                            'body'  => $objCom->comment,
+                            'body' => $objCom->comment,
                         );
                     }
 
@@ -131,8 +131,8 @@ class BufHelper extends \Controller
      * add one ore more parent tables in the config section of the DCA
      * $GLOBALS['TL_DCA']['tl_child']['config']['buf_ptable'] = array('tl_parent', 'tl_parent2');
      * add the foreign key in the fields section of the DCA
-     * $GLOBALS['TL_DCA']['tl_child']['fields']['someField1']['foreignKey'] = 'tl_parent.id';
-     * $GLOBALS['TL_DCA']['tl_child']['fields']['someField2']['foreignKey'] = 'tl_parent2.id';
+     * $GLOBALS['TL_DCA']['tl_child']['fields']['someField1']['buf_linksTo'] = 'tl_parent.id';
+     * $GLOBALS['TL_DCA']['tl_child']['fields']['someField2']['buf_linksTo'] = 'tl_parent2.id';
      *
      * @param string $table
      * @param string $new_records
@@ -142,7 +142,7 @@ class BufHelper extends \Controller
      */
     public static function checkForReferentialIntegrity($table = '', $new_records = '', $parent_table = '', $child_tables = '')
     {
-        //return false;
+        // Return false;
 
         if ($table == '') {
             return false;
@@ -158,53 +158,43 @@ class BufHelper extends \Controller
         // Delete all records of the current table that are not related to the parent table
         $arrPtable = is_array($GLOBALS['TL_DCA'][$table]['config']['buf_ptable']) ? $GLOBALS['TL_DCA'][$table]['config']['buf_ptable'] : array();
 
-        // traverse each field, to see if it references to a parent table
+        // Traverse each field, to see if it references to a parent table
         foreach ($GLOBALS['TL_DCA'][$table]['fields'] as $field => $arrField) {
             if ($arrField['buf_linksTo'] != '') {
-                // 'foreignKey' => 'tl_parent.id'
+                // 'buf_linksTo' => 'tl_parent.id'
                 if (!preg_match('/^(.+)\.(.+)$/', $arrField['buf_linksTo'])) {
-                    // skip to next field, if foreign key isn't valid
+                    // Skip to next field, if foreign key isn't valid
                     continue;
                 }
                 list($ptable, $pfield) = explode('.', $arrField['buf_linksTo']);
 
-                // field must be part of a table which is declared as parent table
+                // Field must be part of a table which is declared as parent table
                 if (!in_array($ptable, $arrPtable)) {
-                    // skip to next field, if foreign key isn't valid
+                    // Skip to next field, if foreign key isn't valid
                     continue;
                 }
 
                 $db = \Database::getInstance();
 
-                // check for a valid tablename
-                if (!in_array($ptable, $db->listTables())) {
-                    // skip to next field, if foreign key isn't valid
+                // Check for a valid tablename
+                if ($db->tableExists($ptable) === false) {
                     continue;
                 }
 
-                // check for a valid fieldname
-                $blnFieldExists = false;
-                foreach ($db->listFields($ptable) as $v) {
-                    if ($v['name'] == $pfield) {
-                        $blnFieldExists = true;
-                        break;
-                    }
-                }
-                if (!$blnFieldExists) {
-                    // skip to next field, if foreign key isn't valid
+                // Check for a valid fieldname
+                if ($db->fieldExists($pfield, $ptable) === false) {
                     continue;
                 }
 
-                //  delete records of the current table that are not related to the parent table
+                //  Delete records of the current table that are not related to the parent table
                 $query = "SELECT * FROM " . $table . " WHERE NOT EXISTS (SELECT * FROM " . $ptable . " WHERE " . $ptable . "." . $pfield . " = " . $table . "." . $field . ")";
                 $objStmt = $db->execute($query);
                 $deletedItems = 0;
-                while ($objStmt->next())
-                {
+                while ($objStmt->next()) {
                     if (intval($objStmt->{$field}) > 0) {
                         $db->prepare('DELETE FROM ' . $table . ' WHERE id=?')->execute($objStmt->id);
                         $deletedItems++;
-                        \System::log('Beim Überprüfen der referentiellen Integrität ist ein Fehler aufgetreten!. Der Fremdschlüssel zeigt auf einen nicht vorhandenen Parentdatensatz in ' . $ptable . '. Der Kinddatensatz ' . $table . '.' . $objStmt->id . ' wurde gelöscht.', __METHOD__ . ' on line ' . __LINE__, TL_GENERAL);
+                        \System::log('Bei der Überprüfung der referentiellen Integrität ist ein Fehler aufgetreten! Der Fremdschlüssel zeigt auf einen nicht vorhandenen Elterndatensatz in ' . $ptable . '. Der Kinddatensatz ' . $table . '.' . $objStmt->id . ' wurde aus diesem Grund gelöscht.', __METHOD__ . ' on line ' . __LINE__, TL_GENERAL);
                     }
                 }
 
@@ -223,7 +213,7 @@ class BufHelper extends \Controller
         $arrCtable = $GLOBALS['TL_DCA'][$table]['config']['buf_ctable'];
 
         if (is_array($arrCtable)) {
-            // traverse each child table and delete all records of the child table that are not related to the current table
+            // Traverse each child table and delete all records of the child table that are not related to the current table
             foreach ($arrCtable as $ctable) {
                 if (!isset($GLOBALS['loadDataContainer'][$ctable])) {
                     $objDC = new self;
@@ -234,38 +224,29 @@ class BufHelper extends \Controller
                     continue;
                 }
 
-                // traverse each field, to see if it references to a parent table
+                // Traverse each field, to see if it references to a parent table
                 foreach ($GLOBALS['TL_DCA'][$ctable]['fields'] as $cfield => $arrField) {
                     if ($arrField['buf_linksTo'] != '') {
-                        // 'foreignKey' => 'tl_parent.id'
+                        // 'buf_linksTo' => 'tl_parent.id'
                         if (!preg_match('/^(.+)\.(.+)$/', $arrField['buf_linksTo'])) {
-                            // skip to next field, if foreign key isn't valid
+                            // Skip to next field, if foreign key isn't valid
                             continue;
                         }
                         list($ptable, $pfield) = explode('.', $arrField['buf_linksTo']);
 
                         $db = \Database::getInstance();
 
-                        // check for a valid tablename
-                        if (!in_array($ptable, $db->listTables())) {
-                            // skip to next field, if foreign key isn't valid
+                        // Check for a valid tablename
+                        if ($db->tableExists($ptable) === false) {
                             continue;
                         }
 
-                        // check for a valid fieldname
-                        $blnFieldExists = false;
-                        foreach ($db->listFields($ptable) as $v) {
-                            if ($v['name'] == $pfield) {
-                                $blnFieldExists = true;
-                                break;
-                            }
-                        }
-                        if (!$blnFieldExists) {
-                            // skip to next field, if foreign key isn't valid
+                        // Check for a valid fieldname
+                        if ($db->fieldExists($pfield, $ptable) === false) {
                             continue;
                         }
 
-                        //  delete records of the child table that are not related to the current table
+                        // Delete records of the child table that are not related to the current table
                         $query = "SELECT * FROM " . $ctable . " WHERE NOT EXISTS (SELECT * FROM " . $ptable . " WHERE " . $ptable . "." . $pfield . "=" . $ctable . "." . $cfield . ")";
                         $objStmt = $db->execute($query);
                         $deletedItems = 0;
@@ -273,7 +254,7 @@ class BufHelper extends \Controller
                             if (intval($objStmt->{$cfield}) > 0) {
                                 $db->prepare('DELETE FROM ' . $ctable . ' WHERE id=?')->execute($objStmt->id);
                                 $deletedItems++;
-                                \System::log('Beim Überprüfen der referentiellen Integrität ist ein Fehler aufgetreten!. Der Fremdschlüssel zeigt auf einen nicht vorhandenen Parentdatensatz in ' . $ctable . '. Der Kinddatensatz ' . $ctable . '.' . $objStmt->id . ' wurde gelöscht.', __METHOD__ . ' on line ' . __LINE__, TL_GENERAL);
+                                \System::log('Bei der Überprüfen der referentiellen Integrität ist ein Fehler aufgetreten! Der Fremdschlüssel zeigt auf einen nicht vorhandenen Elterndatensatz in ' . $ctable . '. Der Kinddatensatz ' . $ctable . '.' . $objStmt->id . ' wurde aus diesem Grund gelöscht.', __METHOD__ . ' on line ' . __LINE__, TL_GENERAL);
                             }
                         }
                         if ($deletedItems > 0) {
