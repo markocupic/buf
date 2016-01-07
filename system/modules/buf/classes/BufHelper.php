@@ -24,17 +24,22 @@ class BufHelper extends \Controller
     public function adviceOnNewComments()
     {
         $objCom = \Database::getInstance()->prepare('SELECT * FROM tl_log WHERE tstamp>? AND func=?')->execute(time() - 3600 * 24, __METHOD__);
-        if ($objCom->numRows) {
+        if ($objCom->numRows)
+        {
             return;
         }
 
         $objTeacher = \TeacherModel::findAll();
-        if ($objTeacher !== null) {
-            while ($objTeacher->next()) {
-                if ($objTeacher->adviceOnNewComments && $objTeacher->isClassTeacher && $objTeacher->class > 0) {
+        if ($objTeacher !== null)
+        {
+            while ($objTeacher->next())
+            {
+                if ($objTeacher->adviceOnNewComments && $objTeacher->isClassTeacher && $objTeacher->class > 0)
+                {
                     $arrMsg = array();
                     $objCom = \Database::getInstance()->prepare('SELECT * FROM tl_comment WHERE tl_comment.student IN (SELECT id FROM tl_student WHERE tl_student.class=?) AND tl_comment.adviced=? ORDER BY tl_comment.student')->execute($objTeacher->class, false);
-                    while ($objCom->next()) {
+                    while ($objCom->next())
+                    {
                         $arrMsg[] = array(
                             'title' => 'Neuer Kommentar von ' . \TeacherModel::getFullName($objCom->teacher) . ' zu ' . \StudentModel::getFullName($objCom->student) . ' im Fach ' . \SubjectModel::getName($objCom->subject),
                             'body' => $objCom->comment,
@@ -42,7 +47,8 @@ class BufHelper extends \Controller
                     }
 
                     // Send Email
-                    if (count($arrMsg) > 0) {
+                    if (count($arrMsg) > 0)
+                    {
                         $objEmail = new \Email();
                         $objEmailTemplate = new \FrontendTemplate('mail_advice_klp');
                         $objEmailTemplate->rows = $arrMsg;
@@ -68,50 +74,62 @@ class BufHelper extends \Controller
     public function bufReplaceInsertTags($strTag)
     {
         global $objPage;
-        if ($strTag == 'buf::name_school') {
-            if (trim($GLOBALS['TL_CONFIG']['buf_name_school']) != '') {
+        if ($strTag == 'buf::name_school')
+        {
+            if (trim($GLOBALS['TL_CONFIG']['buf_name_school']) != '')
+            {
                 return '<li><span class="fa fa-building-o"></span> ' . $GLOBALS['TL_CONFIG']['buf_name_school'] . '</li>';
             }
         }
 
-        if ($strTag == 'buf::dashboard_link') {
+        if ($strTag == 'buf::dashboard_link')
+        {
             $url = \Frontend::generateFrontendUrl($objPage->row(), '/do/dashboard');
             return sprintf('<a href="%s" title="zurück zum Dashboard"><span class="fa fa-arrow-left"></span> Zurück zum Dashboard</a>', $url);
         }
 
-        if ($strTag == 'buf::logged_in_user') {
-            if (FE_USER_LOGGED_IN) {
+        if ($strTag == 'buf::logged_in_user')
+        {
+            if (FE_USER_LOGGED_IN)
+            {
                 $user = \FrontendUser::getInstance();
                 return '<li><span class="fa fa-user"></span> ' . $user->firstname . ' ' . $user->lastname . '</li>';
             }
         }
 
-        if ($strTag == 'buf::logout_user') {
+        if ($strTag == 'buf::logout_user')
+        {
             // Login and redirect
             $page = \PageModel::findByAlias('buf');
 
-            if (FE_USER_LOGGED_IN) {
+            if (FE_USER_LOGGED_IN)
+            {
                 $url = \Frontend::generateFrontendUrl($page->row(), '/do/login') . setQueryString(array('act' => 'logout'));
                 return '<li><a href="' . $url . '" title="Abmelden"><span class="fa fa-sign-out"></span></a></li>';
-            } else {
+            } else
+            {
                 $url = \Frontend::generateFrontendUrl($page->row(), '/do/login');
                 return '<li><a href="' . $url . '" title="Anmelden"><span class="fa fa-sign-in"></span></a></li>';
             }
         }
 
-        if ($strTag == 'buf::dashboard_link_header') {
+        if ($strTag == 'buf::dashboard_link_header')
+        {
             // Dashboard link in header
             $page = \PageModel::findByAlias('buf');
 
-            if (FE_USER_LOGGED_IN) {
+            if (FE_USER_LOGGED_IN)
+            {
                 $url = \Frontend::generateFrontendUrl($page->row(), '/do/dashboard');
                 return '<li><a href="' . $url . '" title="Gehe zum Dashboard"><span class="fa fa-list"></span></a></li>';
             }
         }
 
-        if ($strTag == 'buf::account_settings') {
+        if ($strTag == 'buf::account_settings')
+        {
             // Login and redirect
-            if (FE_USER_LOGGED_IN) {
+            if (FE_USER_LOGGED_IN)
+            {
                 $url = \Frontend::generateFrontendUrl($objPage->row(), '/do/account_settings');
                 return '<li><a href="' . $url . '" title="Konto Einstellungen"><span class="fa fa-cogs"></span></a></li>';
             }
@@ -142,67 +160,75 @@ class BufHelper extends \Controller
      */
     public static function checkForReferentialIntegrity($table = '', $new_records = '', $parent_table = '', $child_tables = '')
     {
-        // Return false;
-
-        if ($table == '') {
-            return false;
-        }
 
         $reload = false;
 
-        if (!isset($GLOBALS['loadDataContainer'][$table])) {
-            $objDC = new self;
-            $objDC->loadDataContainer($table);
+        $db = \Database::getInstance();
+
+        // Check for a valid tablename
+        if ($db->tableExists($table) === false)
+        {
+            return false;
+        }
+
+        if (!isset($GLOBALS['loadDataContainer'][$table]))
+        {
+            \Controller::loadDataContainer($table);
         }
 
         // Delete all records of the current table that are not related to the parent table
         $arrPtable = is_array($GLOBALS['TL_DCA'][$table]['config']['buf_ptable']) ? $GLOBALS['TL_DCA'][$table]['config']['buf_ptable'] : array();
 
         // Traverse each field, to see if it references to a parent table
-        foreach ($GLOBALS['TL_DCA'][$table]['fields'] as $field => $arrField) {
-            if ($arrField['buf_linksTo'] != '') {
+        foreach ($GLOBALS['TL_DCA'][$table]['fields'] as $field => $arrField)
+        {
+            if ($arrField['buf_linksTo'] != '')
+            {
                 // 'buf_linksTo' => 'tl_parent.id'
-                if (!preg_match('/^(.+)\.(.+)$/', $arrField['buf_linksTo'])) {
+                if (!preg_match('/^(.+)\.(.+)$/', $arrField['buf_linksTo']))
+                {
                     // Skip to next field, if foreign key isn't valid
                     continue;
                 }
                 list($ptable, $pfield) = explode('.', $arrField['buf_linksTo']);
 
                 // Field must be part of a table which is declared as parent table
-                if (!in_array($ptable, $arrPtable)) {
+                if (!in_array($ptable, $arrPtable))
+                {
                     // Skip to next field, if foreign key isn't valid
                     continue;
                 }
 
-                $db = \Database::getInstance();
 
                 // Check for a valid tablename
-                if ($db->tableExists($ptable) === false) {
+                if ($db->tableExists($ptable) === false)
+                {
                     continue;
                 }
 
                 // Check for a valid fieldname
-                if ($db->fieldExists($pfield, $ptable) === false) {
+                if ($db->fieldExists($pfield, $ptable) === false)
+                {
                     continue;
                 }
 
-                //  Delete records of the current table that are not related to the parent table
+                // Delete records of the current table that are not related to the parent table
                 $query = "SELECT * FROM " . $table . " WHERE NOT EXISTS (SELECT * FROM " . $ptable . " WHERE " . $ptable . "." . $pfield . " = " . $table . "." . $field . ")";
                 $objStmt = $db->execute($query);
                 $deletedItems = 0;
-                while ($objStmt->next()) {
-                    if (intval($objStmt->{$field}) > 0) {
+                while ($objStmt->next())
+                {
+                    if (intval($objStmt->{$field}) > 0)
+                    {
                         $db->prepare('DELETE FROM ' . $table . ' WHERE id=?')->execute($objStmt->id);
                         $deletedItems++;
                         \System::log('Bei der Überprüfung der referentiellen Integrität ist ein Fehler aufgetreten! Der Fremdschlüssel in "' . $table . "." . $field . '" zeigt auf einen nicht vorhandenen Elterndatensatz in "' . $ptable . '". Der Kinddatensatz "' . $table . '.id=' . $objStmt->id . '" wurde aus diesem Grund gelöscht.', __METHOD__ . ' on line ' . __LINE__, TL_GENERAL);
                     }
                 }
-
-                if ($deletedItems > 0) {
+                if ($deletedItems > 0)
+                {
                     $method = __FUNCTION__;
-                    while (self::$method($table) === true) {
-                        self::$method($table);
-                    }
+                    self::$method($table);
                     $reload = true;
                 }
             }
@@ -212,37 +238,44 @@ class BufHelper extends \Controller
         // Delete all records of the child table that are not related to the current table
         $arrCtable = $GLOBALS['TL_DCA'][$table]['config']['buf_ctable'];
 
-        if (is_array($arrCtable)) {
+        if (is_array($arrCtable))
+        {
             // Traverse each child table and delete all records of the child table that are not related to the current table
-            foreach ($arrCtable as $ctable) {
-                if (!isset($GLOBALS['loadDataContainer'][$ctable])) {
+            foreach ($arrCtable as $ctable)
+            {
+                if (!isset($GLOBALS['loadDataContainer'][$ctable]))
+                {
                     $objDC = new self;
                     $objDC->loadDataContainer($ctable);
                 }
 
-                if (!isset($GLOBALS['TL_DCA'][$ctable]['fields'])) {
+                if (!isset($GLOBALS['TL_DCA'][$ctable]['fields']))
+                {
                     continue;
                 }
 
                 // Traverse each field, to see if it references to a parent table
-                foreach ($GLOBALS['TL_DCA'][$ctable]['fields'] as $cfield => $arrField) {
-                    if ($arrField['buf_linksTo'] != '') {
+                foreach ($GLOBALS['TL_DCA'][$ctable]['fields'] as $cfield => $arrField)
+                {
+                    if ($arrField['buf_linksTo'] != '')
+                    {
                         // 'buf_linksTo' => 'tl_parent.id'
-                        if (!preg_match('/^(.+)\.(.+)$/', $arrField['buf_linksTo'])) {
+                        if (!preg_match('/^(.+)\.(.+)$/', $arrField['buf_linksTo']))
+                        {
                             // Skip to next field, if foreign key isn't valid
                             continue;
                         }
                         list($ptable, $pfield) = explode('.', $arrField['buf_linksTo']);
 
-                        $db = \Database::getInstance();
-
                         // Check for a valid tablename
-                        if ($db->tableExists($ptable) === false) {
+                        if ($db->tableExists($ptable) === false)
+                        {
                             continue;
                         }
 
                         // Check for a valid fieldname
-                        if ($db->fieldExists($pfield, $ptable) === false) {
+                        if ($db->fieldExists($pfield, $ptable) === false)
+                        {
                             continue;
                         }
 
@@ -250,18 +283,19 @@ class BufHelper extends \Controller
                         $query = "SELECT * FROM " . $ctable . " WHERE NOT EXISTS (SELECT * FROM " . $ptable . " WHERE " . $ptable . "." . $pfield . "=" . $ctable . "." . $cfield . ")";
                         $objStmt = $db->execute($query);
                         $deletedItems = 0;
-                        while ($objStmt->next()) {
-                            if (intval($objStmt->{$cfield}) > 0) {
+                        while ($objStmt->next())
+                        {
+                            if (intval($objStmt->{$cfield}) > 0)
+                            {
                                 $db->prepare('DELETE FROM ' . $ctable . ' WHERE id=?')->execute($objStmt->id);
                                 $deletedItems++;
                                 \System::log('Bei der Überprüfung der referentiellen Integrität ist ein Fehler aufgetreten! Der Fremdschlüssel in "' . $ctable . "." . $cfield . '" zeigt auf einen nicht vorhandenen Elterndatensatz in "' . $ptable . '". Der Kinddatensatz "' . $ctable . '.id=' . $objStmt->id . '" wurde aus diesem Grund gelöscht.', __METHOD__ . ' on line ' . __LINE__, TL_GENERAL);
                             }
                         }
-                        if ($deletedItems > 0) {
+                        if ($deletedItems > 0)
+                        {
                             $method = __FUNCTION__;
-                            while (self::$method($ctable) === true) {
-                                self::$method($ctable);
-                            }
+                            self::$method($ctable);
                             $reload = true;
                         }
                     }
@@ -269,10 +303,12 @@ class BufHelper extends \Controller
             }
         }
 
-        // return true for a relaod
-        if ($reload === true) {
+        // return true for a reload
+        if ($reload === true)
+        {
             return true;
-        } else {
+        } else
+        {
             return false;
         }
     }
@@ -293,20 +329,23 @@ class BufHelper extends \Controller
 
         // delete empty comments
         $objStmt = $db->prepare('DELETE FROM tl_comment WHERE comment=?')->execute('');
-        if ($objStmt->affectedRows > 0) {
+        if ($objStmt->affectedRows > 0)
+        {
             return true;
         }
 
         // at minimum one skill must be > 0
         $objStmt = $db->execute('DELETE FROM tl_voting WHERE (skill1 + skill2 + skill3 + skill4 + skill5 + skill6 + skill7 + skill8) < 1');
-        if ($objStmt->affectedRows > 0) {
+        if ($objStmt->affectedRows > 0)
+        {
             return true;
         }
 
         // set tl_member.isClassTeacher to '' if the assigned class doesn't exist
         $set = array('class' => null, 'isClassTeacher' => '');
         $objStmt = $db->prepare('UPDATE tl_member %s WHERE tl_member.class > 0 AND tl_member.class NOT IN (SELECT id FROM tl_class)')->set($set)->execute();
-        if ($objStmt->affectedRows > 0) {
+        if ($objStmt->affectedRows > 0)
+        {
             return true;
         }
 
@@ -330,13 +369,15 @@ class BufHelper extends \Controller
     public static function generateRandomDataRecords()
     {
         $db = \Database::getInstance();
-        for ($i = 0; $i < 10000; $i++) {
+        for ($i = 0; $i < 10000; $i++)
+        {
             $objMember = $db->query('SELECT id FROM tl_member ORDER BY RAND() LIMIT 1');
             $objSubject = $db->query('SELECT id FROM tl_subject ORDER BY RAND() LIMIT 1');
             $objStudent = $db->query('SELECT id FROM tl_student ORDER BY RAND() LIMIT 1');
             $set = array('teacher' => $objMember->id, 'student' => $objStudent->id, 'subject' => $objSubject->id, 'tstamp' => 999, 'skill1' => 1, 'skill2' => 2, 'skill3' => 3, 'skill4' => 4, 'skill5' => 1, 'skill6' => 1, 'skill7' => 1, 'skill8' => 1);
             $objRand = $db->prepare('SELECT id FROM tl_voting WHERE teacher=? AND student=? AND subject=?')->execute($objMember->id, $objStudent->id, $objSubject->id);
-            if (!$objRand->numRows) {
+            if (!$objRand->numRows)
+            {
                 $db->prepare('INSERT INTO tl_voting %s')->set($set)->execute();
             }
         }
