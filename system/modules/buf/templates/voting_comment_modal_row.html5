@@ -1,0 +1,5 @@
+<tr data-id="<?= $this->id ?>" data-subject="<?= $this->subject ?>" data-student="<?= $this->student ?>">
+    <td><strong><?= $this->dateOfCreation ?></strong><br><?= $this->comment ?></td>
+    <td style="padding-left:5px; padding-right:5px; width:45px;"><button onclick="EvalTable.editComment(this)" title="bearbeiten" class="btn btn-success btn-sm"><i class="fa fa-pencil"></i></button></td>
+    <td style="padding-left:5px; padding-right:5px; width:45px;"><button onclick="EvalTable.deleteComment(this)" title="l&ouml;schen" class="btn btn-danger btn-sm"><i class="fa fa-trash"></i></button></td>
+</tr>

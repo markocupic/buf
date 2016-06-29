@@ -3,7 +3,7 @@
 /**
  * Contao Open Source CMS
  *
- * Copyright (c) 2005-2015 Leo Feyer
+ * Copyright (c) 2005-2016 Leo Feyer
  *
  * @license LGPL-3.0+
  */
@@ -54,16 +54,17 @@ ClassLoader::addClasses(array
  */
 TemplateLoader::addFiles(array
 (
-	'account_settings'     => 'system/modules/buf/templates',
-	'voting_table_partial' => 'system/modules/buf/templates',
-	'tally_sheet'          => 'system/modules/buf/templates',
-	'voting_comment_modal' => 'system/modules/buf/templates',
-	'mail_advice_klp'      => 'system/modules/buf/templates',
-	'login'                => 'system/modules/buf/templates',
-	'voting_table'         => 'system/modules/buf/templates',
-	'tallysheet_modal'     => 'system/modules/buf/templates',
-	'edit_classlist'       => 'system/modules/buf/templates',
-	'start_new_voting'     => 'system/modules/buf/templates',
-	'average_table'        => 'system/modules/buf/templates',
-	'dashboard'            => 'system/modules/buf/templates',
+	'account_settings'         => 'system/modules/buf/templates',
+	'voting_table_partial'     => 'system/modules/buf/templates',
+	'tally_sheet'              => 'system/modules/buf/templates',
+	'voting_comment_modal'     => 'system/modules/buf/templates',
+	'mail_advice_klp'          => 'system/modules/buf/templates',
+	'login'                    => 'system/modules/buf/templates',
+	'voting_table'             => 'system/modules/buf/templates',
+	'tallysheet_modal'         => 'system/modules/buf/templates',
+	'edit_classlist'           => 'system/modules/buf/templates',
+	'voting_comment_modal_row' => 'system/modules/buf/templates',
+	'start_new_voting'         => 'system/modules/buf/templates',
+	'average_table'            => 'system/modules/buf/templates',
+	'dashboard'                => 'system/modules/buf/templates',
 ));

@@ -94,7 +94,7 @@ $GLOBALS['TL_DCA']['tl_comment'] = array
     // Palettes
     'palettes' => array
     (
-        'default' => 'student,subject,teacher,tstamp,comment,adviced',
+        'default' => 'student,subject,teacher,tstamp,dateOfCreation,comment,adviced',
     ),
 
     // Fields
@@ -114,6 +114,16 @@ $GLOBALS['TL_DCA']['tl_comment'] = array
             'eval' => array('rgxp' => 'datim'),
             'sql' => "int(10) unsigned NOT NULL default '0'"
         ),
+        'dateOfCreation' => array
+        (
+            'label' => &$GLOBALS['TL_LANG']['tl_comment']['dateOfCreation'],
+            'search' => true,
+            'sorting' => true,
+            'flag' => 6,
+            'inputType' => 'text',
+            'eval' => array('rgxp' => 'date', 'datepicker' => true, 'feEditable' => true, 'feViewable' => true, 'feGroup' => 'personal', 'tl_class' => 'clr wizard'),
+            'sql' => "int(10) unsigned NOT NULL default '0'"
+        ),
         'student' => array
         (
             'label' => &$GLOBALS['TL_LANG']['tl_comment']['student'],
@@ -123,10 +133,12 @@ $GLOBALS['TL_DCA']['tl_comment'] = array
             'filter' => true,
             'flag' => 1,
             'inputType' => 'select',
-            'options_callback' => function () {
+            'options_callback' => function ()
+            {
                 $options = array();
                 $objStudent = \StudentModel::findAll(array('order' => 'class,gender,lastname,firstname'));
-                while ($objStudent->next()) {
+                while ($objStudent->next())
+                {
                     $options[$objStudent->id] = MCupic\ClassModel::getName($objStudent->class) . '-' . $objStudent->name . $objStudent->firstname . ' ' . $objStudent->lastname;
                 }
                 asort($options);
@@ -148,10 +160,12 @@ $GLOBALS['TL_DCA']['tl_comment'] = array
             'sorting' => true,
             'flag' => 1,
             'inputType' => 'select',
-            'options_callback' => function () {
+            'options_callback' => function ()
+            {
                 $options = array();
-                $objTeacher = \TeacherModel::findBy('isTeacher','1');
-                while ($objTeacher->next()) {
+                $objTeacher = \TeacherModel::findBy('isTeacher', '1');
+                while ($objTeacher->next())
+                {
                     $options[$objTeacher->id] = $objTeacher->firstname . ' ' . $objTeacher->lastname;
                 }
                 asort($options);
@@ -172,10 +186,12 @@ $GLOBALS['TL_DCA']['tl_comment'] = array
             'filter' => true,
             'flag' => 1,
             'inputType' => 'select',
-            'options_callback' => function () {
+            'options_callback' => function ()
+            {
                 $options = array();
                 $objSubject = \SubjectModel::findAll();
-                while ($objSubject->next()) {
+                while ($objSubject->next())
+                {
                     $options[$objSubject->id] = $objSubject->name . ' (' . $objSubject->acronym . ')';
                 }
                 asort($options);
@@ -198,7 +214,7 @@ $GLOBALS['TL_DCA']['tl_comment'] = array
             'eval' => array('mandatory' => false),
             'sql' => "mediumtext NULL"
         ),
-       'adviced' => array
+        'adviced' => array
         (
             'label' => &$GLOBALS['TL_LANG']['tl_comment']['adviced'],
             'exclude' => true,
@@ -244,11 +260,11 @@ class tl_comment extends Backend
     public function onSubmitCallback(Contao\DC_Table $dc)
     {
         $newRecord = MCupic\CommentModel::findByPk($dc->id);
-        if($newRecord !== null)
+        if ($newRecord !== null)
         {
             $objDb = $this->Database->prepare("SELECT * FROM tl_comment WHERE teacher=? AND student=? AND subject=?")
                 ->execute($newRecord->teacher, $newRecord->student, $newRecord->subject);
-            if($objDb->numRows > 1)
+            if ($objDb->numRows > 1)
             {
                 $this->log('Datensatz "tl_comment.id=' . $dc->id . '" konnte nicht erstellt werden, da bereits ein Datensatz mit derselben Lehrperson, demselben Schüler und demselben Fach existiert!', __METHOD__, TL_ERROR);
                 \Message::addError('Datensatz konnte nicht erstellt werden, da bereits ein Datensatz mit derselben Lehrperson, demselben Schüler und demselben Fach existiert!');

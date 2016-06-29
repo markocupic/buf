@@ -35,17 +35,14 @@ class CommentModel extends \Model
      * @param $studentId
      * @param $teacherId
      * @param $subjectId
-     * @return \Model\Collection|null|static
+     * @return \Model\Collection|null
      */
     public static function findComment($studentId, $teacherId, $subjectId)
     {
-        $objDb = \Database::getInstance()->prepare("SELECT * FROM tl_comment WHERE student=? AND teacher=? AND subject=? LIMIT 0,1")->execute($studentId,
-            $teacherId, $subjectId);
-        if ($objDb->numRows > 0) {
-            return CommentModel::findByPk($objDb->id);
-        }
+        $objDb = \Database::getInstance()->prepare("SELECT * FROM tl_comment WHERE student=? AND teacher=? AND subject=?")
+            ->execute($studentId, $teacherId, $subjectId);
+        return CommentModel::findMultipleByIds($objDb->fetchEach('id'));
 
-        return null;
     }
 
     /**
@@ -58,23 +55,39 @@ class CommentModel extends \Model
     {
         $objModal = new \FrontendTemplate('voting_comment_modal');
         $objStudent = \StudentModel::findByPk($student);
-        if ($objStudent !== null) {
+        if ($objStudent !== null)
+        {
             $objModal->student = $objStudent->lastname . ' ' . $objStudent->firstname;
             $objModal->studentId = $student;
             $objModal->classname = \StudentModel::getClassnameFromStudentId($student);
             $objModal->subject = $subject;
             $objModal->subjectname = \SubjectModel::getName($subject);
-        }
-        $objComment = \CommentModel::findComment($student, $teacher, $subject);
-        $objModal->comment = '';
-        if ($objComment !== null) {
-            $objModal->comment = $objComment->comment;
+
+            $objUser = \System::importStatic('FrontendUser');
+            $objModal->isAllowed = $teacher == $objUser->id ? true : false;
+
+            $objComment = \Database::getInstance()->prepare('SELECT * FROM tl_comment WHERE student=? AND teacher=? AND subject=? ORDER BY dateOfCreation DESC, tstamp DESC')->execute($student, $teacher, $subject);
+            $objModal->rows = '';
+
+            while ($objComment->next())
+            {
+                if (!$objModal->isAllowed)
+                {
+                    $objModal->rows .= '<tr><td><strong>' . \Date::parse('Y-m-d', $objComment->dateOfCreation) . '</strong><br>' . nl2br($objComment->comment) . '</td></tr>';
+                }
+                else
+                {
+                    $objPartial = new \FrontendTemplate('voting_comment_modal_row');
+                    $objPartial->id = $objComment->id;
+                    $objPartial->subject = $objComment->subject;
+                    $objPartial->student = $objComment->student;
+                    $objPartial->dateOfCreation = \Date::parse('Y-m-d', $objComment->dateOfCreation);
+                    $objPartial->comment = nl2br($objComment->comment);
+                    $objModal->rows .= $objPartial->parse();
+                }
+            }
         }
 
-        $objUser = \System::importStatic('FrontendUser');
-        if ($objUser->id == $teacher) {
-            $objModal->isAllowed = true;
-        }
 
         return $objModal->parse();
     }
@@ -89,7 +102,8 @@ class CommentModel extends \Model
     {
 
         $objComment = \CommentModel::findComment($student, $teacher, $subject);
-        if ($objComment === null) {
+        if ($objComment === null)
+        {
             $objComment = new \CommentModel();
             $objComment->student = $student;
             $objComment->teacher = $teacher;
@@ -100,7 +114,8 @@ class CommentModel extends \Model
         $objComment->adviced = false;
         $objComment->save();
 
-        if ($objComment->comment == '') {
+        if ($objComment->comment == '')
+        {
             $objComment->delete();
         }
         return true;
@@ -134,7 +149,8 @@ class CommentModel extends \Model
             ->execute($intTeacher, $intSubject, $intClass);
 
 
-        if ($objVoting->numRows) {
+        if ($objVoting->numRows)
+        {
             return $objVoting->tstamp;
         }
 

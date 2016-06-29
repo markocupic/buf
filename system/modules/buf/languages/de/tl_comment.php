@@ -15,6 +15,7 @@ $GLOBALS['TL_LANG']['tl_comment']['student'] = array('Schüler');
 $GLOBALS['TL_LANG']['tl_comment']['teacher'] = array('Lehrperson');
 $GLOBALS['TL_LANG']['tl_comment']['subject'] = array('Fach');
 $GLOBALS['TL_LANG']['tl_comment']['tstamp'] = array('Änderungszeit');
+$GLOBALS['TL_LANG']['tl_comment']['dateOfCreation'] = array('Erstellungszeit');
 $GLOBALS['TL_LANG']['tl_comment']['comment'] = array('Kommentar');
 $GLOBALS['TL_LANG']['tl_comment']['adviced'] = array('Klassenlehrer wurde benachrichtigt');
 $GLOBALS['TL_LANG']['tl_comment']['edit'] = array('Kommentar bearbeiten', 'Kommentar ID %s bearbeiten.');

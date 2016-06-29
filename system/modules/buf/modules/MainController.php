@@ -16,7 +16,6 @@
 namespace MCupic;
 
 
-
 /**
  * Class ModuleLogin
  * Front end module "login".
@@ -27,396 +26,496 @@ namespace MCupic;
 class MainController extends \Module
 {
 
-       /**
-        * Template
-        * @var string
-        */
-       protected $strTemplate = 'dashboard';
+    /**
+     * Template
+     * @var string
+     */
+    protected $strTemplate = 'dashboard';
 
-       public function generate()
-       {
+    public function generate()
+    {
 
-              global $objPage;
+        global $objPage;
 
-              if (TL_MODE == 'BE')
-              {
-                     $objTemplate = new \BackendTemplate('be_wildcard');
+        if (TL_MODE == 'BE')
+        {
+            $objTemplate = new \BackendTemplate('be_wildcard');
 
-                     $objTemplate->wildcard = '### Beurteilen und Fördern ###';
-                     $objTemplate->title = $this->headline;
-                     $objTemplate->id = $this->id;
-                     $objTemplate->link = $this->name;
-                     $objTemplate->href = 'contao/main.php?do=themes&amp;table=tl_module&amp;act=edit&amp;id=' . $this->id;
+            $objTemplate->wildcard = '### Beurteilen und Fördern ###';
+            $objTemplate->title = $this->headline;
+            $objTemplate->id = $this->id;
+            $objTemplate->link = $this->name;
+            $objTemplate->href = 'contao/main.php?do=themes&amp;table=tl_module&amp;act=edit&amp;id=' . $this->id;
 
-                     return $objTemplate->parse();
-              }
-
-
-              if (TL_MODE == 'FE')
-              {
-                     // Load languages
-                     \System::loadLanguageFile('tl_class');
-                     \System::loadLanguageFile('tl_member');
-                     \System::loadLanguageFile('tl_settings');
-                     \System::loadLanguageFile('tl_student');
-                     \System::loadLanguageFile('tl_subject');
-                     \System::loadLanguageFile('tl_voting');
+            return $objTemplate->parse();
+        }
 
 
-                     if (FE_USER_LOGGED_IN && \Input::get('isAjax') == 'true')
-                     {
-                            $this->generateAjax();
-                            exit;
-                     }
-                     elseif (!FE_USER_LOGGED_IN && \Input::get('do') != 'login')
-                     {
-                            \Input::resetCache();
-                            $url = $this->generateFrontendUrl($objPage->row(), '/do/login');
-                            $this->redirect($url);
-                     }
-                     elseif (!FE_USER_LOGGED_IN && \Input::get('do') == 'login')
-                     {
-                            $this->strTemplate = \Input::get('do');
-                     }
-                     elseif (FE_USER_LOGGED_IN && !\Input::get('do'))
-                     {
-                            \Input::resetCache();
-                            $url = $this->generateFrontendUrl($objPage->row(), '/do/dashboard');
-                            $this->redirect($url);
-                     }
-                     elseif (FE_USER_LOGGED_IN && \Input::get('do') != '')
-                     {
-                            if (\Input::get('do') == 'print_table' || \Input::get('do') == 'print_average_table' || \Input::get('do') == 'print_tally_sheet' || \Input::get('do') == 'print_data_sheet')
-                            {
-                                   $this->strTemplate = null;
-                            }
-                            else
-                            {
-                                   $this->strTemplate = \Input::get('do');
-                            }
-                     }
-                     else
-                     {
-                            // logout and redirect to the login form
-                            if (FE_USER_LOGGED_IN)
-                            {
-                                   $this->import('FrontendUser', 'User');
-                                   $this->User->logout();
-                            }
-                            \Input::resetCache();
-                            $url = $this->generateFrontendUrl($objPage->row(), '/do/login');
-                            $this->redirect($url);
-                     }
-              }
-
-              return parent::generate();
-       }
-
-       /**
-        * Method called on Ajax Requests
-        */
-       public function generateAjax()
-       {
-
-              if (!FE_USER_LOGGED_IN)
-              {
-                     return;
-              }
-              $this->import('FrontendUser', 'User');
+        if (TL_MODE == 'FE')
+        {
+            // Load languages
+            \System::loadLanguageFile('tl_class');
+            \System::loadLanguageFile('tl_member');
+            \System::loadLanguageFile('tl_settings');
+            \System::loadLanguageFile('tl_student');
+            \System::loadLanguageFile('tl_subject');
+            \System::loadLanguageFile('tl_voting');
 
 
-              // edit student
-              if (\Input::get('act') == 'update_classlist')
-              {
-                     $arrJSON = array();
+            if (FE_USER_LOGGED_IN && \Input::get('isAjax') == 'true')
+            {
+                $this->generateAjax();
+                exit;
+            }
+            elseif (!FE_USER_LOGGED_IN && \Input::get('do') != 'login')
+            {
+                \Input::resetCache();
+                $url = $this->generateFrontendUrl($objPage->row(), '/do/login');
+                $this->redirect($url);
+            }
+            elseif (!FE_USER_LOGGED_IN && \Input::get('do') == 'login')
+            {
+                $this->strTemplate = \Input::get('do');
+            }
+            elseif (FE_USER_LOGGED_IN && !\Input::get('do'))
+            {
+                \Input::resetCache();
+                $url = $this->generateFrontendUrl($objPage->row(), '/do/dashboard');
+                $this->redirect($url);
+            }
+            elseif (FE_USER_LOGGED_IN && \Input::get('do') != '')
+            {
+                if (\Input::get('do') == 'print_table' || \Input::get('do') == 'print_average_table' || \Input::get('do') == 'print_tally_sheet' || \Input::get('do') == 'print_data_sheet')
+                {
+                    $this->strTemplate = null;
+                }
+                else
+                {
+                    $this->strTemplate = \Input::get('do');
+                }
+            }
+            else
+            {
+                // logout and redirect to the login form
+                if (FE_USER_LOGGED_IN)
+                {
+                    $this->import('FrontendUser', 'User');
+                    $this->User->logout();
+                }
+                \Input::resetCache();
+                $url = $this->generateFrontendUrl($objPage->row(), '/do/login');
+                $this->redirect($url);
+            }
+        }
 
-                     if (\Validator::isAlphabetic(\Input::post('lastname')) && \Validator::isAlphabetic(\Input::post('firstname')))
-                     {
-                            $objStudent = \StudentModel::findByPk(\Input::post('id'));
-                            if ($objStudent !== null)
-                            {
-                                   $objStudent->lastname = \Input::post('lastname');
-                                   $objStudent->firstname = \Input::post('firstname');
-                                   $objStudent->gender = \Input::post('gender');
-                                   $objStudent->tstamp = time();
-                                   $objStudent->save();
-                                   $arrJSON['status'] = 'success';
-                            }
-                     }
-                     else
-                     {
-                            $arrJSON['status'] = 'error';
-                            $arrJSON['message'] = 'Ungültige Zeichenkette!';
-                     }
+        return parent::generate();
+    }
 
-                     die(json_encode($arrJSON));
-              }
+    /**
+     * Method called on Ajax Requests
+     */
+    public function generateAjax()
+    {
 
-              // delete a student
-              if (\Input::get('act') == 'delete_student')
-              {
-                     $arrJSON = array();
-                     $arrJSON['status'] = 'error';
-                     if (\TeacherModel::getOwnClass())
-                     {
-                            // delete student
-                            $objDb = \Database::getInstance()->prepare('DELETE FROM tl_student WHERE id=?')->execute(\Input::post('id'));
-                            if ($objDb->affectedRows)
-                            {
-                                   $arrJSON['status'] = 'success';
-                            }
-                            // delete referenced votings
-                            \Database::getInstance()->prepare('DELETE FROM tl_voting WHERE student=?')->execute(\Input::post('id'));
-
-                     }
-                     die(json_encode($arrJSON));
-              }
-
-              // reset the voting table
-              if (\Input::get('act') == 'reset_table')
-              {
-                     $arrTable = \VotingModel::getRows(\Input::get('class'), \Input::get('subject'), \Input::get('teacher'));
-                     $arrJSON = array('status' => 'success', 'rows' => $arrTable['Datensaetze']);
-                     die(json_encode($arrJSON));
-              }
-
-              // update voting table
-              if (\Input::get('act') == 'update')
-              {
-                     $rating = \VotingModel::update(\Input::post('student'), \Input::post('teacher'), \Input::post('subject'), \Input::post('skill'), \Input::post('value'));
-                     if ($rating)
-                     {
-                            $arrJSON = array('status' => 'success', 'rating' => $rating, 'message' => 'Submitted successfully.');
-                     }
-                     else
-                     {
-                            $arrJSON = array('status' => 'success', 'rating' => '', 'message' => 'Invalid value submitted: ' . \Input::post('value'));
-                     }
-                     die(json_encode($arrJSON));
-              }
+        if (!FE_USER_LOGGED_IN)
+        {
+            return;
+        }
+        $this->import('FrontendUser', 'User');
 
 
-              // update voting table
-              if (\Input::get('act') == 'get_comment_modal')
-              {
-                     $strModal = \CommentModel::getCommentModal(\Input::post('student'), \Input::post('teacher'), \Input::post('subject'));
-                     $arrJSON = array('status' => 'success', 'strModal' => $strModal);
-                     die(json_encode($arrJSON));
-              }
+        // edit student
+        if (\Input::get('act') == 'update_classlist')
+        {
+            $arrJSON = array();
+
+            if (\Validator::isAlphabetic(\Input::post('lastname')) && \Validator::isAlphabetic(\Input::post('firstname')))
+            {
+                $objStudent = \StudentModel::findByPk(\Input::post('id'));
+                if ($objStudent !== null)
+                {
+                    $objStudent->lastname = \Input::post('lastname');
+                    $objStudent->firstname = \Input::post('firstname');
+                    $objStudent->gender = \Input::post('gender');
+                    $objStudent->tstamp = time();
+                    $objStudent->save();
+                    $arrJSON['status'] = 'success';
+                }
+            }
+            else
+            {
+                $arrJSON['status'] = 'error';
+                $arrJSON['message'] = 'Ungültige Zeichenkette!';
+            }
+
+            die(json_encode($arrJSON));
+        }
+
+        // delete a student
+        if (\Input::get('act') == 'delete_student')
+        {
+            $arrJSON = array();
+            $arrJSON['status'] = 'error';
+            if (\TeacherModel::getOwnClass())
+            {
+                // delete student
+                $objDb = \Database::getInstance()->prepare('DELETE FROM tl_student WHERE id=?')->execute(\Input::post('id'));
+                if ($objDb->affectedRows)
+                {
+                    $arrJSON['status'] = 'success';
+                }
+                // delete referenced votings
+                \Database::getInstance()->prepare('DELETE FROM tl_voting WHERE student=?')->execute(\Input::post('id'));
+
+            }
+            die(json_encode($arrJSON));
+        }
+
+        // reset the voting table
+        if (\Input::get('act') == 'reset_table')
+        {
+            $arrTable = \VotingModel::getRows(\Input::get('class'), \Input::get('subject'), \Input::get('teacher'));
+            $arrJSON = array('status' => 'success', 'rows' => $arrTable['Datensaetze']);
+            die(json_encode($arrJSON));
+        }
+
+        // update voting table
+        if (\Input::get('act') == 'update')
+        {
+            $rating = \VotingModel::update(\Input::post('student'), \Input::post('teacher'), \Input::post('subject'), \Input::post('skill'), \Input::post('value'));
+            if ($rating)
+            {
+                $arrJSON = array('status' => 'success', 'rating' => $rating, 'message' => 'Submitted successfully.');
+            }
+            else
+            {
+                $arrJSON = array('status' => 'success', 'rating' => '', 'message' => 'Invalid value submitted: ' . \Input::post('value'));
+            }
+            die(json_encode($arrJSON));
+        }
 
 
-              // save comment
-              if (\Input::get('act') == 'save_comment')
-              {
-                     \CommentModel::saveComment(\Input::post('student'), \Input::post('teacher'), \Input::post('subject'), \Input::post('comment'));
-                     $arrJSON = array('status' => 'success');
-                     die(json_encode($arrJSON));
-              }
-
-              // update teacher's deviation tolerance
-              if (\Input::get('act') == 'updateTeachersDeviationTolerance')
-              {
-
-                     $arrJSON = array('status' => 'error', 'deviation' => '');
-                     if (is_numeric(\Input::post('tolerance')) && \Input::post('tolerance') > 0 && \Input::post('tolerance') < 3.1)
-                     {
-                            $objTeacher = \TeacherModel::findByPk($this->User->id);
-                            if ($objTeacher !== null)
-                            {
-                                   $objTeacher->deviation = \Input::post('tolerance');
-                                   $objTeacher->save();
-                                   $arrJSON['status'] = 'success';
-                                   $arrJSON['deviation'] = \Input::post('tolerance');
-                            }
-                     }
-                     die(json_encode($arrJSON));
-              }
-
-              // delete all votings in a column or in a row
-              if (\Input::get('act') == 'delete_row_or_col')
-              {
-                     $mode = \Input::post('mode');
-                     $colOrRow = \Input::post('colOrRow');
-                     if (\VotingModel::deleteRowOrCol($mode, $colOrRow, \Input::post('teacher'), \Input::post('subject'), \Input::post('class')))
-                     {
-                            $arrJSON = array('status' => 'deleted', 'intIndex' => $colOrRow);
-                     }
-                     else
-                     {
-                            $arrJSON = array('status' => 'error', 'intIndex' => $colOrRow);
-                     }
-
-                     die(json_encode($arrJSON));
-              }
-
-              // appear the info Box in the tally sheet mode
-              if (\Input::get('act') == 'tally_sheet')
-              {
-                     if (\VotingModel::getInfoBox(\Input::post('studentId'), \Input::post('skillId')))
-                     {
-                            $arrJSON = array('status' => 'success', 'html' => \VotingModel::getInfoBox(\Input::post('studentId'), \Input::post('skillId')));
-                     }
-                     else
-                     {
-                            $arrJSON = array('status' => 'error', 'html' => '');
-                     }
-                     die(json_encode($arrJSON));
-              }
-
-       }
-
-       /**
-        * Generate the module
-        */
-       protected function compile()
-       {
-
-              global $objPage;
-              $this->import('FrontendUser', 'User');
+        // update voting table
+        if (\Input::get('act') == 'get_comment_modal')
+        {
+            $strModal = \CommentModel::getCommentModal(\Input::post('student'), \Input::post('teacher'), \Input::post('subject'));
+            $arrJSON = array('status' => 'success', 'strModal' => $strModal);
+            die(json_encode($arrJSON));
+        }
 
 
-              // decode, if query string is encoded
-              if (\Input::get('vars') && $GLOBALS['TL_CONFIG']['buf_encode_params'])
-              {
-                     $plaintext_dec = \Cipher::decrypt(\Input::get('vars'));
-                     $arrGet = explode('&', $plaintext_dec);
-                     foreach ($arrGet as $chunk)
-                     {
-                            $arrItem = explode('=', $chunk);
-                            \Input::setGet($arrItem[0], $arrItem[1]);
-                     }
-              }
+        // new comment
+        if (\Input::get('act') == 'new_comment')
+        {
+            $objUser = \FrontendUser::getInstance();
+            $objComment = new \CommentModel();
+
+            $objComment->dateOfCreation = time();
+            $objComment->subject = \Input::post('subject');
+            $objComment->student = \Input::post('student');
+            $objComment->teacher = $objUser->id;
+            $objComment->save();
+
+            $arrJSON = array();
+            $arrJSON['status'] = 'success';
+
+            $objRows = \Database::getInstance()->prepare('SELECT * FROM tl_comment WHERE teacher=? AND subject=? AND student=? ORDER BY dateOfCreation DESC, tstamp DESC')
+                ->execute($objComment->teacher, $objComment->subject, $objComment->student);
+
+            $tableRows = '';
+            while ($objRows->next())
+            {
+                $objPartial = new \FrontendTemplate('voting_comment_modal_row');
+                $objPartial->id = $objRows->id;
+                $objPartial->subject = $objRows->subject;
+                $objPartial->student = $objRows->student;
+                $objPartial->dateOfCreation = \Date::parse('Y-m-d', $objRows->dateOfCreation);
+                $objPartial->comment = nl2br($objRows->comment);
+                $tableRows .= $objPartial->parse();
+            }
+            $arrJSON['tableRows'] = $tableRows;
+            die(json_encode($arrJSON));
+        }
+
+        // delete comment
+        if (\Input::get('act') == 'delete_comment')
+        {
+            $objUser = \FrontendUser::getInstance();
+            $objComment = \CommentModel::findByPk(\Input::post('id'));
+            if ($objComment !== null)
+            {
+                if ($objComment->teacher == $objUser->id)
+                {
+                    $objComment->delete();
+                    $arrJSON = array();
+                    $arrJSON['status'] = 'success';
+                    die(json_encode($arrJSON));
+                }
+            }
+
+            exit;
+        }
+
+        // get comment
+        if (\Input::get('act') == 'get_comment')
+        {
+            $objComment = \CommentModel::findByPk(\Input::post('id'));
+            if ($objComment !== null)
+            {
+                $arrJSON = $objComment->row();
+                $arrJSON['status'] = 'success';
+                $arrJSON['dateOfCreation'] = \Date::parse('Y-m-d', $arrJSON['dateOfCreation']);
+                die(json_encode($arrJSON));
+            }
+            exit();
+        }
+
+        // get comment
+        if (\Input::get('act') == 'save_comment')
+        {
+            $objComment = \CommentModel::findByPk(\Input::post('id'));
+            if ($objComment !== null)
+            {
+                $objUser = \FrontendUser::getInstance();
+                if ($objUser->id == $objComment->teacher)
+                {
+                    $strDate = trim(\Input::post('dateOfCreation'));
+                    $strDate = $strDate == '' ? \Date::parse('Y-m-d') : $strDate;
+                    $objDate = new \Date($strDate, 'Y-m-d');
+                    $objComment->dateOfCreation = $objDate->tstamp;
+                    $objComment->comment = trim(\Input::post('comment'));
+                    $objComment->tstamp = time();
+
+                    $objComment->save();
+                    $arrJSON = array();
+                    $arrJSON['status'] = 'success';
+
+                    $objRows = \Database::getInstance()->prepare('SELECT * FROM tl_comment WHERE teacher=? AND subject=? AND student=? ORDER BY dateOfCreation DESC, tstamp DESC')
+                        ->execute($objComment->teacher, $objComment->subject, $objComment->student);
+
+                    $tableRows = '';
+                    while ($objRows->next())
+                    {
+                        $objPartial = new \FrontendTemplate('voting_comment_modal_row');
+                        $objPartial->id = $objRows->id;
+                        $objPartial->subject = $objRows->subject;
+                        $objPartial->student = $objRows->student;
+                        $objPartial->dateOfCreation = \Date::parse('Y-m-d', $objRows->dateOfCreation);
+                        $objPartial->comment = nl2br($objRows->comment);
+                        $tableRows .= $objPartial->parse();
+                    }
+                    $arrJSON['tableRows'] = $tableRows;
+                    die(json_encode($arrJSON));
+                }
+            }
+            exit();
+        }
 
 
-              // switch
-              switch (\Input::get('do'))
-              {
-                     case 'login':
-                            $objController = new \LoginController($this);
-                            $objController->authenticate();
-                            $this->Template = $objController->setTemplate($this->Template);
-                            break;
+        // update teacher's deviation tolerance
+        if (\Input::get('act') == 'updateTeachersDeviationTolerance')
+        {
+
+            $arrJSON = array('status' => 'error', 'deviation' => '');
+            if (is_numeric(\Input::post('tolerance')) && \Input::post('tolerance') > 0 && \Input::post('tolerance') < 3.1)
+            {
+                $objTeacher = \TeacherModel::findByPk($this->User->id);
+                if ($objTeacher !== null)
+                {
+                    $objTeacher->deviation = \Input::post('tolerance');
+                    $objTeacher->save();
+                    $arrJSON['status'] = 'success';
+                    $arrJSON['deviation'] = \Input::post('tolerance');
+                }
+            }
+            die(json_encode($arrJSON));
+        }
+
+        // delete all votings in a column or in a row
+        if (\Input::get('act') == 'delete_row_or_col')
+        {
+            $mode = \Input::post('mode');
+            $colOrRow = \Input::post('colOrRow');
+            if (\VotingModel::deleteRowOrCol($mode, $colOrRow, \Input::post('teacher'), \Input::post('subject'), \Input::post('class')))
+            {
+                $arrJSON = array('status' => 'deleted', 'intIndex' => $colOrRow);
+            }
+            else
+            {
+                $arrJSON = array('status' => 'error', 'intIndex' => $colOrRow);
+            }
+
+            die(json_encode($arrJSON));
+        }
+
+        // appear the info Box in the tally sheet mode
+        if (\Input::get('act') == 'tally_sheet')
+        {
+            if (\VotingModel::getInfoBox(\Input::post('studentId'), \Input::post('skillId')))
+            {
+                $arrJSON = array('status' => 'success', 'html' => \VotingModel::getInfoBox(\Input::post('studentId'), \Input::post('skillId')));
+            }
+            else
+            {
+                $arrJSON = array('status' => 'error', 'html' => '');
+            }
+            die(json_encode($arrJSON));
+        }
+
+    }
+
+    /**
+     * Generate the module
+     */
+    protected function compile()
+    {
+
+        global $objPage;
+        $this->import('FrontendUser', 'User');
 
 
-                     case 'dashboard':
-                            $objController = new \DashboardController($this);
-                            $this->Template = $objController->setTemplate($this->Template);
-                            break;
+        // decode, if query string is encoded
+        if (\Input::get('vars') && $GLOBALS['TL_CONFIG']['buf_encode_params'])
+        {
+            $plaintext_dec = \Cipher::decrypt(\Input::get('vars'));
+            $arrGet = explode('&', $plaintext_dec);
+            foreach ($arrGet as $chunk)
+            {
+                $arrItem = explode('=', $chunk);
+                \Input::setGet($arrItem[0], $arrItem[1]);
+            }
+        }
 
-                     case 'start_new_voting':
-                            $objController = new \StartNewVotingController($this);
-                            $this->Template = $objController->setTemplate($this->Template);
-                            break;
 
-                     case 'voting_table':
-                            $blnError = false;
-                            if (!is_numeric(\Input::get('teacher')) || !is_numeric(\Input::get('class')) || !is_numeric(\Input::get('subject')))
-                            {
-                                   $blnError = true;
-                            }
-                            if (\Input::get('teacher') != $this->User->id && \Input::get('class') != $this->User->class)
-                            {
-                                   $blnError = true;
-                            }
-                            if ($blnError)
-                            {
-                                   $url = $this->generateFrontendUrl($objPage->row(), '/do/dashboard');
-                                   $this->redirect($url);
-                            }
+        // switch
+        switch (\Input::get('do'))
+        {
+            case 'login':
+                $objController = new \LoginController($this);
+                $objController->authenticate();
+                $this->Template = $objController->setTemplate($this->Template);
+                break;
 
-                            $objController = new \VotingTableController($this);
-                            $this->Template = $objController->setTemplate($this->Template);
-                            break;
 
-                     case 'print_table':
-                            if (\TeacherModel::getOwnClass() != \Input::get('class') && \Input::get('teacher') != $this->User->id)
-                            {
-                                   $url = $this->generateFrontendUrl($objPage->row(), '/do/dashboard');
-                                   $this->redirect($url);
-                            }
-                            $objController = new \FpdfController($this);
-                            $objController->printTable();
-                            break;
+            case 'dashboard':
+                $objController = new \DashboardController($this);
+                $this->Template = $objController->setTemplate($this->Template);
+                break;
 
-                     case 'print_average_table':
-                            if (!\TeacherModel::getOwnClass())
-                            {
-                                   $url = $this->generateFrontendUrl($objPage->row(), '/do/dashboard');
-                                   $this->redirect($url);
-                            }
-                            $objController = new \FpdfController($this);
-                            $objController->printAverageTable();
-                            break;
+            case 'start_new_voting':
+                $objController = new \StartNewVotingController($this);
+                $this->Template = $objController->setTemplate($this->Template);
+                break;
 
-                     case 'print_tally_sheet':
-                            if (!\TeacherModel::getOwnClass())
-                            {
-                                   $url = $this->generateFrontendUrl($objPage->row(), '/do/dashboard');
-                                   $this->redirect($url);
-                            }
-                            $objController = new \FpdfController($this);
-                            $objController->printTallySheet();
-                            break;
+            case 'voting_table':
+                $blnError = false;
+                if (!is_numeric(\Input::get('teacher')) || !is_numeric(\Input::get('class')) || !is_numeric(\Input::get('subject')))
+                {
+                    $blnError = true;
+                }
+                if (\Input::get('teacher') != $this->User->id && \Input::get('class') != $this->User->class)
+                {
+                    $blnError = true;
+                }
+                if ($blnError)
+                {
+                    $url = $this->generateFrontendUrl($objPage->row(), '/do/dashboard');
+                    $this->redirect($url);
+                }
 
-                     case 'print_data_sheet':
-                            if (!\TeacherModel::getOwnClass())
-                            {
-                                   $url = $this->generateFrontendUrl($objPage->row(), '/do/dashboard');
-                                   $this->redirect($url);
-                            }
-                            $objController = new \FpdfController($this);
-                            $objController->printDataSheet();
-                            break;
+                $objController = new \VotingTableController($this);
+                $this->Template = $objController->setTemplate($this->Template);
+                break;
 
-                     case 'delete_table':
-                            if (\Input::get('teacher') == $this->User->id || \TeacherModel::getOwnClass() == \Input::get('class'))
-                            {
-                                   $this->import('Database');
-                                   // Delete votings
-                                   $this->Database->prepare('DELETE FROM tl_voting WHERE teacher=? AND subject=? AND student IN (SELECT id FROM tl_student WHERE class=?)')->execute((int)\Input::get('teacher'), (int)\Input::get('subject'), (int)\Input::get('class'));
-                                   // Delete comments
-                                   $this->Database->prepare('DELETE FROM tl_comment WHERE teacher=? AND subject=? AND student IN (SELECT id FROM tl_student WHERE class=?)')->execute((int)\Input::get('teacher'), (int)\Input::get('subject'), (int)\Input::get('class'));
+            case 'print_table':
+                if (\TeacherModel::getOwnClass() != \Input::get('class') && \Input::get('teacher') != $this->User->id)
+                {
+                    $url = $this->generateFrontendUrl($objPage->row(), '/do/dashboard');
+                    $this->redirect($url);
+                }
+                $objController = new \FpdfController($this);
+                $objController->printTable();
+                break;
 
-                            }
-                            $url = $this->generateFrontendUrl($objPage->row(), '/do/dashboard');
-                            $this->redirect($url);
-                            break;
+            case 'print_average_table':
+                if (!\TeacherModel::getOwnClass())
+                {
+                    $url = $this->generateFrontendUrl($objPage->row(), '/do/dashboard');
+                    $this->redirect($url);
+                }
+                $objController = new \FpdfController($this);
+                $objController->printAverageTable();
+                break;
 
-                     case 'account_settings':
-                            $objController = new \AccountSettingsController($this);
-                            $this->Template = $objController->setTemplate($this->Template);
-                            break;
+            case 'print_tally_sheet':
+                if (!\TeacherModel::getOwnClass())
+                {
+                    $url = $this->generateFrontendUrl($objPage->row(), '/do/dashboard');
+                    $this->redirect($url);
+                }
+                $objController = new \FpdfController($this);
+                $objController->printTallySheet();
+                break;
 
-                     case 'edit_classlist':
-                            if (!\TeacherModel::getOwnClass())
-                            {
-                                   $url = $this->generateFrontendUrl($objPage->row(), '/do/dashboard');
-                                   $this->redirect($url);
-                            }
-                            $objController = new \EditClasslistController($this);
-                            $this->Template = $objController->setTemplate($this->Template);
-                            break;
+            case 'print_data_sheet':
+                if (!\TeacherModel::getOwnClass())
+                {
+                    $url = $this->generateFrontendUrl($objPage->row(), '/do/dashboard');
+                    $this->redirect($url);
+                }
+                $objController = new \FpdfController($this);
+                $objController->printDataSheet();
+                break;
 
-                     case 'average_table':
-                            if (!\TeacherModel::getOwnClass())
-                            {
-                                   $url = $this->generateFrontendUrl($objPage->row(), '/do/dashboard');
-                                   $this->redirect($url);
-                            }
-                            $objController = new \AverageTableController($this);
-                            $this->Template = $objController->setTemplate($this->Template);
-                            break;
+            case 'delete_table':
+                if (\Input::get('teacher') == $this->User->id || \TeacherModel::getOwnClass() == \Input::get('class'))
+                {
+                    $this->import('Database');
+                    // Delete votings
+                    $this->Database->prepare('DELETE FROM tl_voting WHERE teacher=? AND subject=? AND student IN (SELECT id FROM tl_student WHERE class=?)')->execute((int)\Input::get('teacher'), (int)\Input::get('subject'), (int)\Input::get('class'));
+                    // Delete comments
+                    $this->Database->prepare('DELETE FROM tl_comment WHERE teacher=? AND subject=? AND student IN (SELECT id FROM tl_student WHERE class=?)')->execute((int)\Input::get('teacher'), (int)\Input::get('subject'), (int)\Input::get('class'));
 
-                     case 'tally_sheet':
-                            if (!\TeacherModel::getOwnClass())
-                            {
-                                   $url = $this->generateFrontendUrl($objPage->row(), '/do/dashboard');
-                                   $this->redirect($url);
-                            }
-                            $objController = new \TallySheetController($this);
-                            $this->Template = $objController->setTemplate($this->Template);
-                            break;
+                }
+                $url = $this->generateFrontendUrl($objPage->row(), '/do/dashboard');
+                $this->redirect($url);
+                break;
 
-              }
-       }
+            case 'account_settings':
+                $objController = new \AccountSettingsController($this);
+                $this->Template = $objController->setTemplate($this->Template);
+                break;
+
+            case 'edit_classlist':
+                if (!\TeacherModel::getOwnClass())
+                {
+                    $url = $this->generateFrontendUrl($objPage->row(), '/do/dashboard');
+                    $this->redirect($url);
+                }
+                $objController = new \EditClasslistController($this);
+                $this->Template = $objController->setTemplate($this->Template);
+                break;
+
+            case 'average_table':
+                if (!\TeacherModel::getOwnClass())
+                {
+                    $url = $this->generateFrontendUrl($objPage->row(), '/do/dashboard');
+                    $this->redirect($url);
+                }
+                $objController = new \AverageTableController($this);
+                $this->Template = $objController->setTemplate($this->Template);
+                break;
+
+            case 'tally_sheet':
+                if (!\TeacherModel::getOwnClass())
+                {
+                    $url = $this->generateFrontendUrl($objPage->row(), '/do/dashboard');
+                    $this->redirect($url);
+                }
+                $objController = new \TallySheetController($this);
+                $this->Template = $objController->setTemplate($this->Template);
+                break;
+
+        }
+    }
 }
