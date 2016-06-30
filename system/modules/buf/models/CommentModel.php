@@ -79,10 +79,11 @@ class CommentModel extends \Model
                 {
                     $objPartial = new \FrontendTemplate('voting_comment_modal_row');
                     $objPartial->id = $objComment->id;
+                    $objPartial->published = $objComment->published;
                     $objPartial->subject = $objComment->subject;
                     $objPartial->student = $objComment->student;
                     $objPartial->dateOfCreation = \Date::parse('Y-m-d', $objComment->dateOfCreation);
-                    $objPartial->comment = nl2br($objComment->comment);
+                    $objPartial->comment = nl2br(html_entity_decode($objComment->comment));
                     $objModal->rows .= $objPartial->parse();
                 }
             }

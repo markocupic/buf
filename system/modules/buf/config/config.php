@@ -38,8 +38,6 @@ $GLOBALS['BE_MOD']['buf'] = array(
     )
 );
 
-
-
 // Klassenlehrer �ber neue Kommentare benachrichtigen
 if($_GET['adviceOnNewComments']=='true'){
 	$GLOBALS['TL_HOOKS']['generatePage'][] = array('MCupic\BufHelper', 'adviceOnNewComments');

@@ -96,8 +96,7 @@
                 if (json) {
                     if (json.status == 'deleted') {
                         self.resetTable();
-                        if(mode == 'delete_row')
-                        {
+                        if (mode == 'delete_row') {
                             var button = $('.row_' + intValue + '.comment_col').find('.fa');
                             var href = $('.row_' + intValue + '.comment_col').find('a');
 
@@ -270,27 +269,26 @@
                 }
             });
             request.fail(function (jqXHR, textStatus, errorThrown) {
+                console.log(jqXHR);
                 alert('Request fehlgeschlagen. Internet-Verbindung überprüfen!');
             });
         };
 
+
         /**
          *
          * @param elementClick
-         * @param studentId
          */
-        this.saveComment = function (elementClick, studentId) {
+        this.toggleVisibility = function (elementClick) {
 
-            var comment = $.trim($('#commentModalCommentValue').val());
+            var id = $(elementClick).closest('tr').attr('data-id');
+
             var request = $.ajax({
-                url: '?isAjax=true&act=save_comment',
+                url: '?isAjax=true&act=toggle_visibility',
                 method: 'post',
                 data: {
                     REQUEST_TOKEN: self.request_token,
-                    student: studentId.toString(),
-                    teacher: self.teacher.toString(),
-                    subject: self.subject.toString(),
-                    comment: comment
+                    id: id
                 },
                 dataType: 'json',
 
@@ -301,18 +299,12 @@
             request.done(function (json) {
                 if (json) {
                     if (json.status == 'success') {
-                        var button = $('.row_' + studentId + '.comment_col').find('.fa');
-                        var href = $('.row_' + studentId + '.comment_col').find('a');
-
-                        // Button anpassen
-                        if (comment == '') {
-                            button.removeClass('fa-comment');
-                            button.addClass('fa-comment-o');
-                            href.attr('title', 'Kommentar schreiben');
+                        var icon = $(elementClick).find('i');
+                        icon.removeClass('fa-eye fa-eye-slash');
+                        if (json.published > 0) {
+                            icon.addClass('fa-eye');
                         } else {
-                            button.removeClass('fa-comment-o');
-                            button.addClass('fa-comment');
-                            href.attr('title', 'Kommentar bearbeiten');
+                            icon.addClass('fa-eye-slash');
                         }
                     }
                 }
@@ -320,7 +312,184 @@
             request.fail(function (jqXHR, textStatus, errorThrown) {
                 alert('Request fehlgeschlagen. Internet-Verbindung überprüfen!');
             });
+
+
         };
+
+
+        /**
+         *
+         * @param elementClick
+         */
+        this.editComment = function (elementClick) {
+
+            $('#commentForm textarea').text('').val('');
+
+
+            var id = $(elementClick).closest('tr').attr('data-id');
+            var subject = $(elementClick).closest('tr').attr('data-subject');
+            var student = $(elementClick).closest('tr').attr('data-student');
+
+            var request = $.ajax({
+                url: '?isAjax=true&act=get_comment',
+                method: 'post',
+                data: {
+                    REQUEST_TOKEN: self.request_token,
+                    //student: student.toString(),
+                    //subject: subject.toString(),
+                    id: id
+                },
+                dataType: 'json',
+
+                beforeSend: function (event, xhr) {
+                    //
+                }
+            });
+            request.done(function (json) {
+                if (json) {
+                    if (json.status == 'success') {
+                        //alert(json.comment);
+                        $('#commentForm textarea[name="comment"]').val(json.comment);
+                        $('#commentForm input[name="id"]').attr('value', json.id);
+                        $('#commentForm input[name="dateOfCreation"]').attr('value', json.dateOfCreation);
+                        $('#commentTable').hide();
+                        $('#globalOperations').hide();
+                        $('#commentForm').show();
+                    }
+                }
+            });
+            request.fail(function (jqXHR, textStatus, errorThrown) {
+                alert('Request fehlgeschlagen. Internet-Verbindung überprüfen!');
+            });
+
+
+        };
+
+
+        /**
+         *
+         * @param elementClick
+         * @param studentId
+         */
+        this.saveComment = function () {
+
+            var comment = $('#commentForm textarea').val();
+            var id = $('#commentForm input[name="id"]').val();
+            var dateOfCreation = $('#commentForm input[name="dateOfCreation"]').val();
+
+            // Check date
+            if (!/^(19|20)\d\d-(0\d|1[012])-(0\d|1\d|2\d|3[01])$/.test(dateOfCreation)) {
+                alert('Gib ein gültiges Datum im Format yyyy-mm-dd ein!');
+                return;
+            }
+
+
+            var request = $.ajax({
+                url: '?isAjax=true&act=save_comment',
+                method: 'post',
+                data: {
+                    REQUEST_TOKEN: self.request_token,
+                    id: id,
+                    dateOfCreation: dateOfCreation,
+                    comment: comment
+                },
+                dataType: 'json',
+
+                beforeSend: function (event, xhr) {
+                    //
+                }
+            });
+            request.done(function (json) {
+                console.log(json);
+                if (json) {
+                    if (json.status == 'success') {
+                        $('#commentTable tr').remove();
+                        $('#commentTable').html(json.tableRows);
+                        $('#commentTable').show();
+                        $('#globalOperations').show();
+                        $('#commentForm').hide();
+                    }
+                }
+            });
+            request.fail(function (jqXHR, textStatus, errorThrown) {
+                alert('Request fehlgeschlagen. Internet-Verbindung überprüfen!');
+            });
+        };
+
+        /**
+         *
+         */
+        this.newComment = function (subject, student) {
+            $('#commentForm textarea').text('').val('');
+
+            var request = $.ajax({
+                url: '?isAjax=true&act=new_comment',
+                method: 'post',
+                data: {
+                    REQUEST_TOKEN: self.request_token,
+                    student: student,
+                    subject: subject
+                },
+                dataType: 'json',
+
+                beforeSend: function (event, xhr) {
+                    //
+                }
+            });
+            request.done(function (json) {
+                console.log(json);
+                if (json) {
+                    if (json.status == 'success') {
+                        $('#commentTable tr').remove();
+                        $('#commentTable').html(json.tableRows);
+                        $('#commentTable').show();
+                        $('#globalOperations').show();
+                        $('#commentForm').hide();
+                    }
+                }
+            });
+            request.fail(function (jqXHR, textStatus, errorThrown) {
+                alert('Request fehlgeschlagen. Internet-Verbindung überprüfen!');
+            });
+        };
+
+
+        /**
+         *
+         * @param elementClick
+         */
+        this.deleteComment = function (elementClick) {
+
+            if (!confirm('Soll der Kommentar wirklich gelöscht werden?')) {
+                return;
+            }
+
+            var id = $(elementClick).closest('tr').attr('data-id');
+            var request = $.ajax({
+                url: '?isAjax=true&act=delete_comment',
+                method: 'post',
+                data: {
+                    REQUEST_TOKEN: self.request_token,
+                    id: id
+                },
+                dataType: 'json',
+
+                beforeSend: function (event, xhr) {
+                    //
+                }
+            });
+            request.done(function (json) {
+                if (json) {
+                    if (json.status == 'success') {
+                        $(elementClick).closest('tr').remove();
+                    }
+                }
+            });
+            request.fail(function (jqXHR, textStatus, errorThrown) {
+                alert('Request fehlgeschlagen. Internet-Verbindung überprüfen!');
+            });
+        };
+
 
         /**
          *

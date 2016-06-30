@@ -209,7 +209,7 @@ class MainController extends \Module
         {
             $objUser = \FrontendUser::getInstance();
             $objComment = new \CommentModel();
-
+            $objComment->published = true;
             $objComment->dateOfCreation = time();
             $objComment->subject = \Input::post('subject');
             $objComment->student = \Input::post('student');
@@ -227,6 +227,7 @@ class MainController extends \Module
             {
                 $objPartial = new \FrontendTemplate('voting_comment_modal_row');
                 $objPartial->id = $objRows->id;
+                $objPartial->published = $objRows->published;
                 $objPartial->subject = $objRows->subject;
                 $objPartial->student = $objRows->student;
                 $objPartial->dateOfCreation = \Date::parse('Y-m-d', $objRows->dateOfCreation);
@@ -256,6 +257,33 @@ class MainController extends \Module
             exit;
         }
 
+        // toggle visibility
+        if (\Input::get('act') == 'toggle_visibility')
+        {
+            $objUser = \FrontendUser::getInstance();
+            $objComment = \CommentModel::findByPk(\Input::post('id'));
+            if ($objComment !== null)
+            {
+                if ($objComment->teacher == $objUser->id)
+                {
+                    if($objComment->published > 0)
+                    {
+                        $objComment->published = 0;
+                    }else{
+                        $objComment->published = 1;
+                    }
+                    $objComment->save();
+                    $arrJSON = array();
+                    $arrJSON['status'] = 'success';
+                    $arrJSON['published'] = $objComment->published;
+
+                    die(json_encode($arrJSON));
+                }
+            }
+
+            exit;
+        }
+
         // get comment
         if (\Input::get('act') == 'get_comment')
         {
@@ -263,6 +291,7 @@ class MainController extends \Module
             if ($objComment !== null)
             {
                 $arrJSON = $objComment->row();
+                $arrJSON['comment'] =  html_entity_decode($arrJSON['comment']);
                 $arrJSON['status'] = 'success';
                 $arrJSON['dateOfCreation'] = \Date::parse('Y-m-d', $arrJSON['dateOfCreation']);
                 die(json_encode($arrJSON));
@@ -270,7 +299,7 @@ class MainController extends \Module
             exit();
         }
 
-        // get comment
+        // save comment
         if (\Input::get('act') == 'save_comment')
         {
             $objComment = \CommentModel::findByPk(\Input::post('id'));
@@ -298,10 +327,11 @@ class MainController extends \Module
                     {
                         $objPartial = new \FrontendTemplate('voting_comment_modal_row');
                         $objPartial->id = $objRows->id;
+                        $objPartial->published = $objRows->published;
                         $objPartial->subject = $objRows->subject;
                         $objPartial->student = $objRows->student;
                         $objPartial->dateOfCreation = \Date::parse('Y-m-d', $objRows->dateOfCreation);
-                        $objPartial->comment = nl2br($objRows->comment);
+                        $objPartial->comment = nl2br(html_entity_decode($objRows->comment));
                         $tableRows .= $objPartial->parse();
                     }
                     $arrJSON['tableRows'] = $tableRows;

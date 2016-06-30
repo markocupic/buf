@@ -207,7 +207,7 @@ class FpdfController extends \System
         $objStudent = \Database::getInstance()->prepare('SELECT * FROM tl_student WHERE class=? ORDER BY gender, lastname, firstname')->execute($class);
         while ($objStudent->next())
         {
-            $objComment = \Database::getInstance()->prepare('SELECT * FROM tl_comment WHERE subject=? AND student=? AND teacher=?')->execute($subject, $objStudent->id, $teacher);
+            $objComment = \Database::getInstance()->prepare('SELECT * FROM tl_comment WHERE subject=? AND student=? AND teacher=? AND published=?')->execute($subject, $objStudent->id, $teacher, 1);
             while ($objComment->next())
             {
                 $pdf->SetFont('Arial', 'B', 12);
@@ -744,7 +744,7 @@ class FpdfController extends \System
         //$pdf->Ln();
 
 
-        $objComment = \Database::getInstance()->prepare('SELECT * FROM tl_comment WHERE student=? ORDER BY subject, teacher, dateOfCreation')->execute(\Input::get('student'));
+        $objComment = \Database::getInstance()->prepare('SELECT * FROM tl_comment WHERE student=? AND published=? ORDER BY subject, teacher, dateOfCreation DESC')->execute(\Input::get('student'), 1);
         $prevId = '';
         while ($objComment->next())
         {

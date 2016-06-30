@@ -94,7 +94,7 @@ $GLOBALS['TL_DCA']['tl_comment'] = array
     // Palettes
     'palettes' => array
     (
-        'default' => 'student,subject,teacher,tstamp,dateOfCreation,comment,adviced',
+        'default' => 'published,student,subject,teacher,tstamp,dateOfCreation,comment,adviced',
     ),
 
     // Fields
@@ -217,6 +217,16 @@ $GLOBALS['TL_DCA']['tl_comment'] = array
         'adviced' => array
         (
             'label' => &$GLOBALS['TL_LANG']['tl_comment']['adviced'],
+            'exclude' => true,
+            'search' => true,
+            'filter' => true,
+            'inputType' => 'checkbox',
+            'eval' => array('submitOnChange' => false, 'class' => 'clr'),
+            'sql' => "char(1) NOT NULL default ''"
+        ),
+        'published' => array
+        (
+            'label' => &$GLOBALS['TL_LANG']['tl_comment']['published'],
             'exclude' => true,
             'search' => true,
             'filter' => true,
