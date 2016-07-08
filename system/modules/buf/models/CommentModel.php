@@ -94,35 +94,6 @@ class CommentModel extends \Model
     }
 
     /**
-     * @param $student
-     * @param $teacher
-     * @param $subject
-     * @return string
-     */
-    public static function saveComment($student, $teacher, $subject, $comment = '')
-    {
-
-        $objComment = \CommentModel::findComment($student, $teacher, $subject);
-        if ($objComment === null)
-        {
-            $objComment = new \CommentModel();
-            $objComment->student = $student;
-            $objComment->teacher = $teacher;
-            $objComment->subject = $subject;
-        }
-        $objComment->comment = trim($comment);
-        $objComment->tstamp = time();
-        $objComment->adviced = false;
-        $objComment->save();
-
-        if ($objComment->comment == '')
-        {
-            $objComment->delete();
-        }
-        return true;
-    }
-
-    /**
      * @param $class
      * @param $teacher
      * @param $subject

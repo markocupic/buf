@@ -215,6 +215,8 @@ class MainController extends \Module
             $objComment->student = \Input::post('student');
             $objComment->teacher = $objUser->id;
             $objComment->save();
+            \System::log('A new entry "tl_content.id=' . $objComment->id . '" has been created', __METHOD__, TL_GENERAL);
+
 
             $arrJSON = array();
             $arrJSON['status'] = 'success';
@@ -248,6 +250,7 @@ class MainController extends \Module
                 if ($objComment->teacher == $objUser->id)
                 {
                     $objComment->delete();
+                    \System::log('DELETE FROM tl_comment WHERE id=' . \Input::post('id'), __METHOD__, TL_GENERAL);
                     $arrJSON = array();
                     $arrJSON['status'] = 'success';
                     die(json_encode($arrJSON));
@@ -266,10 +269,12 @@ class MainController extends \Module
             {
                 if ($objComment->teacher == $objUser->id)
                 {
-                    if($objComment->published > 0)
+                    if ($objComment->published > 0)
                     {
                         $objComment->published = 0;
-                    }else{
+                    }
+                    else
+                    {
                         $objComment->published = 1;
                     }
                     $objComment->save();
@@ -291,7 +296,7 @@ class MainController extends \Module
             if ($objComment !== null)
             {
                 $arrJSON = $objComment->row();
-                $arrJSON['comment'] =  html_entity_decode($arrJSON['comment']);
+                $arrJSON['comment'] = html_entity_decode($arrJSON['comment']);
                 $arrJSON['status'] = 'success';
                 $arrJSON['dateOfCreation'] = \Date::parse('Y-m-d', $arrJSON['dateOfCreation']);
                 die(json_encode($arrJSON));
@@ -312,12 +317,23 @@ class MainController extends \Module
                     $strDate = $strDate == '' ? \Date::parse('Y-m-d') : $strDate;
                     $objDate = new \Date($strDate, 'Y-m-d');
                     $objComment->dateOfCreation = $objDate->tstamp;
-                    $objComment->comment = trim(\Input::post('comment'));
-                    $objComment->tstamp = time();
+                    if ($objComment->comment != trim(\Input::post('comment')))
+                    {
+                        $objComment->adviced = false;
+                        $objComment->comment = trim(\Input::post('comment'));
+                        $objComment->tstamp = time();
+                        $objComment->save();
+                        \System::log('A new version of record "tl_comment.id=' . $objComment->id . '" has been created', __METHOD__, TL_GENERAL);
+                    }
+                    // Delete, when empty
+                    if ($objComment->comment == '')
+                    {
+                        $objComment->delete();
+                    }
 
-                    $objComment->save();
                     $arrJSON = array();
                     $arrJSON['status'] = 'success';
+
 
                     $objRows = \Database::getInstance()->prepare('SELECT * FROM tl_comment WHERE teacher=? AND subject=? AND student=? ORDER BY dateOfCreation DESC, tstamp DESC')
                         ->execute($objComment->teacher, $objComment->subject, $objComment->student);

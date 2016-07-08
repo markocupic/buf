@@ -109,6 +109,7 @@
                 }
             });
             request.fail(function (jqXHR, textStatus, errorThrown) {
+                console.log(jqXHR);
                 alert('Fehler: Die Anfrage konnte nicht gespeichert werden! Überprüfe die Internetverbindung.');
             });
         };
@@ -170,6 +171,7 @@
                 });
 
                 request.fail(function (jqXHR, textStatus, errorThrown) {
+                    console.log(jqXHR);
                     alert('Fehler: Die Anfrage konnte nicht gespeichert werden! Überprüfe die Internetverbindung.');
                 });
 
@@ -310,6 +312,7 @@
                 }
             });
             request.fail(function (jqXHR, textStatus, errorThrown) {
+                console.log(jqXHR);
                 alert('Request fehlgeschlagen. Internet-Verbindung überprüfen!');
             });
 
@@ -359,6 +362,7 @@
                 }
             });
             request.fail(function (jqXHR, textStatus, errorThrown) {
+                console.log(jqXHR);
                 alert('Request fehlgeschlagen. Internet-Verbindung überprüfen!');
             });
 
@@ -412,6 +416,7 @@
                 }
             });
             request.fail(function (jqXHR, textStatus, errorThrown) {
+                console.log(jqXHR);
                 alert('Request fehlgeschlagen. Internet-Verbindung überprüfen!');
             });
         };
@@ -437,7 +442,7 @@
                 }
             });
             request.done(function (json) {
-                console.log(json);
+                //console.log(json);
                 if (json) {
                     if (json.status == 'success') {
                         $('#commentTable tr').remove();
@@ -449,6 +454,7 @@
                 }
             });
             request.fail(function (jqXHR, textStatus, errorThrown) {
+                console.log(jqXHR);
                 alert('Request fehlgeschlagen. Internet-Verbindung überprüfen!');
             });
         };
@@ -486,6 +492,7 @@
                 }
             });
             request.fail(function (jqXHR, textStatus, errorThrown) {
+                console.log(jqXHR);
                 alert('Request fehlgeschlagen. Internet-Verbindung überprüfen!');
             });
         };
@@ -520,6 +527,7 @@
             });
 
             request.fail(function (jqXHR, textStatus, errorThrown) {
+                console.log(jqXHR);
                 alert('Fehler: Die Anfrage konnte nicht gespeichert werden! Überprüfe die Internetverbindung.');
             });
         };
@@ -597,6 +605,7 @@
                 }
             });
             request.fail(function (jqXHR, textStatus, errorThrown) {
+                console.log(jqXHR);
                 alert('Fehler: Die Anfrage konnte nicht gespeichert werden! Überprüfe die Internetverbindung.');
             });
 
