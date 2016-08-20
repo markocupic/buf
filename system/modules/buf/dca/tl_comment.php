@@ -118,6 +118,7 @@ $GLOBALS['TL_DCA']['tl_comment'] = array
             'label' => &$GLOBALS['TL_LANG']['tl_comment']['dateOfCreation'],
             'search' => true,
             'sorting' => true,
+            'default' => time(),
             'flag' => 6,
             'inputType' => 'text',
             'eval' => array('rgxp' => 'date', 'datepicker' => true, 'feEditable' => true, 'feViewable' => true, 'feGroup' => 'personal', 'tl_class' => 'clr wizard'),

@@ -16,34 +16,35 @@
  */
 $GLOBALS['BE_MOD']['buf'] = array(
     // Beurteilen Und Foerdern  modules
-    'class' => array(
+    'class'   => array(
         'tables' => array('tl_class'),
-        'icon' => 'files/buf/images/backend/group.png'
+        'icon'   => 'files/buf/images/backend/group.png',
     ),
     'student' => array(
         'tables' => array('tl_student'),
-        'icon' => 'files/buf/images/backend/user.png'
+        'icon'   => 'files/buf/images/backend/user.png',
     ),
-    'voting' => array(
+    'voting'  => array(
         'tables' => array('tl_voting'),
-        'icon' => 'files/buf/images/backend/star.png'
+        'icon'   => 'files/buf/images/backend/star.png',
     ),
     'comment' => array(
         'tables' => array('tl_comment'),
-        'icon' => 'files/buf/images/backend/comments.png'
+        'icon'   => 'files/buf/images/backend/comments.png',
     ),
     'subject' => array(
         'tables' => array('tl_subject'),
-        'icon' => 'files/buf/images/backend/report.png'
-    )
+        'icon'   => 'files/buf/images/backend/report.png',
+    ),
 );
 
-// Klassenlehrer �ber neue Kommentare benachrichtigen
-if($_GET['adviceOnNewComments']=='true'){
-	$GLOBALS['TL_HOOKS']['generatePage'][] = array('MCupic\BufHelper', 'adviceOnNewComments');
+// Klassenlehrer über neue Kommentare benachrichtigen
+if ($_GET['adviceOnNewComments'] == 'true')
+{
+    $GLOBALS['TL_HOOKS']['generatePage'][] = array('MCupic\BufHelper', 'adviceOnNewComments');
 }
 
-if(TL_MODE == 'FE')
+if (TL_MODE == 'FE')
 {
     /**
      * Include the helpers

@@ -23,12 +23,6 @@ class BufHelper extends \Controller
      */
     public function adviceOnNewComments()
     {
-        $objCom = \Database::getInstance()->prepare('SELECT * FROM tl_log WHERE tstamp>? AND func=?')->execute(time() - 3600 * 24, __METHOD__);
-        if ($objCom->numRows)
-        {
-            return;
-        }
-
         $objTeacher = \TeacherModel::findAll();
         if ($objTeacher !== null)
         {
@@ -37,7 +31,7 @@ class BufHelper extends \Controller
                 if ($objTeacher->adviceOnNewComments && $objTeacher->isClassTeacher && $objTeacher->class > 0)
                 {
                     $arrMsg = array();
-                    $objCom = \Database::getInstance()->prepare('SELECT * FROM tl_comment WHERE tl_comment.student IN (SELECT id FROM tl_student WHERE tl_student.class=?) AND tl_comment.adviced=? ORDER BY tl_comment.student')->execute($objTeacher->class, false);
+                    $objCom = \Database::getInstance()->prepare('SELECT * FROM tl_comment WHERE tl_comment.student IN (SELECT id FROM tl_student WHERE tl_student.class=?) AND tl_comment.adviced=? ORDER BY tl_comment.student')->execute($objTeacher->class, '');
                     while ($objCom->next())
                     {
                         $arrMsg[] = array(
@@ -62,7 +56,7 @@ class BufHelper extends \Controller
             }
         }
 
-        \Database::getInstance()->prepare('UPDATE tl_comment %s')->set(array('adviced' => 1))->execute();
+        \Database::getInstance()->prepare('UPDATE tl_comment %s')->set(array('adviced' => true))->execute();
 
     }
 
