@@ -31,7 +31,7 @@
   <?php $this->block('body'); ?>
     <?php $this->sections('top'); ?>
 
-    <div id="wrapper" class="container-fluid">
+    <div id="wrapper" class="">
 
       <?php $this->block('header'); ?>
         <?php if ($this->header): ?>
@@ -46,7 +46,7 @@
       <?php $this->sections('before'); ?>
 
       <?php $this->block('container'); ?>
-        <div id="container">
+        <div id="container" class="container">
 
           <?php $this->block('main'); ?>
             <div id="main">
@@ -82,17 +82,20 @@
 
       <?php $this->sections('after'); ?>
 
-      <?php $this->block('footer'); ?>
-        <?php if ($this->footer): ?>
-          <footer id="footer">
-            <div class="inside">
-              <?= $this->footer ?>
-      <?php $this->endblock(); ?>
-            </div>
-          </footer>
-        <?php endif; ?>
+
 
     </div>
+
+
+        <?php $this->block('footer'); ?>
+        <?php if ($this->footer): ?>
+<footer id="footer">
+<div class="inside">
+  <?= $this->footer ?>
+  <?php $this->endblock(); ?>
+</div>
+</footer>
+        <?php endif; ?>
 
     <?php $this->sections('bottom'); ?>
   <?php $this->endblock(); ?>
