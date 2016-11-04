@@ -54,6 +54,7 @@ if (TL_MODE == 'FE')
     $GLOBALS['TL_JAVASCRIPT'][] = 'files/buf/jquery/main.js';
     $GLOBALS['TL_JAVASCRIPT'][] = 'files/buf/jquery/editClasslist.js';
     $GLOBALS['TL_JAVASCRIPT'][] = 'files/buf/jquery/votingTable.js';
+    $GLOBALS['TL_JAVASCRIPT'][] = 'files/buf/jquery/averageTable.js';
     $GLOBALS['TL_JAVASCRIPT'][] = 'files/buf/jquery/tallySheet.js';
 
     $GLOBALS['TL_CSS'][] = 'system/modules/bootstrap-datepicker/dist/css/bootstrap-datepicker3.min.css';

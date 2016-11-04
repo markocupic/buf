@@ -81,12 +81,23 @@ $GLOBALS['TL_DCA']['tl_member']['fields']['deviation'] = array
     'eval' => array('rgxp' => 'alnum', 'maxlength' => 3, 'includeBlankOption' => false, 'class' => 'clr'),
     'sql' => "varchar(3) NOT NULL default ''"
 );
-
+$GLOBALS['TL_DCA']['tl_member']['fields']['showCommentsNotOlderThen'] = array
+(
+    'label' => &$GLOBALS['TL_LANG']['tl_member']['showCommentsNotOlderThen'],
+    'exclude' => true,
+    'search' => true,
+    'sorting' => true,
+    'flag' => 1,
+    'options' => range(0,37),
+    'inputType' => 'select',
+    'eval' => array('mandatory' => false, 'maxlength' => 255, 'includeBlankOption' => true, 'class' => 'clr'),
+    'sql' => "int(2) NOT NULL",
+);
 $GLOBALS['TL_DCA']['tl_member']['palettes'] = array
 (
     '__selector__' => array('isClassTeacher', 'login'),
     //'default'                     => '{personal_legend},firstname,lastname,dateOfBirth,gender;{address_legend:hide},company,street,postal,city,state,country;{contact_legend},phone,mobile,fax,email,website,language;{groups_legend},groups;{login_legend},login;{homedir_legend:hide},assignDir;{account_legend},disable,start,stop',
-    'default' => '{personal_legend},isTeacher;firstname,lastname,gender,email;{voting_table_legend},deviation;{class_teacher_legend},isClassTeacher;{login_legend},login;{account_legend},disable',
+    'default' => '{personal_legend},isTeacher;firstname,lastname,gender,email;{voting_table_legend},deviation,showCommentsNotOlderThen;{class_teacher_legend},isClassTeacher;{login_legend},login;{account_legend},disable',
 );
 
 // Subpalettes

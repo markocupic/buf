@@ -743,8 +743,13 @@ class FpdfController extends \System
         //$pdf->Cell(190, 8, 'Kommentare', 0, '', 'L');
         //$pdf->Ln();
 
+        $timeRange = $this->User->showCommentsNotOlderThen * 30 * 24 * 3600;
+        if($timeRange == 0){
+            $timeRange = time();
+        }
+        $timeRange = time() - $timeRange;
 
-        $objComment = \Database::getInstance()->prepare('SELECT * FROM tl_comment WHERE student=? AND published=? ORDER BY subject, teacher, dateOfCreation DESC')->execute(\Input::get('student'), 1);
+        $objComment = \Database::getInstance()->prepare('SELECT * FROM tl_comment WHERE student=? AND published=? AND dateOfCreation>? ORDER BY subject, teacher, dateOfCreation DESC')->execute(\Input::get('student'), 1,$timeRange);
         $prevId = '';
         while ($objComment->next())
         {
@@ -769,7 +774,9 @@ class FpdfController extends \System
         $pdf->Ln();
 
         $pdf->Cell(190, 8, 'Schule Ettiswil, ' . \Date::parse('j. M Y'), 0, '', 'L');
-        $pdf->Output();
+       $firstname = \StudentModel::findByPk(\Input::get('student'))->firstname;
+        $lastname = \StudentModel::findByPk(\Input::get('student'))->lastname;
+        $pdf->Output('Datenblatt-' . $firstname . ' ' . $lastname . '.pdf','D');
     }
 
 

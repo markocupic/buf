@@ -377,6 +377,30 @@ class MainController extends \Module
             die(json_encode($arrJSON));
         }
 
+        // update teacher's showCommentsNotOlderThen
+        if (\Input::get('act') == 'updateTeachersShowCommentsTimeRange')
+        {
+            $timeRange = \Input::post('timeRange');
+            $teacherId = \Input::post('teacherId');
+            $arrJSON = array('status' => 'error', 'timeRange' => '');
+
+            if(is_numeric($timeRange) && $timeRange < 37)
+            {
+                    $objTeacher = \TeacherModel::findByPk($teacherId);
+                    if ($objTeacher !== null)
+                    {
+                        $objTeacher->showCommentsNotOlderThen = $timeRange;
+                        $objTeacher->save();
+                        $arrJSON['status'] = 'success';
+                        $arrJSON['timeRange'] = $timeRange;
+                    }
+            }
+
+            die(json_encode($arrJSON));
+        }
+
+
+
         // delete all votings in a column or in a row
         if (\Input::get('act') == 'delete_row_or_col')
         {
