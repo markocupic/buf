@@ -1,4 +1,12 @@
 <h2>Mittelwerte (&quot;Sammelblatt&quot;) Stammklasse <?php echo  \ClassModel::getName($this->classId); ?></h2>
+<select id="showCommentsNotOlderThenSelect" class="form-control" onChange="AvgTable.updateTeachersShowCommentsTimeRange(this);">
+<option value="0">alle Kommentare anzeigen</option>
+<option value="1">h&ouml;chstens 1 Monat alte Kommentare anzeigen</option>
+<?php for($i = 2; $i<37; $i++): ?>
+<option value="<?= $i ?>">h&ouml;chstens <?= $i ?> Monate alte Kommentare anzeigen</option>
+<?php endfor; ?>
+</select>
+{{br}}
 <div class="row">
     <div class="col-xs-6">
         {{buf::dashboard_link}}
@@ -33,3 +41,19 @@
 <?php endforeach; ?>
 </table>
 </div>
+
+<script>
+(function ($) {
+    $().ready(function() {
+        var showCommentsNotOlderThen = <?= \FrontendUser::getInstance()->showCommentsNotOlderThen ?>;
+        $('#showCommentsNotOlderThenSelect option').each(function(){
+            if($(this).prop('value') == showCommentsNotOlderThen)
+            {
+                $(this).prop('selected',true);
+            }
+        });
+
+        AvgTable = new AverageTable("<?= \FrontendUser::getInstance()->id ?>", "<?= REQUEST_TOKEN ?>");
+    });
+})(jQuery);
+</script>

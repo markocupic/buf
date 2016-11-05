@@ -533,7 +533,7 @@ class MainController extends \Module
                     $url = $this->generateFrontendUrl($objPage->row(), '/do/dashboard');
                     $this->redirect($url);
                 }
-                $objController = new \FpdfController($this);
+                $objController = new \TcpdfController($this);
                 $objController->printDataSheet();
                 break;
 
