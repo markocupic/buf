@@ -319,7 +319,7 @@ class MainController extends \Module
                     $objComment->dateOfCreation = $objDate->tstamp;
                     if ($objComment->comment != trim(\Input::post('comment')))
                     {
-                        $objComment->adviced = false;
+                        $objComment->adviced = '';
                         $objComment->comment = trim(\Input::post('comment'));
                         $objComment->tstamp = time();
                         $objComment->save();
