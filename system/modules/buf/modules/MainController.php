@@ -316,17 +316,33 @@ class MainController extends \Module
                     $strDate = trim(\Input::post('dateOfCreation'));
                     $strDate = $strDate == '' ? \Date::parse('Y-m-d') : $strDate;
                     $objDate = new \Date($strDate, 'Y-m-d');
-                    $objComment->dateOfCreation = $objDate->tstamp;
-                    if ($objComment->comment != trim(\Input::post('comment')))
+
+                    if (trim(\Input::post('dateOfCreation')) != '')
                     {
-                        $objComment->adviced = '';
-                        $objComment->comment = trim(\Input::post('comment'));
-                        $objComment->tstamp = time();
-                        $objComment->save();
+                        if($objDate->dateOfCreation != $objComment->dateOfCreation)
+                        {
+                            $objComment->dateOfCreation = $objDate->tstamp;
+                            $objComment->tstamp = time();
+                            $objComment->adviced = '';
+                        }
                         \System::log('A new version of record "tl_comment.id=' . $objComment->id . '" has been created', __METHOD__, TL_GENERAL);
                     }
+
+                    if (trim(\Input::post('comment')) != '')
+                    {
+                        if(trim(\Input::post('comment')) != $objComment->comment)
+                        {
+                            $objComment->comment = trim(\Input::post('comment'));
+                            $objComment->tstamp = time();
+                            $objComment->adviced = '';
+                        }
+                        \System::log('A new version of record "tl_comment.id=' . $objComment->id . '" has been created', __METHOD__, TL_GENERAL);
+                    }
+
+                    $objComment->save();
+
                     // Delete, when empty
-                    if ($objComment->comment == '')
+                    if (trim($objComment->comment) == '')
                     {
                         $objComment->delete();
                     }

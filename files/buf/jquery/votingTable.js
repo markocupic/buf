@@ -386,6 +386,7 @@
                 alert('Gib ein gültiges Datum im Format yyyy-mm-dd ein!');
                 return;
             }
+            
 
 
             var request = $.ajax({
