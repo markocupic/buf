@@ -252,13 +252,13 @@ class TcpdfController extends \System
             if ($prevId != $currentId)
             {
                 $pdf->Ln();
-                $pdf->Cell(180, 8, 'Kommentar von: ' . \TeacherModel::findByPk($objComment->teacher)->firstname . ' ' . \TeacherModel::findByPk($objComment->teacher)->lastname . ', ' . \SubjectModel::findByPk($objComment->subject)->name, 'B', 1, 'L');
+                $pdf->Cell(180, 8, 'Kommentar von: ' . \TeacherModel::findByPk($objComment->teacher)->firstname . ' ' . \TeacherModel::findByPk($objComment->teacher)->lastname . ', ' . utf8_decode_entities(\SubjectModel::findByPk($objComment->subject)->name), 'B', 1, 'L');
             }
             $pdf->Ln();
             $pdf->SetFont('helvetica', 'B', 11);
             $pdf->Cell(180, 8, \Date::parse('Y-m-d', $objComment->dateOfCreation), '', 1, 'L');
             $pdf->SetFont('helvetica', '', 11);
-            $pdf->Write(6, $objComment->comment, '', 0, 'L', true, 0, false, false, 0);
+            $pdf->Write(6, utf8_decode_entities($objComment->comment), '', 0, 'L', true, 0, false, false, 0);
             $pdf->Ln();
             $prevId = $currentId;
         }
