@@ -3,7 +3,7 @@
 /**
  * Contao Open Source CMS
  *
- * Copyright (c) 2005-2016 Leo Feyer
+ * Copyright (c) 2005-2017 Leo Feyer
  *
  * @license LGPL-3.0+
  */
@@ -24,6 +24,7 @@ ClassLoader::addNamespaces(array
 ClassLoader::addClasses(array
 (
 	// Modules
+	'MCupic\PHPWordController'         => 'system/modules/buf/modules/PHPWordController.php',
 	'MCupic\DashboardController'       => 'system/modules/buf/modules/DashboardController.php',
 	'MCupic\LoginController'           => 'system/modules/buf/modules/LoginController.php',
 	'MCupic\StartNewVotingController'  => 'system/modules/buf/modules/StartNewVotingController.php',

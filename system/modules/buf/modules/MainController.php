@@ -85,7 +85,7 @@ class MainController extends \Module
             }
             elseif (FE_USER_LOGGED_IN && \Input::get('do') != '')
             {
-                if (\Input::get('do') == 'print_table' || \Input::get('do') == 'print_average_table' || \Input::get('do') == 'print_tally_sheet' || \Input::get('do') == 'print_data_sheet')
+                if (\Input::get('do') == 'print_table' || \Input::get('do') == 'print_average_table' || \Input::get('do') == 'print_tally_sheet' || \Input::get('do') == 'print_data_sheet' || \Input::get('do') == 'print_data_sheet_doc')
                 {
                     $this->strTemplate = null;
                 }
@@ -543,13 +543,24 @@ class MainController extends \Module
                 $objController->printTallySheet();
                 break;
 
-            case 'print_data_sheet':
+            // abandoned since 14.01.2017 !!!!!
+            case 'print_data_sheet_pdf':
                 if (!\TeacherModel::getOwnClass())
                 {
                     $url = $this->generateFrontendUrl($objPage->row(), '/do/dashboard');
                     $this->redirect($url);
                 }
                 $objController = new \TcpdfController($this);
+                $objController->printDataSheet();
+                break;
+
+            case 'print_data_sheet':
+                if (!\TeacherModel::getOwnClass())
+                {
+                    $url = $this->generateFrontendUrl($objPage->row(), '/do/dashboard');
+                    $this->redirect($url);
+                }
+                $objController = new \PHPWordController($this);
                 $objController->printDataSheet();
                 break;
 

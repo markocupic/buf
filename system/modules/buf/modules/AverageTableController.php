@@ -50,6 +50,8 @@ class AverageTableController extends \Frontend
               $url = $this->generateFrontendUrl($objPage->row(), '/do/print_average_table');
               $objTemplate->printAverageTableLink = $url;
               $objTemplate->printDataSheet = $this->generateFrontendUrl($objPage->row(), '/do/print_data_sheet');
+              $objTemplate->printDataSheetDoc = $this->generateFrontendUrl($objPage->row(), '/do/print_data_sheet_doc');
+
 
               return $objTemplate;
        }
