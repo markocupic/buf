@@ -145,7 +145,7 @@ class PHPWordController extends \System
             $currentId = $objComment->teacher . '-' . $objComment->subject;
 
             // If a teacher has written 2 or more comments, do not show his name again
-            $author = \TeacherModel::getFullName($objComment->teacher) . ', ' . \SubjectModel::findByPk($objComment->subject)->name . "\n";
+            $author = \TeacherModel::getFullName($objComment->teacher) . ', ' . \SubjectModel::findByPk($objComment->subject)->name;
             if ($prevId == $currentId)
             {
                 $author = '';
