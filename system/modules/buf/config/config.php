@@ -57,8 +57,8 @@ if (TL_MODE == 'FE')
     $GLOBALS['TL_JAVASCRIPT'][] = 'files/buf/jquery/averageTable.js';
     $GLOBALS['TL_JAVASCRIPT'][] = 'files/buf/jquery/tallySheet.js';
 
-    $GLOBALS['TL_CSS'][] = 'system/modules/bootstrap-datepicker/dist/css/bootstrap-datepicker3.min.css';
-    $GLOBALS['TL_JAVASCRIPT'][] = 'system/modules/bootstrap-datepicker/dist/js/bootstrap-datepicker.js';
+    $GLOBALS['TL_CSS'][] = 'composer/vendor/eternicode/bootstrap-datepicker/dist/css/bootstrap-datepicker3.min.css';
+    $GLOBALS['TL_JAVASCRIPT'][] = 'composer/vendor/eternicode/bootstrap-datepicker/dist/js/bootstrap-datepicker.js'; 
 }
 /**
  * Front end modules
