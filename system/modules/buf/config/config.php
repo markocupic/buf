@@ -71,7 +71,7 @@ $GLOBALS['TL_HOOKS']['replaceInsertTags'][] = array('BufHelper', 'bufReplaceInse
 
 // revise Table Hook
 $GLOBALS['TL_HOOKS']['reviseTable'][] = array('BufHelper', 'checkForReferentialIntegrity');
-$GLOBALS['TL_HOOKS']['reviseTable'][] = array('BufHelper', 'bufReviseTableHook');
+$GLOBALS['TL_HOOKS']['reviseTable'][] = array('BufHelper', 'bufReviseTable');
 
 // lang config
 $GLOBALS['TL_LANG']['MSC']['newPasswordSet'] = 'Dein Passwort wurde aktualisiert.';

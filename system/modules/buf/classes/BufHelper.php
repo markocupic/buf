@@ -36,7 +36,7 @@ class BufHelper extends \Controller
                     {
                         $arrMsg[] = array(
                             'title' => 'Neuer Kommentar von ' . \TeacherModel::getFullName($objCom->teacher) . ' zu ' . \StudentModel::getFullName($objCom->student) . ' im Fach ' . \SubjectModel::getName($objCom->subject),
-                            'body' => $objCom->comment,
+                            'body'  => $objCom->comment,
                         );
                     }
 
@@ -100,7 +100,8 @@ class BufHelper extends \Controller
             {
                 $url = \Frontend::generateFrontendUrl($page->row(), '/do/login') . setQueryString(array('act' => 'logout'));
                 return '<li><a href="' . $url . '" title="Abmelden"><span class="fa fa-sign-out"></span></a></li>';
-            } else
+            }
+            else
             {
                 $url = \Frontend::generateFrontendUrl($page->row(), '/do/login');
                 return '<li><a href="' . $url . '" title="Anmelden"><span class="fa fa-sign-in"></span></a></li>';
@@ -154,6 +155,7 @@ class BufHelper extends \Controller
      */
     public static function checkForReferentialIntegrity($table = '', $new_records = '', $parent_table = '', $child_tables = '')
     {
+
 
         $reload = false;
 
@@ -301,7 +303,8 @@ class BufHelper extends \Controller
         if ($reload === true)
         {
             return true;
-        } else
+        }
+        else
         {
             return false;
         }
@@ -316,17 +319,27 @@ class BufHelper extends \Controller
      * @param string $child_tables
      * @return bool
      */
-    public static function bufReviseTableHook($table = '', $new_records = '', $parent_table = '', $child_tables = '')
+    public static function bufReviseTable($table = '', $new_records = '', $parent_table = '', $child_tables = '')
     {
+
 
         $db = \Database::getInstance();
 
         // delete empty comments
-        $objStmt = $db->prepare('DELETE FROM tl_comment WHERE comment=?')->execute('');
-        if ($objStmt->affectedRows > 0)
+        $objDB = $db->prepare('SELECT * FROM tl_comment WHERE tstamp>?')->execute(0);
+        while ($objDB->next())
         {
-            return true;
+            if (trim($objDB->comment) == '')
+            {
+                // Delete empty comments that are older then 1 hour
+                if (time() > $objDB->tstamp + 3600)
+                {
+                    $db->prepare('DELETE FROM tl_comment WHERE id=?')->execute($objDB->id);
+                    return true;
+                }
+            }
         }
+
 
         // at minimum one skill must be > 0
         $objStmt = $db->execute('DELETE FROM tl_voting WHERE (skill1 + skill2 + skill3 + skill4 + skill5 + skill6 + skill7 + skill8) < 1');

@@ -78,27 +78,19 @@ class PHPWordController extends \System
 		GROUP BY tl_student.id
 		';
 
-        $objDb = $this->Database->prepare($sql)->execute($id);
-        $rows = $objDb->numRows ? $objDb->fetchAllAssoc() : array();
-        $color = $m = 0;
-        foreach ($rows as $row)
+        $objDb = $this->Database->prepare($sql)->limit(1)->execute($id);
+        $row = $objDb->numRows ? $objDb->row() : array();
+
+        for ($i = 1; $i < 9; $i++)
         {
-            $m += 1;
-
-            for ($i = 1; $i < 9; $i++)
+            $skill = round($row['skill' . $i], 1);
+            if ($skill === 0 || $skill == 0)
             {
-
-                $skill = round($row['skill' . $i], 1);
-                if ($skill === 0 || $skill == 0)
-                {
-                    $skill = '';
-                }
-
-                $arrSkills['skill_' . $i] = $skill;
+                $skill = '';
             }
-
-
+            $arrSkills['skill_' . $i] = $skill;
         }
+
         return $arrSkills;
     }
 
@@ -118,6 +110,7 @@ class PHPWordController extends \System
 
 
         $arrSkill = $this->getSkill(\Input::get('student'));
+
         $templateProcessor->setValue('a', $arrSkill['skill_1']);
         $templateProcessor->setValue('b', $arrSkill['skill_2']);
         $templateProcessor->setValue('c', $arrSkill['skill_3']);
@@ -128,8 +121,7 @@ class PHPWordController extends \System
         $templateProcessor->setValue('h', $arrSkill['skill_8']);
 
 
-        // Comments
-
+        // Only collect comments of the selected time span
         $timeRange = $this->User->showCommentsNotOlderThen * 30 * 24 * 3600;
         if ($timeRange == 0)
         {
@@ -140,7 +132,7 @@ class PHPWordController extends \System
         $objComment = \Database::getInstance()->prepare('SELECT * FROM tl_comment WHERE student=? AND published=? AND dateOfCreation>? ORDER BY subject, teacher, dateOfCreation DESC')->execute(\Input::get('student'), 1, $timeRange);
         $prevId = '';
 
-        // Get rows
+        // Count number or of rows
         $rows = $objComment->numRows;
 
         // Clone rows
@@ -153,7 +145,7 @@ class PHPWordController extends \System
             $currentId = $objComment->teacher . '-' . $objComment->subject;
 
             // If a teacher has written 2 or more comments, do not show his name again
-            $author = 'Kommentar von: ' . \TeacherModel::findByPk($objComment->teacher)->firstname . ' ' . \TeacherModel::findByPk($objComment->teacher)->lastname . ', ' . \SubjectModel::findByPk($objComment->subject)->name;
+            $author = \TeacherModel::getFullName($objComment->teacher) . ', ' . \SubjectModel::findByPk($objComment->subject)->name . "\n";
             if ($prevId == $currentId)
             {
                 $author = '';
@@ -162,9 +154,8 @@ class PHPWordController extends \System
             // Add authors name
             $templateProcessor->setValue('loopAuthor#' . $row, htmlspecialchars(utf8_decode_entities($author)));
 
-
             // Add date
-            $date = \Date::parse('m.d.Y', $objComment->dateOfCreation);
+            $date = \Date::parse('d.m.Y', $objComment->dateOfCreation);
             $templateProcessor->setValue('loopDate#' . $row, htmlspecialchars(utf8_decode_entities($date)));
 
             // Add comment
@@ -173,7 +164,7 @@ class PHPWordController extends \System
             $prevId = $currentId;
         }
 
-        $templateProcessor->setValue('date', \Date::parse('m.d.Y'));
+        $templateProcessor->setValue('date', \Date::parse('d.m.Y'));
 
         $tempFolder = new \Folder('files/buf/tmp');
         $tempFolder->purge();
@@ -183,6 +174,5 @@ class PHPWordController extends \System
         sleep(1);
         \Contao\Controller::sendFileToBrowser('files/buf/tmp/' . $filename);
     }
-
 
 }
