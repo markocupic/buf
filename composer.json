@@ -36,7 +36,7 @@
     "extra":{
         "contao":{
             "sources":{
-                "system/modules/buf":"system/modules/buf" 
+                "TL_ROOT/system/modules/buf":"system/modules/buf"
             }
         }
     }
