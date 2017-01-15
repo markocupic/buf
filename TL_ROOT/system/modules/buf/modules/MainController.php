@@ -529,7 +529,9 @@ class MainController extends \Module
                     $url = $this->generateFrontendUrl($objPage->row(), '/do/dashboard');
                     $this->redirect($url);
                 }
-                $objController = new \FpdfController($this);
+                //$objController = new \FpdfController($this);
+                //$objController->printAverageTable();
+                $objController = new \PHPWordController($this);
                 $objController->printAverageTable();
                 break;
 
