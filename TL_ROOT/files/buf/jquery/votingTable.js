@@ -99,11 +99,6 @@
                         if (mode == 'delete_row') {
                             var button = $('.row_' + intValue + '.comment_col').find('.fa');
                             var href = $('.row_' + intValue + '.comment_col').find('a');
-
-                            // Comment Button anpassen
-                            button.removeClass('fa-comment');
-                            button.addClass('fa-comment-o');
-                            href.attr('title', 'Kommentar schreiben');
                         }
                     }
                 }
