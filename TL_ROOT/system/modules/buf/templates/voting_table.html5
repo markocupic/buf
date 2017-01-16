@@ -25,9 +25,9 @@
     <div id="BeurteilungstabelleColumnRight" class="col-md-3">
 
         <?php if ($this->User->id == $this->teacherId ): ?>
-                <a title="Ganze Tabelle löschen" id="delete_table" href="<?php echo $this->hrefDeleteTable; ?>" onclick="if(!confirm('Warnung!!! \nSollen alle Datensätze der Tabelle unwiderruflich gelöscht werden?')) return false;"><span class="fa fa-trash-o"></span> Ganze Tabelle löschen</a>
+                <a title="Ganze Tabelle inkl. aller Kommentare löschen" id="delete_table" href="<?php echo $this->hrefDeleteTable; ?>" onclick="if(!confirm('Warnung!!! \nSollen alle Datensätze und alle Kommentare der Tabelle unwiderruflich gelöscht werden?')) return false;"><span class="fa fa-trash-o"></span> Ganze Tabelle löschen</a>
         <?php elseif (\TeacherModel::getOwnClass() == $this->classId): ?>
-                <a title="Ganze Tabelle löschen" id="delete_table" href="<?php echo $this->hrefDeleteTable; ?>" onclick="if(!confirm('Warnung!!! \nDas ist die Wertung einer Fachlehrperson. Sollen alle Datensätze dieser Tabelle unwiderruflich gelöscht werden?')) return false;"><span class="fa fa-trash-o"></span> Ganze Tabelle löschen</a>
+                <a title="Ganze Tabelle inkl. aller Kommentare löschen" id="delete_table" href="<?php echo $this->hrefDeleteTable; ?>" onclick="if(!confirm('Warnung!!! \nDas ist die Wertung einer Fachlehrperson. Sollen alle Datensätze und alle Kommentare dieser Tabelle unwiderruflich gelöscht werden?')) return false;"><span class="fa fa-trash-o"></span> Ganze Tabelle löschen</a>
         <?php else: ?>
         <?php endif; ?>
         <div class="skillDetailsLayer">

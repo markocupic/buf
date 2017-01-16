@@ -47,18 +47,21 @@ class VotingModel extends \Model
         $arr_datensaetze = array();
 
         $objStudent = \Database::getInstance()->prepare('SELECT id, lastname, firstname FROM tl_student WHERE class=? ORDER BY gender DESC,lastname, firstname')->execute($classId);
-        while ($objStudent->next()) {
+        while ($objStudent->next())
+        {
             $m = 'student_' . $objStudent->id;
-            $objVoting = \Database::getInstance()->prepare('SELECT * FROM tl_voting WHERE teacher = ? AND student = ? AND subject = ?')->execute($teacherId,
-                $objStudent->id, $subjectId);
+            $objVoting = \Database::getInstance()->prepare('SELECT * FROM tl_voting WHERE teacher = ? AND student = ? AND subject = ?')->execute($teacherId, $objStudent->id, $subjectId);
             //Falls die Abfrage nicht eindeutig war.
-            if ($objVoting->numRows > 1) {
+            if ($objVoting->numRows > 1)
+            {
                 die ("Abbruch: zwei Datensätze der selben Kategorie vorhanden");
             }
 
             //Falls zum Namen keine Bewertung gefunden wurde, bleiben die Zellen leer.
-            if ($objVoting->numRows < 1) {
-                for ($i = 1; $i < 9; $i++) {
+            if ($objVoting->numRows < 1)
+            {
+                for ($i = 1; $i < 9; $i++)
+                {
                     $skill = "0";
                     $deviation = "";
                     $color = "000000";
@@ -74,38 +77,51 @@ class VotingModel extends \Model
                 }
             }
             //Falls ein Datensatz vorhanden ist
-            if ($objVoting->numRows == 1) {
+            if ($objVoting->numRows == 1)
+            {
                 $dataRecord = $objVoting->fetchAssoc();
                 $tstamp = $dataRecord["tstamp"];
-                for ($i = 1; $i < 9; $i++) {
+                for ($i = 1; $i < 9; $i++)
+                {
                     $skill = $dataRecord["skill" . $i];
-                    if ($skill < 1) {
+                    if ($skill < 1)
+                    {
                         $skill = "0";
                     }
                     //average
                     //Nur für den Klassenlehrer an seiner Stammklasse ersichtlich
-                    if ($skill > 0 && \TeacherModel::getOwnClass() == $classId) {
-                        $sql = sprintf('SELECT AVG(skill%s) AS average FROM tl_voting WHERE student = ? AND skill%s > 0 AND skill%s < 5 AND id != ?',
-                            $i, $i, $i);
+                    if ($skill > 0 && \TeacherModel::getOwnClass() == $classId)
+                    {
+                        $sql = sprintf('SELECT AVG(skill%s) AS average FROM tl_voting WHERE student = ? AND skill%s > 0 AND skill%s < 5 AND id != ?', $i, $i, $i);
                         $stmt3 = \Database::getInstance()->prepare($sql)->execute($objStudent->id, $dataRecord['id']);
                         $rowAverage = $stmt3->fetchAssoc();
                         $intAverage = $rowAverage['average'];
                         $deviation = $dataRecord["skill" . $i] - $intAverage;
-                        if ($deviation < (-1) * $tolerance && $intAverage > 0) {
+                        if ($deviation < (-1) * $tolerance && $intAverage > 0)
+                        {
                             $color = "009900";
-                        } elseif ($deviation > $tolerance && $intAverage > 0) {
+                        }
+                        elseif ($deviation > $tolerance && $intAverage > 0)
+                        {
                             $color = "CC0000";
-                        } else {
+                        }
+                        else
+                        {
                             $color = "000000";
                         }
-                    } else {
+                    }
+                    else
+                    {
                         $intAverage = 0;
                         $color = "000000";
                     }
 
-                    if ($color != "000000" && $intAverage > 0) {
+                    if ($color != "000000" && $intAverage > 0)
+                    {
                         $deviation = round($deviation, 1);
-                    } else {
+                    }
+                    else
+                    {
                         $deviation = "";
                     }
                     $array_name = "unterarray" . $i;
@@ -160,21 +176,21 @@ class VotingModel extends \Model
 
         $objUser = \System::importStatic('FrontendUser');
 
-        if ($objUser->id == $teacher) {
-            if ($mode == 'delete_row') {
-                \Database::getInstance()->prepare('DELETE FROM tl_voting WHERE teacher=? AND student=? AND subject=?')->execute($teacher,
-                    $colOrRow, $subject);
-                \Database::getInstance()->prepare('DELETE FROM tl_comment WHERE teacher=? AND student=? AND subject=?')->execute($teacher,
-                    $colOrRow, $subject);
+        if ($objUser->id == $teacher)
+        {
+            if ($mode == 'delete_row')
+            {
+                \Database::getInstance()->prepare('DELETE FROM tl_voting WHERE teacher=? AND student=? AND subject=?')->execute($teacher, $colOrRow, $subject);
+                //\Database::getInstance()->prepare('DELETE FROM tl_comment WHERE teacher=? AND student=? AND subject=?')->execute($teacher, $colOrRow, $subject);
                 return true;
             }
 
-            if ($mode == 'delete_col') {
+            if ($mode == 'delete_col')
+            {
 
                 $set = array('tstamp' => time());
                 $set['skill' . $colOrRow] = '0';
-                \Database::getInstance()->prepare('UPDATE tl_voting %s WHERE teacher=? AND subject=? AND student = ANY (SELECT id FROM tl_student WHERE class=?)')->set($set)->execute($teacher,
-                    $subject, $class);
+                \Database::getInstance()->prepare('UPDATE tl_voting %s WHERE teacher=? AND subject=? AND student = ANY (SELECT id FROM tl_student WHERE class=?)')->set($set)->execute($teacher, $subject, $class);
                 // Delete all empty rows
                 \Database::getInstance()->execute('DELETE FROM tl_voting WHERE (skill1 + skill2 + skill3 + skill4 + skill5 + skill6 + skill7 + skill8) < 1');
 
@@ -197,26 +213,30 @@ class VotingModel extends \Model
     {
 
         $objUser = \System::importStatic('FrontendUser');
-        if (intval($teacher) == $objUser->id) {
+        if (intval($teacher) == $objUser->id)
+        {
             $value = trim($value);
             $value = $value == '' ? 0 : $value;
-            if (preg_match('/^[0-4]{0,1}$/', $value)) {
-                $objVoting = \VotingModel::find(
-                    array(
-                        'column' => array('tl_voting.teacher=?', 'tl_voting.student=?','tl_voting.subject=?'),
-                        'value' => array($teacher, $student, $subject),
-                        'limit' => 1,
-                    )
-                );
+            if (preg_match('/^[0-4]{0,1}$/', $value))
+            {
+                $objVoting = \VotingModel::find(array(
+                        'column' => array('tl_voting.teacher=?', 'tl_voting.student=?', 'tl_voting.subject=?'),
+                        'value'  => array($teacher, $student, $subject),
+                        'limit'  => 1,
+                    ));
 
-                if ($objVoting !== null) {
+                if ($objVoting !== null)
+                {
                     $objVoting->{'skill' . $skill} = $value;
                     $objVoting->tstamp = time();
                     $objVoting->save();
                     // delete all empty rows
                     \Database::getInstance()->prepare('DELETE FROM tl_voting WHERE id=? AND (skill1 + skill2 + skill3 + skill4 + skill5 + skill6 + skill7 + skill8) < 1')->execute($objVoting->id);
-                } else {
-                    if ($value > 0) {
+                }
+                else
+                {
+                    if ($value > 0)
+                    {
                         $objVoting = new \VotingModel();
                         $objVoting->student = $student;
                         $objVoting->teacher = $teacher;
@@ -226,7 +246,8 @@ class VotingModel extends \Model
                         $objVoting->save();
                     }
                 }
-                if ($value == 0) {
+                if ($value == 0)
+                {
                     $value = '';
                 }
 
@@ -244,25 +265,27 @@ class VotingModel extends \Model
     public static function getInfoBox($studentId, $skillId)
     {
 
-        if (!\TeacherModel::getOwnClass()) {
+        if (!\TeacherModel::getOwnClass())
+        {
             return false;
         }
         $objModal = new \FrontendTemplate('tallysheet_modal');
         $rows = '';
 
-        $objVoting = \Database::getInstance()->prepare('SELECT * FROM tl_voting WHERE student = ? AND skill' . $skillId . ' > ? ORDER BY id')->execute($studentId,
-            '0');
-        if ($objVoting->numRows) {
+        $objVoting = \Database::getInstance()->prepare('SELECT * FROM tl_voting WHERE student = ? AND skill' . $skillId . ' > ? ORDER BY id')->execute($studentId, '0');
+        if ($objVoting->numRows)
+        {
             $i = 0;
-            while ($objVoting->next()) {
+            while ($objVoting->next())
+            {
                 $skill = 'skill' . $skillId;
                 $i++;
-                if ($i == 1) {
+                if ($i == 1)
+                {
                     $objModal->skill = $GLOBALS['TL_LANG']['tl_voting']['skill' . $skillId][0];
                     $objModal->student = \StudentModel::findByPk($studentId)->firstname . ' ' . \StudentModel::findByPk($studentId)->lastname;
                 }
-                $rows .= '<tr><td><strong><span class="red strong">' . $objVoting->$skill . '&nbsp;</span></strong></td><td class="green strong">&nbsp;' . \SubjectModel::findByPk($objVoting->subject)->acronym . '&nbsp;</td><td class="strong">&nbsp;' . substr(\TeacherModel::findByPk($objVoting->teacher)->firstname,
-                        0, 1) . '. ' . \TeacherModel::findByPk($objVoting->teacher)->lastname . '</td></tr>';
+                $rows .= '<tr><td><strong><span class="red strong">' . $objVoting->$skill . '&nbsp;</span></strong></td><td class="green strong">&nbsp;' . \SubjectModel::findByPk($objVoting->subject)->acronym . '&nbsp;</td><td class="strong">&nbsp;' . substr(\TeacherModel::findByPk($objVoting->teacher)->firstname, 0, 1) . '. ' . \TeacherModel::findByPk($objVoting->teacher)->lastname . '</td></tr>';
 
             }
             $objModal->rows = $rows;
@@ -280,7 +303,8 @@ class VotingModel extends \Model
     {
 
         $objUser = \System::importStatic('FrontendUser');
-        if ($objUser->id == \Input::get('teacher')) {
+        if ($objUser->id == \Input::get('teacher'))
+        {
             return true;
         }
         return false;
@@ -309,22 +333,26 @@ class VotingModel extends \Model
      * @param string $mode
      * @return mixed|null
      */
-    public static function getLastChange($intTeacher, $intSubject = null, $intClass = null, $intStudent=null, $mode = 'table') {
+    public static function getLastChange($intTeacher, $intSubject = null, $intClass = null, $intStudent = null, $mode = 'table')
+    {
 
-        if ($mode == 'table') {
-            $objVoting = \Database::getInstance()->prepare('SELECT * FROM tl_voting WHERE teacher = ? AND subject = ? AND student IN (SELECT id FROM tl_student WHERE class = ?) ORDER BY tstamp DESC LIMIT 0,1')->execute($intTeacher,
-                $intSubject, $intClass);
-        } elseif ($mode == 'teacher') {
+        if ($mode == 'table')
+        {
+            $objVoting = \Database::getInstance()->prepare('SELECT * FROM tl_voting WHERE teacher = ? AND subject = ? AND student IN (SELECT id FROM tl_student WHERE class = ?) ORDER BY tstamp DESC LIMIT 0,1')->execute($intTeacher, $intSubject, $intClass);
+        }
+        elseif ($mode == 'teacher')
+        {
             // $mode= 'teacher'
-            $objVoting = \Database::getInstance()->prepare('SELECT * FROM tl_voting WHERE teacher = ? ORDER BY tstamp DESC LIMIT 0,1')->execute($intTeacher,
-                $intStudent, $intSubject);
-        } else {
+            $objVoting = \Database::getInstance()->prepare('SELECT * FROM tl_voting WHERE teacher = ? ORDER BY tstamp DESC LIMIT 0,1')->execute($intTeacher, $intStudent, $intSubject);
+        }
+        else
+        {
             // $mode= 'row'
-            $objVoting = \Database::getInstance()->prepare('SELECT * FROM tl_voting WHERE teacher = ? AND student = ? AND subject = ? ORDER BY tstamp DESC')->execute($intTeacher,
-                $intStudent, $intSubject);
+            $objVoting = \Database::getInstance()->prepare('SELECT * FROM tl_voting WHERE teacher = ? AND student = ? AND subject = ? ORDER BY tstamp DESC')->execute($intTeacher, $intStudent, $intSubject);
         }
 
-        if ($objVoting->numRows) {
+        if ($objVoting->numRows)
+        {
             return $objVoting->tstamp;
         }
         return null;
@@ -344,7 +372,8 @@ class VotingModel extends \Model
 
         $period = new \DatePeriod(new \DateTime($startDate), $interval, $realEnd);
 
-        foreach ($period as $date) {
+        foreach ($period as $date)
+        {
             $array[] = $date->format('Y-m-d');
         }
 
@@ -358,23 +387,25 @@ class VotingModel extends \Model
      * @param int $endTstamp
      * @return array
      */
-    public static function getVotingsAsJSON($teacherId, $startTstamp=0, $endTstamp=0)
+    public static function getVotingsAsJSON($teacherId, $startTstamp = 0, $endTstamp = 0)
     {
         // 180 d
         $range = 180 * 24 * 60 * 60;
-        if($endTstamp <= $startTstamp)
+        if ($endTstamp <= $startTstamp)
         {
             $endTstamp = time();
         }
 
-        if($startTstamp == 0){
+        if ($startTstamp == 0)
+        {
             $startTstamp = $endTstamp - $range;
         }
 
         $arrDates = self::getDatesFromRange(\Date::parse('Y-m-d', $startTstamp), \Date::parse('Y-m-d', $endTstamp));
 
         $arrDat = array();
-        foreach ($arrDates as $v) {
+        foreach ($arrDates as $v)
+        {
             $arrDat[$v] = array('x' => $v, 'y' => '0');
         }
         $objDb = \Database::getInstance()->prepare("
@@ -386,12 +417,12 @@ class VotingModel extends \Model
             GROUP BY order_date
         ")->execute($startTstamp, \TeacherModel::getOwnClass($teacherId));
 
-        while ($objDb->next()) {
+        while ($objDb->next())
+        {
             $arrDat[$objDb->order_date] = array("x" => $objDb->order_date, "y" => $objDb->order_count);
         }
         return array_values($arrDat);
     }
 
-    
 
 }

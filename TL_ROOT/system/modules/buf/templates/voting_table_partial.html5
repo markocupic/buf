@@ -75,7 +75,7 @@
                 </button>
             </td>
             <!-- delete col -->
-            <td class="delete_col row_<?php echo $Datensatz['student']; ?>"><a href="<?php echo $this->hrefDeleteRowOrCol; ?>" onclick="EvalTable.deleteEntries(this,<?php echo $Datensatz['student']; ?>,'delete_row'); return false;" title="Zeile inkl. Kommentare löschen"><span class="fa fa-close"></span></a></td>
+            <td class="delete_col row_<?php echo $Datensatz['student']; ?>"><a href="<?php echo $this->hrefDeleteRowOrCol; ?>" onclick="EvalTable.deleteEntries(this,<?php echo $Datensatz['student']; ?>,'delete_row'); return false;" title="Bewertungen in Zeile löschen"><span class="fa fa-close"></span></a></td>
 
             <!-- comment col -->
             <?php
