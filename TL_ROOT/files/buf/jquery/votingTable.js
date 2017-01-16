@@ -96,10 +96,6 @@
                 if (json) {
                     if (json.status == 'deleted') {
                         self.resetTable();
-                        if (mode == 'delete_row') {
-                            var button = $('.row_' + intValue + '.comment_col').find('.fa');
-                            var href = $('.row_' + intValue + '.comment_col').find('a');
-                        }
                     }
                 }
             });
