@@ -28,7 +28,7 @@
                         <div class="form-group date">
                             <label for="dateOfCreation">Datum</label>
                             <div class="form-group input-group date">
-                                <input id="dateOfCreation" name="dateOfCreation" maxlength="10" type="text" class="datepicker form-control" data-date-format="yyyy-mm-dd">
+                                <input name="dateOfCreation" maxlength="10" type="text" class="datepicker form-control" data-date-format="yyyy-mm-dd" autocomplete="off">
                                 <div class="input-group-addon">
                                     <span class="datepicker-icon fa fa-calendar"></span>
                                 </div>
@@ -40,6 +40,13 @@
 
 
                         <script>
+                            $().ready(function() {
+                                $('#commentModal').on('shown.bs.modal', function (e) {
+                                    // do something...
+                                    //alert('bsdf');
+                                });
+                            });
+
                             $('.datepicker-icon').click(function(event){
                                 $('.datepicker').datepicker('show');
                             });

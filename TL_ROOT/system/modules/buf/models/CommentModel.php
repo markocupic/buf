@@ -66,7 +66,7 @@ class CommentModel extends \Model
             $objUser = \System::importStatic('FrontendUser');
             $objModal->isAllowed = $teacher == $objUser->id ? true : false;
 
-            $objComment = \Database::getInstance()->prepare('SELECT * FROM tl_comment WHERE student=? AND teacher=? AND subject=? ORDER BY dateOfCreation DESC, tstamp DESC')->execute($student, $teacher, $subject);
+            $objComment = \Database::getInstance()->prepare('SELECT * FROM tl_comment WHERE student=? AND teacher=? AND subject=? ORDER BY dateOfCreation DESC')->execute($student, $teacher, $subject);
             $objModal->rows = '';
 
             while ($objComment->next())

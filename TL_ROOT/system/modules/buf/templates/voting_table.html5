@@ -258,6 +258,13 @@
 
     });
 
+    $().ready(function() {
+        $('#commentModal').on('shown.bs.modal', function (e) {
+            // do something...
+            alert('bsdf');
+        });
+    });
+
 
 
     function displaySkillDetails(index) {

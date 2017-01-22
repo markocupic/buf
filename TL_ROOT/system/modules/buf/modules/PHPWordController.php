@@ -3,7 +3,7 @@
 /**
  * Contao Open Source CMS
  * Copyright (c) 2005-2014 Leo Feyer
- * @package BUF (Beurteilen und Fördern)
+ * @package BUF (Beurteilen und Fï¿½rdern)
  * @author Marko Cupic m.cupic@gmx.ch, 2014
  * @link    https://contao.org
  * @license http://www.gnu.org/licenses/lgpl-3.0.html LGPL
@@ -111,7 +111,11 @@ class PHPWordController extends \System
             $templateProcessor->setValue('loopDate#' . $row, htmlspecialchars(utf8_decode_entities($date)));
 
             // Add comment
-            $templateProcessor->setValue('loopComment#' . $row, htmlspecialchars(utf8_decode_entities($objComment->comment)));
+            // add newlines https://github.com/PHPOffice/PHPWord/issues/268
+            $comment = preg_replace('~\R~u', '</w:t><w:br/><w:t>', $objComment->comment);
+            //$templateProcessor->setValue('loopComment#' . $row, htmlspecialchars(utf8_decode_entities($comment)));
+            $templateProcessor->setValue('loopComment#' . $row, $comment);
+
 
             $prevId = $currentId;
         }

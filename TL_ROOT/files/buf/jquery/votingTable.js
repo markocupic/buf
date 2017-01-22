@@ -346,6 +346,7 @@
                         $('#commentForm textarea[name="comment"]').val(json.comment);
                         $('#commentForm input[name="id"]').attr('value', json.id);
                         $('#commentForm input[name="dateOfCreation"]').attr('value', json.dateOfCreation);
+                        $('#commentForm input[name="dateOfCreation"]').val(json.dateOfCreation);
                         $('#commentTable').hide();
                         $('#globalOperations').hide();
                         $('#commentForm').show();
