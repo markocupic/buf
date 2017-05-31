@@ -1,5 +1,8 @@
 <div class="dashboard">
 <h2>Dashboard</h2>
+
+<div class="row">
+<div class="col-lg-6">
 <h3>Beurteilen</h3>
 <div class="list-group">
 <a class="list-group-item" title="neue Beurteilung abgeben" href="<?= $this->hrefNewVoting ?>">
@@ -67,34 +70,39 @@
     <p class="list-group-item">An deiner Stammklasse wurden noch keine Beurteilungen abgegeben.</p>
 </div>
 <?php endif; ?>
-
-
-<h3>Für den Klassenlehrer</h3>
-<div class="list-group">
-    <a class="list-group-item" title="Klassenliste bearbeiten" href="<?= $this->editClasslistLink ?>">
-        <div class="float-left"><span class="fa fa-pencil"></span></div>
-        <div class="float-left">
-            Die Klassenliste bearbeiten
-        </div>
-        <div class="clearing"></div>
-    </a>
-    <a class="list-group-item" title="Mittelwerte und Kommentare meiner Stammklasse" href="<?= $this->averageTableLink ?>">
-        <div class="float-left"><span class="fa fa-eye"></span></div>
-        <div class="float-left">
-            Mittelwert-Tabelle{{br}}und Lehrerkommentare meiner Stammklasse ansehen
-        </div>
-        <div class="clearing"></div>
-    </a>
-    <a class="list-group-item" title="Strichliste" href="<?= $this->tallySheetLink ?>">
-        <div class="float-left"><span class="fa fa-eye"></span></div>
-        <div class="float-left">
-            Strichliste &quot;Sammelblatt&quot;{{br}}meiner Stammklasse ansehen
-        </div>
-        <div class="clearing"></div>
-    </a>
-</div>
-
 <?php endif; ?>
+</div><!--end col-->
+
+<?php if(\TeacherModel::getOwnClass()): ?>
+<div class="col-lg-6">
+    <h3>Für den Klassenlehrer</h3>
+    <div class="list-group">
+        <a class="list-group-item" title="Klassenliste bearbeiten" href="<?= $this->editClasslistLink ?>">
+            <div class="float-left"><span class="fa fa-pencil"></span></div>
+            <div class="float-left">
+                Die Klassenliste bearbeiten
+            </div>
+            <div class="clearing"></div>
+        </a>
+        <a class="list-group-item" title="Mittelwerte und Kommentare meiner Stammklasse" href="<?= $this->averageTableLink ?>">
+            <div class="float-left"><span class="fa fa-eye"></span></div>
+            <div class="float-left">
+                Mittelwert-Tabelle{{br}}und Lehrerkommentare meiner Stammklasse ansehen
+            </div>
+            <div class="clearing"></div>
+        </a>
+        <a class="list-group-item" title="Strichliste" href="<?= $this->tallySheetLink ?>">
+            <div class="float-left"><span class="fa fa-eye"></span></div>
+            <div class="float-left">
+                Strichliste &quot;Sammelblatt&quot;{{br}}meiner Stammklasse ansehen
+            </div>
+            <div class="clearing"></div>
+        </a>
+    </div>
+</div><!--end col-->
+<?php endif; ?>
+
+</div><!--end row -->
 </div>
 
 <?php if(\TeacherModel::getOwnClass()): ?>

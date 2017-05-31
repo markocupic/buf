@@ -112,8 +112,9 @@ class PHPWordController extends \System
 
             // Add comment
             // add newlines https://github.com/PHPOffice/PHPWord/issues/268
-            $comment = preg_replace('~\R~u', '</w:t><w:br/><w:t>', $objComment->comment);
-            //$templateProcessor->setValue('loopComment#' . $row, htmlspecialchars(utf8_decode_entities($comment)));
+            $comment = $objComment->comment;
+            $comment = htmlspecialchars(utf8_decode_entities($comment));
+            $comment = preg_replace('~\R~u', '</w:t><w:br/><w:t>', $comment);
             $templateProcessor->setValue('loopComment#' . $row, $comment);
 
 
