@@ -156,7 +156,7 @@ class FpdfController extends \System
         $pdf->Ln();
         $pdf->SetFont('Arial', '', 11);
 
-        $objStudent = $this->Database->prepare('SELECT * FROM tl_student WHERE class = ? ORDER BY gender DESC, lastname ASC, firstname ASC')->execute($class);
+        $objStudent = $this->Database->prepare('SELECT * FROM tl_student WHERE disable=? class=? ORDER BY gender DESC, lastname ASC, firstname ASC')->execute('', $class);
         $color = $m = 0;
         while ($objStudent->next())
         {
@@ -204,7 +204,7 @@ class FpdfController extends \System
         //$pdf->Cell(190, 8, 'Kommentare', 0, '', 'L');
         $pdf->Ln();
 
-        $objStudent = \Database::getInstance()->prepare('SELECT * FROM tl_student WHERE class=? ORDER BY gender, lastname, firstname')->execute($class);
+        $objStudent = \Database::getInstance()->prepare('SELECT * FROM tl_student WHERE disable=? AND class=? ORDER BY gender, lastname, firstname')->execute('', $class);
         while ($objStudent->next())
         {
             $objComment = \Database::getInstance()->prepare('SELECT * FROM tl_comment WHERE subject=? AND student=? AND teacher=? AND published=?')->execute($subject, $objStudent->id, $teacher, 1);
@@ -246,7 +246,7 @@ class FpdfController extends \System
 
         //Wichtig um die Zeilenhöhe in der Strichliste zu ermitteln
         $MaxAnzahlStriche = array();
-        $objStudent = \Database::getInstance()->prepare("SELECT * FROM tl_student WHERE class = ? ORDER BY gender DESC,lastname,firstname")->execute($ID_Klasse);
+        $objStudent = \Database::getInstance()->prepare("SELECT * FROM tl_student WHERE disable=? AND class = ? ORDER BY gender DESC,lastname,firstname")->execute('', $ID_Klasse);
         while ($objStudent->next())
         {
             for ($i = 1; $i < 9; $i++)
@@ -346,7 +346,7 @@ class FpdfController extends \System
         //end for
         $pdf->Ln();
         $pdf->SetFont('Arial', '', 9);
-        $objStudent = \Database::getInstance()->prepare('SELECT * FROM tl_student WHERE class = ? ORDER BY gender DESC,lastname,firstname')->execute($ID_Klasse);
+        $objStudent = \Database::getInstance()->prepare('SELECT * FROM tl_student WHERE disable=? AND class = ? ORDER BY gender DESC,lastname,firstname')->execute('', $ID_Klasse);
         $color = $m = 0;
         while ($objStudent->next())
         {

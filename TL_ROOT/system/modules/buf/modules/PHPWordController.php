@@ -202,11 +202,11 @@ class PHPWordController extends \System
 		AVG(CASE WHEN tl_voting.skill8 <> 0 THEN tl_voting.skill8 ELSE NULL END) AS skill8
 		FROM tl_student
 		LEFT JOIN tl_voting ON tl_student.id = tl_voting.student
-		WHERE tl_student.class = ?
+		WHERE tl_student.class = ? AND tl_student.disable = ?
 		GROUP BY tl_student.id
 		ORDER BY tl_student.gender DESC, tl_student.lastname, tl_student.firstname';
 
-        $objDb = $this->Database->prepare($sql)->execute($class);
+        $objDb = $this->Database->prepare($sql)->execute($class, '');
         $rows = $objDb->numRows ? $objDb->fetchAllAssoc() : array();
 
         $m = 0;

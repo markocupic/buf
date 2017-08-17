@@ -47,6 +47,12 @@
                 self.submitRow(this);
             });
 
+            // Add events
+            $('tr.row_student td.col_6 .toggle_row').on('click', function (event) {
+                event.stopPropagation();
+                self.toggleRow(this);
+            });
+
             return this;
 
         };
@@ -101,6 +107,46 @@
                     $(elInputGender).hide().appendTo($(this)).fadeIn();
 
             }
+            });
+        };
+
+        /**
+         * Public Method
+         * @param elIcon
+         */
+        this.toggleRow = function (elButton) {
+
+            var intStudentId = $(elButton).attr('data-id');
+
+            var request = $.ajax({
+                url: '?isAjax=true&act=toggle_student',
+                method: 'post',
+                data: {
+                    id: intStudentId,
+                    REQUEST_TOKEN: self.request_token
+                },
+                dataType: 'json'
+            });
+            request.done(function (json) {
+                if (json) {
+                    if (json.status == 'success') {
+
+                       if(json.disable == '1')
+                       {
+                           $(elButton).find('.fa').removeClass('fa-eye');
+                           $(elButton).find('.fa').addClass('fa-eye-slash');
+                       }else{
+                           $(elButton).find('.fa').removeClass('fa-eye-slash');
+                           $(elButton).find('.fa').addClass('fa-eye');
+                       }
+                    }
+                    if (json.status == 'error') {
+                        alert('Beim Versuch den Datensatz zu ändern, kam es zu einem Fehler.');
+                    }
+                }
+            });
+            request.fail(function () {
+                alert('Fehler: Die Anfrage konnte nicht gespeichert werden! Überprüfe die Internetverbindung.');
             });
         };
 

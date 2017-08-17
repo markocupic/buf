@@ -46,7 +46,7 @@ class VotingModel extends \Model
 
         $arr_datensaetze = array();
 
-        $objStudent = \Database::getInstance()->prepare('SELECT id, lastname, firstname FROM tl_student WHERE class=? ORDER BY gender DESC,lastname, firstname')->execute($classId);
+        $objStudent = \Database::getInstance()->prepare('SELECT id, lastname, firstname FROM tl_student WHERE class=? AND disable=? ORDER BY gender DESC,lastname, firstname')->execute($classId,'');
         while ($objStudent->next())
         {
             $m = 'student_' . $objStudent->id;
@@ -413,9 +413,9 @@ class VotingModel extends \Model
             COUNT(id) as order_count,
             DATE(FROM_UNIXTIME(tstamp)) as order_date
             FROM `tl_voting`
-            WHERE tstamp > ? AND student IN (SELECT id FROM tl_student WHERE class = ?)
+            WHERE tstamp > ? AND student IN (SELECT id FROM tl_student WHERE class = ? AND disable = ?)
             GROUP BY order_date
-        ")->execute($startTstamp, \TeacherModel::getOwnClass($teacherId));
+        ")->execute($startTstamp, \TeacherModel::getOwnClass($teacherId), '');
 
         while ($objDb->next())
         {

@@ -16,6 +16,8 @@
                 <th class="width19 col_3 col_gender textaligncenter"><p><strong>Geschlecht</strong></p></th>
                 <th class="width7 col_4 textaligncenter">&nbsp;</th>
                 <th class="width7 col_5 textaligncenter">&nbsp;</th>
+                <th class="width7 col_6 textaligncenter">&nbsp;</th>
+
             </tr>
 
             <?php $i=1; ?>
@@ -46,6 +48,11 @@
                         <i class="fa fa-save"></i>
                     </button>
                 </td>
+                <td class="col_6 textaligncenter">
+                    <button type="button" data-id="<?= $student['id'] ?>" title="einblenden/ausblenden" class="toggle_row btn btn-link">
+                        <i class="fa fa-eye<?php if($student['disable']): ?>-slash<?php endif; ?>"></i>
+                    </button>
+                </td>
             </tr>
             <?php $i++; ?>
             <?php endforeach; ?>
@@ -68,6 +75,8 @@
                 </td>
                 <td class="col_4">&nbsp;</td>
                 <td class="col_5">&nbsp;</td>
+                <td class="col_6">&nbsp;</td>
+
             </tr>
             <?php endfor; ?>
 

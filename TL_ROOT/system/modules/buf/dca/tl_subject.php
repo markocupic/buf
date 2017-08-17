@@ -129,6 +129,16 @@ $GLOBALS['TL_DCA']['tl_subject'] = array
             'inputType' => 'text',
             'eval' => array('unique' => true, 'mandatory' => true, 'maxlength' => 5),
             'sql' => "varchar(5) NOT NULL default ''"
+        ),
+        'disable' => array
+        (
+            'label' => &$GLOBALS['TL_LANG']['tl_subject']['disable'],
+            'exclude' => true,
+            'search' => true,
+            'filter' => true,
+            'inputType' => 'checkbox',
+            'eval' => array('submitOnChange' => true, 'class' => 'clr'),
+            'sql' => "char(1) NOT NULL default ''"
         )
     )
 

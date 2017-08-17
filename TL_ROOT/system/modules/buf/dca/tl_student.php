@@ -22,7 +22,7 @@ $GLOBALS['TL_DCA']['tl_student'] = array
         'dataContainer' => 'Table',
         'enableVersioning' => true,
         'buf_ptable' => array('tl_class'),
-        'buf_ctable' => array('tl_voting','tl_comment'),
+        'buf_ctable' => array('tl_voting', 'tl_comment'),
 
         'sql' => array
         (
@@ -80,6 +80,13 @@ $GLOBALS['TL_DCA']['tl_student'] = array
                 'icon' => 'delete.gif',
                 'attributes' => 'onclick="if(!confirm(\'' . $GLOBALS['TL_LANG']['MSC']['deleteConfirm'] . '\'))return false;Backend.getScrollOffset()"'
             ),
+            'toggle' => array
+            (
+                'label' => &$GLOBALS['TL_LANG']['tl_member']['toggle'],
+                'icon' => 'visible.gif',
+                'attributes' => 'onclick="Backend.getScrollOffset();return AjaxRequest.toggleVisibility(this,%s)"',
+                'button_callback' => array('tl_student', 'toggleIcon')
+            ),
             'show' => array
             (
                 'label' => &$GLOBALS['TL_LANG']['tl_member']['show'],
@@ -116,6 +123,16 @@ $GLOBALS['TL_DCA']['tl_student'] = array
             'search' => true,
             'sorting' => true,
             'sql' => "int(10) unsigned NOT NULL default '0'"
+        ),
+        'disable' => array
+        (
+            'label' => &$GLOBALS['TL_LANG']['tl_student']['disable'],
+            'exclude' => true,
+            'search' => true,
+            'filter' => true,
+            'inputType' => 'checkbox',
+            'eval' => array('submitOnChange' => true, 'class' => 'clr'),
+            'sql' => "char(1) NOT NULL default ''"
         ),
         'gender' => array
         (
@@ -159,10 +176,12 @@ $GLOBALS['TL_DCA']['tl_student'] = array
             'sorting' => true,
             'flag' => 1,
             'inputType' => 'select',
-            'options_callback' => function () {
+            'options_callback' => function ()
+            {
                 $options = array();
                 $objClass = \ClassModel::findAll();
-                while ($objClass->next()) {
+                while ($objClass->next())
+                {
                     $options[$objClass->id] = $objClass->name;
                 }
                 return $options;
@@ -177,4 +196,105 @@ $GLOBALS['TL_DCA']['tl_student'] = array
 
 );
 
+/**
+ * Provide miscellaneous methods that are used by the data configuration array.
+ *
+ * @author Leo Feyer <https://github.com/leofeyer>
+ */
+class tl_student extends Backend
+{
+
+    /**
+     * Import the back end user object
+     */
+    public function __construct()
+    {
+        parent::__construct();
+        $this->import('BackendUser', 'User');
+    }
+
+    /**
+     * Return the "toggle visibility" button
+     *
+     * @param array $row
+     * @param string $href
+     * @param string $label
+     * @param string $title
+     * @param string $icon
+     * @param string $attributes
+     *
+     * @return string
+     */
+    public function toggleIcon($row, $href, $label, $title, $icon, $attributes)
+    {
+        if (strlen(Input::get('tid')))
+        {
+            $this->toggleVisibility(Input::get('tid'), (Input::get('state') == 1), (@func_get_arg(12) ?: null));
+            $this->redirect($this->getReferer());
+        }
+
+        $href .= '&amp;tid=' . $row['id'] . '&amp;state=' . $row['disable'];
+
+        if ($row['disable'])
+        {
+            $icon = 'invisible.gif';
+        }
+
+        return '<a href="' . $this->addToUrl($href) . '" title="' . specialchars($title) . '"' . $attributes . '>' . Image::getHtml($icon, $label, 'data-state="' . ($row['disable'] ? 0 : 1) . '"') . '</a> ';
+    }
+
+
+    /**
+     * Disable/enable a user group
+     *
+     * @param integer $intId
+     * @param boolean $blnVisible
+     * @param DataContainer $dc
+     */
+    public function toggleVisibility($intId, $blnVisible, DataContainer $dc = null)
+    {
+        // Set the ID and action
+        Input::setGet('id', $intId);
+        Input::setGet('act', 'toggle');
+
+        if ($dc)
+        {
+            $dc->id = $intId; // see #8043
+        }
+
+
+
+        $objVersions = new Versions('tl_student', $intId);
+        $objVersions->initialize();
+
+        // Trigger the save_callback
+        if (is_array($GLOBALS['TL_DCA']['tl_student']['fields']['disable']['save_callback']))
+        {
+            foreach ($GLOBALS['TL_DCA']['tl_student']['fields']['disable']['save_callback'] as $callback)
+            {
+                if (is_array($callback))
+                {
+                    $this->import($callback[0]);
+                    $blnVisible = $this->{$callback[0]}->{$callback[1]}($blnVisible, ($dc ?: $this));
+                }
+                elseif (is_callable($callback))
+                {
+                    $blnVisible = $callback($blnVisible, ($dc ?: $this));
+                }
+            }
+        }
+
+        $time = time();
+
+        // Update the database
+        $this->Database->prepare("UPDATE tl_student SET tstamp=$time, disable='" . ($blnVisible ? '' : 1) . "' WHERE id=?")
+            ->execute($intId);
+
+        $objVersions->create();
+
+
+
+
+    }
+}
 

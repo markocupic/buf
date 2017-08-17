@@ -31,7 +31,7 @@ class BufHelper extends \Controller
                 if ($objTeacher->adviceOnNewComments && $objTeacher->isClassTeacher && $objTeacher->class > 0)
                 {
                     $arrMsg = array();
-                    $objCom = \Database::getInstance()->prepare('SELECT * FROM tl_comment WHERE tl_comment.student IN (SELECT id FROM tl_student WHERE tl_student.class=?) AND tl_comment.adviced=? ORDER BY tl_comment.student')->execute($objTeacher->class, '');
+                    $objCom = \Database::getInstance()->prepare('SELECT * FROM tl_comment WHERE tl_comment.student IN (SELECT id FROM tl_student WHERE tl_student.class=? AND tl_student.disable=?) AND tl_comment.adviced=? ORDER BY tl_comment.student')->execute($objTeacher->class,'','');
                     while ($objCom->next())
                     {
                         $arrMsg[] = array(

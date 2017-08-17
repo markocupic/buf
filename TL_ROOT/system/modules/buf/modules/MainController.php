@@ -171,6 +171,32 @@ class MainController extends \Module
             die(json_encode($arrJSON));
         }
 
+        // toggle visibility of a student
+        if (\Input::get('act') == 'toggle_student')
+        {
+            $arrJSON = array();
+            $arrJSON['status'] = 'error';
+            if (\TeacherModel::getOwnClass())
+            {
+                $objStudent = \StudentModel::findByPk(\Input::post('id'));
+                if ($objStudent !== null)
+                {
+                    if ($objStudent->disable == '1')
+                    {
+                        $objStudent->disable = '';
+                    }
+                    else
+                    {
+                        $objStudent->disable = '1';
+                    }
+                    $objStudent->save();
+                    $arrJSON['status'] = 'success';
+                    $arrJSON['disable'] = $objStudent->disable;
+                }
+            }
+            die(json_encode($arrJSON));
+        }
+
         // reset the voting table
         if (\Input::get('act') == 'reset_table')
         {

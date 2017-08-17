@@ -260,6 +260,16 @@ $GLOBALS['TL_DCA']['tl_voting'] = array
             'reference' => &$GLOBALS['TL_LANG']['MSC'],
             'eval' => array('mandatory' => true, 'includeBlankOption' => false),
             'sql' => "varchar(1) NOT NULL default '0'"
+        ),
+        'disable' => array
+        (
+            'label' => &$GLOBALS['TL_LANG']['tl_voting']['disable'],
+            'exclude' => true,
+            'search' => true,
+            'filter' => true,
+            'inputType' => 'checkbox',
+            'eval' => array('submitOnChange' => true, 'class' => 'clr'),
+            'sql' => "char(1) NOT NULL default ''"
         )
     )
 );

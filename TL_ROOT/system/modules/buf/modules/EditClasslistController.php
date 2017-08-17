@@ -56,7 +56,8 @@ class EditClasslistController extends \Frontend
                     'lastname' => $_POST['insert_lastname'][$k],
                     'firstname' => $_POST['insert_firstname'][$k],
                     'gender' => $_POST['insert_gender'][$k],
-                    'class' => \TeacherModel::getOwnClass()
+                    'class' => \TeacherModel::getOwnClass(),
+                    'disable' => ''
                 );
                 \Database::getInstance()->prepare('INSERT INTO tl_student %s')->set($set)->execute();
             }
