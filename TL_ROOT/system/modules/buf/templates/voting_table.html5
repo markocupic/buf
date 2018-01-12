@@ -25,9 +25,11 @@
     <div id="BeurteilungstabelleColumnRight" class="col-md-3">
 
         <?php if ($this->User->id == $this->teacherId ): ?>
-                <a title="Ganze Tabelle inkl. aller Kommentare löschen" id="delete_table" href="<?php echo $this->hrefDeleteTable; ?>" onclick="if(!confirm('Warnung!!! \nSollen alle Datensätze und alle Kommentare der Tabelle unwiderruflich gelöscht werden?')) return false;"><span class="fa fa-trash-o"></span> Ganze Tabelle löschen</a>
+            <a title="Alle Verhaltensnoten dieser Tabelle löschen" id="delete_skills_only" href="<?php echo $this->hrefDeleteSkillsOnly; ?>" onclick="if(!confirm('Warnung!!! \n Sollen alle Verhaltensnoten dieser Tabelle unwiderruflich gelöscht werden?')) return false;"><span class="fa fa-trash-o"></span> Alle Verhaltensnoten löschen</a>{{br}}
+            <a title="Alle Kommentare dieser Tabelle löschen" id="delete_comments_only" href="<?php echo $this->hrefDeleteCommentsOnly; ?>" onclick="if(!confirm('Warnung!!! \n Sollen alle Kommentare dieser Tabelle unwiderruflich gelöscht werden?')) return false;"><span class="fa fa-trash-o"></span> Alle Kommentare löschen</a>
         <?php elseif (\TeacherModel::getOwnClass() == $this->classId): ?>
-                <a title="Ganze Tabelle inkl. aller Kommentare löschen" id="delete_table" href="<?php echo $this->hrefDeleteTable; ?>" onclick="if(!confirm('Warnung!!! \nDas ist die Wertung einer Fachlehrperson. Sollen alle Datensätze und alle Kommentare dieser Tabelle unwiderruflich gelöscht werden?')) return false;"><span class="fa fa-trash-o"></span> Ganze Tabelle löschen</a>
+            <a title="Alle Verhaltensnoten dieser Tabelle löschen" id="delete_skills_only" href="<?php echo $this->hrefDeleteSkillsOnly; ?>" onclick="if(!confirm('Warnung!!! \nDas ist die Wertung einer Fachlehrperson. Sollen alle Verhaltensnoten dieser Tabelle unwiderruflich gelöscht werden?')) return false;"><span class="fa fa-trash-o"></span> Alle Verhaltensnoten löschen</a>{{br}}
+            <a title="Alle Kommentare dieser Tabelle löschen" id="delete_comments_only" href="<?php echo $this->hrefDeleteCommentsOnly; ?>" onclick="if(!confirm('Warnung!!! \nDas ist die Wertung einer Fachlehrperson. Sollen alle Kommentare dieser Tabelle unwiderruflich gelöscht werden?')) return false;"><span class="fa fa-trash-o"></span> Alle Kommentare löschen</a>
         <?php else: ?>
         <?php endif; ?>
         <div class="skillDetailsLayer">
