@@ -25,11 +25,19 @@
     <div id="BeurteilungstabelleColumnRight" class="col-md-3">
 
         <?php if ($this->User->id == $this->teacherId ): ?>
-            <a title="Alle Verhaltensnoten dieser Tabelle löschen" id="delete_skills_only" href="<?php echo $this->hrefDeleteSkillsOnly; ?>" onclick="if(!confirm('Warnung!!! \n Sollen alle Verhaltensnoten dieser Tabelle unwiderruflich gelöscht werden?')) return false;"><span class="fa fa-trash-o"></span> Alle Verhaltensnoten löschen</a>{{br}}
-            <a title="Alle Kommentare dieser Tabelle löschen" id="delete_comments_only" href="<?php echo $this->hrefDeleteCommentsOnly; ?>" onclick="if(!confirm('Warnung!!! \n Sollen alle Kommentare dieser Tabelle unwiderruflich gelöscht werden?')) return false;"><span class="fa fa-trash-o"></span> Alle Kommentare löschen</a>
+            <p>
+                <a title="Alle Verhaltensnoten dieser Tabelle löschen" class="block btn btn-danger btn-sm" id="delete_skills_only" href="<?php echo $this->hrefDeleteSkillsOnly; ?>" onclick="if(!confirm('Warnung!!! \n Sollen alle Verhaltensnoten dieser Tabelle unwiderruflich gelöscht werden?')) return false;">Alle Verhaltensnoten löschen</a>
+            </p>
+            <p>
+                <a title="Alle Kommentare dieser Tabelle löschen" class="block btn btn-danger btn-sm" id="delete_comments_only" href="<?php echo $this->hrefDeleteCommentsOnly; ?>" onclick="if(!confirm('Warnung!!! \n Sollen alle Kommentare dieser Tabelle unwiderruflich gelöscht werden?')) return false;">Alle Kommentare löschen</a>
+            </p>
         <?php elseif (\TeacherModel::getOwnClass() == $this->classId): ?>
-            <a title="Alle Verhaltensnoten dieser Tabelle löschen" id="delete_skills_only" href="<?php echo $this->hrefDeleteSkillsOnly; ?>" onclick="if(!confirm('Warnung!!! \nDas ist die Wertung einer Fachlehrperson. Sollen alle Verhaltensnoten dieser Tabelle unwiderruflich gelöscht werden?')) return false;"><span class="fa fa-trash-o"></span> Alle Verhaltensnoten löschen</a>{{br}}
-            <a title="Alle Kommentare dieser Tabelle löschen" id="delete_comments_only" href="<?php echo $this->hrefDeleteCommentsOnly; ?>" onclick="if(!confirm('Warnung!!! \nDas ist die Wertung einer Fachlehrperson. Sollen alle Kommentare dieser Tabelle unwiderruflich gelöscht werden?')) return false;"><span class="fa fa-trash-o"></span> Alle Kommentare löschen</a>
+            <p>
+                <a title="Alle Verhaltensnoten dieser Tabelle löschen" class="block btn btn-danger btn-sm" id="delete_skills_only" href="<?php echo $this->hrefDeleteSkillsOnly; ?>" onclick="if(!confirm('Warnung!!! \nDas ist die Wertung einer Fachlehrperson. Sollen alle Verhaltensnoten dieser Tabelle unwiderruflich gelöscht werden?')) return false;">Alle Verhaltensnoten löschen</a>
+            </p>
+            <p>
+                <a title="Alle Kommentare dieser Tabelle löschen" class="block btn btn-danger btn-sm" id="delete_comments_only" href="<?php echo $this->hrefDeleteCommentsOnly; ?>" onclick="if(!confirm('Warnung!!! \nDas ist die Wertung einer Fachlehrperson. Sollen alle Kommentare dieser Tabelle unwiderruflich gelöscht werden?')) return false;">Alle Kommentare löschen</a>
+            </p>
         <?php else: ?>
         <?php endif; ?>
         <div class="skillDetailsLayer">
