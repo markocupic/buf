@@ -156,7 +156,7 @@ class FpdfController extends \System
         $pdf->Ln();
         $pdf->SetFont('Arial', '', 11);
 
-        $objStudent = $this->Database->prepare('SELECT * FROM tl_student WHERE disable=? class=? ORDER BY gender DESC, lastname ASC, firstname ASC')->execute('', $class);
+        $objStudent = $this->Database->prepare('SELECT * FROM tl_student WHERE disable=? AND class=? ORDER BY gender DESC, lastname ASC, firstname ASC')->execute('', $class);
         $color = $m = 0;
         while ($objStudent->next())
         {
